@@ -1,0 +1,93 @@
+{
+  "lockScreen": {
+    "passwordPlaceholder": "Passwort...",
+    "incorrectPassword": "Fehlversuch",
+    "incorrectPasswordPlural": "Fehlversuch",
+    "locked": "7 Fehlversuche. Versuchen Sie es erneut für",
+    "lockedSecond": "Sekunden lang.",
+    "lockedSeconds": "Sekunden lang.",
+    "interactions": {
+      "sleep": "Schlafen",
+      "lock": "Sperren",
+      "shutdown": "Abschalten",
+      "restart": "Neu starten"
+    },
+    "editMenu": {
+      "fontFamily": "Schriftarten",
+      "fontSize": {
+        "name": "Schriftgröße",
+        "medium": "Mittel",
+        "large": "Groß"
+      }
+    }
+  },
+  "header": {
+    "notifications": {
+      "off": "Abschalten",
+      "on": "Anmachen"
+    },
+    "lowBattery": "Niedriger Batteriestatus",
+    "charging": "Aufladen",
+    "fullyCharged": "Voll aufgeladen"
+  },
+  "panel": {
+    "volume": "Volumen",
+    "brightness": "Helligkeit",
+    "darkMode": "Dunkler Modus",
+    "airplaneMode": "Flugzeug-Modus",
+    "nightShift": "Nachtlicht",
+    "boldText": "Fetter Text"
+  },
+  "apps": {
+    "open": "Offen",
+    "quit": "Beenden",
+    "hide": "Verstecken",
+    "unhide": "Einblenden",
+    "surface": {
+      "newTab": "Neuer Tab",
+      "newPrivateTab": "Neuer privater Tab",
+      "turnPrivateOff": "Privaten Modus ausschalten",
+      "turnPrivateOn": "Privaten Modus einschalten",
+      "searchPlaceholder": "Mit Bing suchen oder Adresse eingeben…",
+      "internetUnabled": "Internet ist nicht aktiviert.",
+      "internetUnabledDesc": "Sie benötigen eine Internetverbindung, um eine Verbindung zu dieser Website herzustellen.",
+      "internetUnabledReload": "Neu laden",
+      "startupTitle": "Suchen Sie mit Bing oder geben Sie eine Adresse ein oder lassen Sie das Feld leer, um zur offiziellen Website von BreezeOS weitergeleitet zu werden.",
+      "settings": {
+        "privateMode": "Privatmodus",
+        "searchEngine": "Suchmaschine"
+      }
+    },
+    "calendar": {
+      "name": "Kalender"
+    },
+    "settings": {
+      "name": "Einstellungen"
+    },
+    "clock": {
+      "name": "Uhr"
+    },
+    "camera": {
+      "name": "Kamera"
+    },
+    "files": {
+      "name": "Dateien"
+    },
+    "calculator": {
+      "name": "Rechner",
+      "recentResult": "Aktuelles Ergebnis"
+    },
+    "terminal": {
+      "name": "Terminal"
+    },
+    "textEditor": {
+      "name": "Texteditor"
+    },
+    "softwareStore": {
+      "name": "Software-Store"
+    },
+    "imgview": {
+      "name": "Bildbetrachter"
+    }
+  }
+}

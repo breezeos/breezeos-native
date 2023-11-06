@@ -1,0 +1,434 @@
+$bgcolor: #202023e5;
+$fgcolor: #e2e2e2;
+
+.SurfaceWindow {
+  .Window .TopBar {
+    padding: 4px 8px;
+
+    .TopBarInteractionContainer {
+      display: flex;
+      width: 100vw;
+      justify-content: space-between;
+      align-items: center;
+
+      .TabBar {
+        display: flex;
+
+        .TabBarItem {
+          padding: 4px 9px;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          font-size: 11px;
+          margin-right: 5px;
+
+          * {
+            margin: 0;
+          }
+
+          .TabBarInteraction {
+            display: flex;
+
+            i {
+              font-size: 12px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 999px;
+              height: 20px;
+              width: 20px;
+
+              &:hover {
+                background: #ffffff1e;
+              }
+            }
+          }
+
+          &.TabSearchItem {
+            width: 150px;
+            border-radius: 5px;
+            background: #ffffff0a;
+
+            .TabBarInteraction {
+              margin-right: 5px;
+
+              i {
+                margin-right: 3px;
+              }
+            }
+
+            .CloseButton {
+              width: 18px;
+              height: 18px;
+              border-radius: 999px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              i {
+                display: none;
+                font-size: 10px;
+              }
+            }
+
+            &:hover {
+              .CloseButton {
+                i {
+                  display: block;
+                }
+
+                &:hover {
+                  background: #ffffff10;
+                }
+              }
+            }
+
+            .TabSearch {
+              appearance: none;
+              -webkit-appearance: none;
+              border: none;
+              outline: none;
+              background: transparent;
+              color: #fff;
+              width: 100%;
+              font-size: 12px;
+
+              &::placeholder {
+                color: #ffffff36;
+              }
+
+              &.disabled {
+                opacity: 0.3;
+                pointer-events: none;
+              }
+            }
+          }
+
+          &.TabSettingsItem {
+            margin: 0;
+
+            .TabBarInteraction {
+              margin-right: 5px;
+              i {
+                transition: none;
+
+                &:hover {
+                  background: transparent;
+                }
+
+                &.active {
+                  background: #ffffff1e;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .TopBarTitle {
+      width: auto;
+    }
+  }
+
+  .surface {
+    width: 100vw;
+    height: 100%;
+
+    .TabBarWrapper {
+      margin: 0 10px;
+    }
+
+    &.minimize {
+      width: 1000px;
+      height: 600px;
+    }
+  }
+
+  .Surface {
+    background: $bgcolor;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    height: 100%;
+    padding: 0 5px 5px 5px;
+    position: relative;
+
+    & > * {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    .SurfaceContentContainer {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+
+      .Settings,
+      .Support {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background: #09090b;
+        color: #f4f4f5;
+        z-index: 1;
+        opacity: 0;
+        pointer-events: none;
+
+        &.active {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .CloseButton {
+          background: transparentize($fgcolor, 0.95);
+          border-radius: 999px;
+          width: 42px;
+          height: 42px;
+          font-size: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: $fgcolor;
+
+          &:active {
+            background: transparentize($fgcolor, 0.9);
+            transition: none;
+          }
+        }
+      }
+
+      .Settings {
+        padding: 30px 0;
+
+        .SettingsItem {
+          margin-bottom: 10px;
+          padding: 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .SettingsName {
+            font-weight: 700;
+            font-size: 18px;
+            margin: 0;
+          }
+
+          .SettingsMenuSection {
+            font-size: 12px;
+            padding: 7px 12px;
+            background: transparentize($fgcolor, 0.95);
+            text-transform: capitalize;
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+            align-items: center;
+            border-radius: 7px;
+
+            p {
+              margin: 0;
+            }
+          }
+        }
+      }
+
+      .Support {
+        padding-top: 30px;
+
+        .SupportFrame {
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+      }
+
+      .SplashScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: 100%;
+        height: 100%;
+        background: #2563eb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.7s;
+
+        .SplashScreenIcon {
+          width: 200px;
+          height: 200px;
+        }
+
+        &.private {
+          background: #09090b;
+        }
+
+        &.disabled {
+          border-radius: 999px;
+          width: 120px;
+          height: 120px;
+          bottom: 100px;
+          .SplashScreenIcon {
+            width: 130px;
+            height: 130px;
+          }
+        }
+      }
+
+      .MainScreen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        transition: none;
+
+        .Main {
+          max-width: 600px;
+          padding: 30px 20px;
+
+          .NonCollapsibleSection {
+            padding: 0 25px;
+
+            .SearchWrapper {
+              padding: 34px 0 38px;
+
+              .Text {
+                margin-top: 140px;
+                margin-bottom: 0;
+                font-size: 22px;
+                color: $fgcolor;
+                text-align: center;
+              }
+            }
+          }
+        }
+      }
+
+      .CantBeReached {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        padding: 50px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        max-width: 65%;
+        margin: 0 auto;
+        color: $fgcolor;
+        transition: none;
+
+        .CantBeReachedText {
+          font-weight: 700;
+          font-size: 40px;
+          margin-bottom: 10px;
+        }
+
+        .Description {
+          font-size: 14px;
+          line-height: 1.8;
+
+          .ButtonContainer {
+            margin: 40px 0;
+
+            .Button {
+              appearance: none;
+              border: none;
+              border-radius: 999px;
+              outline: none;
+              padding: 12px 24px;
+              background: #0061df;
+              font-size: 14px;
+              font-weight: 700;
+              transition: all ease 0.3s;
+              color: $fgcolor;
+
+              &:active {
+                transition: none;
+                background: darken(#0061df, 10%);
+              }
+            }
+          }
+        }
+      }
+
+      .iFrame {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background-color: #fff;
+      }
+    }
+  }
+}
+
+.lightMode {
+  .SurfaceWindow {
+    .Window .TopBar .TopBarInteractionContainer .TabBar .TabBarItem {
+      background: #0000000a;
+      color: #000;
+
+      &:hover {
+        .CloseButton {
+          &:hover {
+            background: #00000010;
+          }
+        }
+      }
+
+      .TabBarInteraction i:hover {
+        background: #0000001e;
+      }
+
+      .TabSearch {
+        color: #000;
+
+        &::placeholder {
+          color: #00000036;
+        }
+      }
+    }
+    .Surface {
+      background: $fgcolor;
+
+      .Settings,
+      .Support {
+        background: #f4f4f5;
+        color: #09090b;
+
+        .CloseButton {
+          background: transparentize($bgcolor, 0.85);
+          color: $bgcolor;
+
+          &:active {
+            background: transparentize($bgcolor, 0.8);
+            transition: none;
+          }
+        }
+      }
+
+      .MainScreen {
+        .Main {
+          .NonCollapsibleSection {
+            .SearchWrapper {
+              .Text {
+                color: $bgcolor;
+              }
+            }
+          }
+        }
+      }
+
+      .CantBeReached {
+        color: $bgcolor;
+      }
+    }
+  }
+}

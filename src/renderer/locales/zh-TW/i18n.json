@@ -1,0 +1,93 @@
+{
+  "lockScreen": {
+    "passwordPlaceholder": "密碼...",
+    "incorrectPassword": "次嘗試失敗",
+    "incorrectPasswordPlural": "次嘗試失敗",
+    "locked": "次嘗試失敗。",
+    "lockedSecond": "秒後重試。",
+    "lockedSeconds": "秒後重試。",
+    "interactions": {
+      "sleep": "睡覺",
+      "lock": "鎖",
+      "shutdown": "關閉",
+      "restart": "重啟"
+    },
+    "editMenu": {
+      "fontFamily": "字體",
+      "fontSize": {
+        "name": "字體大小",
+        "medium": "中等的",
+        "large": "大的"
+      }
+    }
+  },
+  "header": {
+    "notifications": {
+      "off": "關",
+      "on": "打開"
+    },
+    "lowBattery": "低電量",
+    "charging": "收費",
+    "fullyCharged": "充滿電"
+  },
+  "panel": {
+    "volume": "體積",
+    "brightness": "亮度",
+    "darkMode": "深色模式",
+    "airplaneMode": "飛航模式",
+    "nightShift": "小夜燈",
+    "boldText": "加粗字體"
+  },
+  "apps": {
+    "open": "打開",
+    "quit": "辭職",
+    "hide": "隱藏",
+    "unhide": "取消隱藏",
+    "surface": {
+      "newTab": "新標籤",
+      "newPrivateTab": "新的私人標籤",
+      "turnPrivateOff": "關閉私密模式",
+      "turnPrivateOn": "開啟私密模式",
+      "searchPlaceholder": "使用 Bing 搜尋或輸入地址...",
+      "internetUnabled": "網際網路未啟用。",
+      "internetUnabledDesc": "您需要網路連線才能連接到該網站。",
+      "internetUnabledReload": "重新載入",
+      "startupTitle": "使用 Bing 搜尋或輸入地址，或留空以重定向至 BreezeOS 官方網站。",
+      "settings": {
+        "privateMode": "私人模式",
+        "searchEngine": "搜尋引擎"
+      }
+    },
+    "calendar": {
+      "name": "日曆"
+    },
+    "settings": {
+      "name": "設定"
+    },
+    "clock": {
+      "name": "鐘"
+    },
+    "camera": {
+      "name": "相機"
+    },
+    "files": {
+      "name": "文件"
+    },
+    "calculator": {
+      "name": "計算機",
+      "recentResult": "最近的結果"
+    },
+    "terminal": {
+      "name": "終端"
+    },
+    "textEditor": {
+      "name": "文字編輯器"
+    },
+    "softwareStore": {
+      "name": "軟體商店"
+    },
+    "imgview": {
+      "name": "圖片瀏覽器"
+    }
+  }
+}

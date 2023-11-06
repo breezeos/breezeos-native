@@ -1,0 +1,102 @@
+{
+  "lockScreen": {
+    "passwordPlaceholder": "Mật khẩu...",
+    "incorrectPassword": "lần sai mật khẩu",
+    "incorrectPasswordPlural": "lần sai mật khẩu",
+    "locked": "lần sai mật khẩu. Thử lại sau",
+    "lockedSecond": "giây.",
+    "lockedSeconds": "giây.",
+    "interactions": {
+      "sleep": "Ngủ",
+      "lock": "Khoá",
+      "shutdown": "Tắt máy",
+      "restart": "Khởi động"
+    },
+    "editMenu": {
+      "fontFamily": "Phông chữ",
+      "fontSize": {
+        "name": "Cỡ chữ",
+        "medium": "Trung bình",
+        "large": "Lớn"
+      }
+    }
+  },
+  "header": {
+    "notifications": {
+      "off": "Tắt",
+      "on": "Bật"
+    },
+    "lowBattery": "Pin yếu",
+    "charging": "Đang sạc",
+    "fullyCharged": "Đã sạc đầy"
+  },
+  "panel": {
+    "volume": "Âm lượng",
+    "brightness": "Độ sáng",
+    "darkMode": "Chế độ Tối",
+    "airplaneMode": "C.độ Máy bay",
+    "nightShift": "Ánh sáng Đêm",
+    "boldText": "Chữ Đậm"
+  },
+  "apps": {
+    "open": "Mở",
+    "quit": "Thoát",
+    "hide": "Ẩn",
+    "unhide": "Bỏ ẩn",
+    "surface": {
+      "newTab": "Tab mới",
+      "newPrivateTab": "Tab Ẩn danh mới",
+      "turnPrivateOff": "Tắt chế độ riêng tư",
+      "turnPrivateOn": "Bật chế độ riêng tư",
+      "searchPlaceholder": "Tìm kiếm bằng Bing hoặc nhập địa chỉ...",
+      "internetUnabled": "Internet chưa được kích hoạt.",
+      "internetUnabledDesc": "Bạn cần kết nối Internet để có thể kết nối tới trang này.",
+      "internetUnabledReload": "Tải lại",
+      "startupTitle": "Tìm kiếm bằng Bing hoặc nhập địa chỉ hoặc để trống để chuyển hướng đến trang web chính thức của BreezeOS.",
+      "settings": {
+        "privateMode": "Chế độ riêng tư",
+        "searchEngine": "Công cụ tìm kiếm"
+      }
+    },
+    "calendar": {
+      "name": "Lịch",
+      "weekDays": {
+        "sunday": "CN",
+        "monday": "T2",
+        "tuesday": "T3",
+        "wednesday": "T4",
+        "thursday": "T5",
+        "friday": "T6",
+        "saturday": "T7"
+      }
+    },
+    "settings": {
+      "name": "Cài đặt"
+    },
+    "clock": {
+      "name": "Đồng hồ"
+    },
+    "camera": {
+      "name": "Máy ảnh"
+    },
+    "files": {
+      "name": "Thư mục"
+    },
+    "calculator": {
+      "name": "Máy tính",
+      "recentResult": "Kết quả gần đây"
+    },
+    "terminal": {
+      "name": "T.bị đầu cuối"
+    },
+    "textEditor": {
+      "name": "S.thảo văn bản"
+    },
+    "softwareStore": {
+      "name": "C.hàng ứng dụng"
+    },
+    "imgview": {
+      "name": "Trình xem ảnh"
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "lockScreen": {
+    "passwordPlaceholder": "Password...",
+    "incorrectPassword": "failed attempt",
+    "incorrectPasswordPlural": "failed attempts",
+    "locked": "failed attempts. Try again for",
+    "lockedSecond": "second.",
+    "lockedSeconds": "seconds.",
+    "interactions": {
+      "sleep": "Sleep",
+      "lock": "Lock",
+      "shutdown": "Shutdown",
+      "restart": "Restart"
+    },
+    "editMenu": {
+      "fontFamily": "Fonts",
+      "fontSize": {
+        "name": "Font size",
+        "medium": "Medium",
+        "large": "Large"
+      },
+      "widgets": "Widgets"
+    }
+  },
+  "header": {
+    "notifications": {
+      "off": "Off",
+      "on": "On"
+    },
+    "lowBattery": "Low Battery",
+    "charging": "Charging",
+    "fullyCharged": "Fully Charged"
+  },
+  "panel": {
+    "volume": "Volume",
+    "brightness": "Brightness",
+    "darkMode": "Dark Mode",
+    "airplaneMode": "Airplane Mode",
+    "nightShift": "Night Shift",
+    "boldText": "Bold Text"
+  },
+  "apps": {
+    "open": "Open",
+    "quit": "Quit",
+    "hide": "Hide",
+    "unhide": "Unhide",
+    "surface": {
+      "newTab": "New Tab",
+      "newPrivateTab": "New Private Tab",
+      "turnPrivateOff": "Turn off private mode",
+      "turnPrivateOn": "Turn on private mode",
+      "searchPlaceholder": "Search with Bing or enter address...",
+      "internetUnabled": "Internet is not enabled.",
+      "internetUnabledDesc": "You need Internet connection in order to connect to this website.",
+      "internetUnabledReload": "Reload",
+      "startupTitle": "Search with Bing or enter address, or leave blank to get redirected to BreezeOS official website.",
+      "settings": {
+        "privateMode": "Private mode",
+        "searchEngine": "Search engine"
+      }
+    },
+    "calendar": {
+      "name": "Calendar",
+      "weekDays": {
+        "sunday": "Sun",
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thursday": "Thu",
+        "friday": "Fri",
+        "saturday": "Sat"
+      }
+    },
+    "settings": {
+      "name": "Settings"
+    },
+    "clock": {
+      "name": "Clock"
+    },
+    "camera": {
+      "name": "Camera"
+    },
+    "files": {
+      "name": "Files"
+    },
+    "calculator": {
+      "name": "Calculator",
+      "recentResult": "Recent Result"
+    },
+    "terminal": {
+      "name": "Terminal"
+    },
+    "textEditor": {
+      "name": "Text Editor"
+    },
+    "softwareStore": {
+      "name": "Software Store"
+    },
+    "imgview": {
+      "name": "Image Viewer"
+    }
+  }
+}

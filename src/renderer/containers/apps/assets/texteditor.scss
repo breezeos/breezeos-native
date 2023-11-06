@@ -1,0 +1,155 @@
+$bgcolor: #202023e5;
+$fgcolor: #e2e2e2;
+
+.TextEditorWindow {
+  .Window .TopBar {
+    padding: 4px 8px;
+    justify-content: space-between;
+    .TopBarInteractionContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .TopBarTitle {
+      width: auto;
+    }
+  }
+
+  .texteditor {
+    width: 100vw;
+    height: 100%;
+
+    &.minimize {
+      width: 1000px;
+      height: 600px;
+
+      .TopBarTitle {
+        width: 200px;
+      }
+    }
+
+    .TabBarWrapper {
+      margin: 0 10px;
+      margin-right: 0;
+
+      .TabBar {
+        display: flex;
+
+        .TabBarItem {
+          padding: 4px 9px;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          font-size: 11px;
+          margin-right: 5px;
+
+          * {
+            margin: 0;
+          }
+
+          .TabSeparator {
+            background: #ffffff1e;
+            width: 1px;
+          }
+
+          .TabBarInteraction {
+            display: flex;
+
+            i {
+              margin-right: 3px;
+              font-size: 12px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 999px;
+              height: 20px;
+              width: 20px;
+
+              &:hover {
+                background: #ffffff1e;
+              }
+
+              &:last-child {
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .TextEditor {
+    background: $bgcolor;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    width: 100%;
+    height: 100%;
+    color: $fgcolor;
+
+    * {
+      margin: 0;
+    }
+
+    .TextArea {
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: $fgcolor;
+      font-size: 16px;
+      padding: 20px;
+      line-height: 1.5;
+      resize: none;
+
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $fgcolor;
+        border-radius: 999px;
+      }
+    }
+  }
+}
+
+.lightMode {
+  .texteditor {
+    .TabBarWrapper .TabBar {
+      .TabBarItem {
+        color: #000;
+
+        .TabSeparator {
+          background: #0000001e;
+        }
+
+        &:hover {
+          .CloseButton {
+            &:hover {
+              background: #00000010;
+            }
+          }
+        }
+
+        .TabBarInteraction i:hover {
+          background: #0000001e;
+        }
+      }
+    }
+  }
+
+  .TextEditor {
+    background: $fgcolor;
+    color: $bgcolor;
+
+    .TextArea {
+      color: $bgcolor;
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $bgcolor;
+      }
+    }
+  }
+}

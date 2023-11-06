@@ -1,0 +1,397 @@
+$fgcolor: #e2e2e2;
+@import url(https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css);
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+
+@font-face {
+  font-display: swap;
+  font-family: Optimistic Display;
+  font-style: normal;
+  font-weight: 200;
+  src: url(https://static.xx.fbcdn.net/rsrc.php/yu/r/UwoTM2u9U6b.woff2)
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Optimistic Display;
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://static.xx.fbcdn.net/rsrc.php/yJ/r/gJ8wmjmQhMa.woff2)
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Optimistic Display;
+  font-style: normal;
+  font-weight: 500;
+  src: url(https://static.xx.fbcdn.net/rsrc.php/yL/r/jfwoHaS3i0K.woff2)
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Optimistic Display;
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://static.xx.fbcdn.net/rsrc.php/yU/r/WXBYOaYZuYu.woff2)
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Optimistic Display;
+  font-style: normal;
+  font-weight: 800;
+  src: url(https://static.xx.fbcdn.net/rsrc.php/yR/r/0wcuDYQ2laN.woff2)
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Cascadia Code;
+  font-style: normal;
+  src: url(../../assets/fonts/CascadiaCode/CascadiaCode-Regular-VTT.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: San Francisco;
+  font-style: normal;
+  font-weight: 200;
+  src: url(../../assets/fonts/SanFrancisco/SF200.woff) format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: San Francisco;
+  font-style: normal;
+  font-weight: 300;
+  src: url(../../assets/fonts/SanFrancisco/SF300.woff) format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: San Francisco;
+  font-style: normal;
+  font-weight: 500;
+  src: url(../../assets/fonts/SanFrancisco/SF500.woff) format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: San Francisco;
+  font-style: normal;
+  font-weight: 700;
+  src: url(../../assets/fonts/SanFrancisco/SF700.woff) format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: San Francisco;
+  font-style: normal;
+  font-weight: 800;
+  src: url(../../assets/fonts/SanFrancisco/SF800.woff) format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: 200;
+  src: url(../../assets/fonts/JetBrainsMono/JetBrainsMono-Light.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: 300;
+  src: url(../../assets/fonts/JetBrainsMono/JetBrainsMono-Regular.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: 500;
+  src: url(../../assets/fonts/JetBrainsMono/JetBrainsMono-Medium.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: 700;
+  src: url(../../assets/fonts/JetBrainsMono/JetBrainsMono-Bold.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: 800;
+  src: url(../../assets/fonts/JetBrainsMono/JetBrainsMono-ExtraBold.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Regattia Stencil;
+  font-style: normal;
+  font-weight: 700;
+  src: url(../../assets/fonts/RegattiaStencil/RS700.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Tiempos Fine;
+  font-style: normal;
+  font-weight: 200;
+  src: url(../../assets/fonts/TiemposFine/test-tiempos-fine-light.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Tiempos Fine;
+  font-style: normal;
+  font-weight: 300;
+  src: url(../../assets/fonts/TiemposFine/test-tiempos-fine-regular.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Tiempos Fine;
+  font-style: normal;
+  font-weight: 500;
+  src: url(../../assets/fonts/TiemposFine/test-tiempos-fine-medium.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Tiempos Fine;
+  font-style: normal;
+  font-weight: 700;
+  src: url(../../assets/fonts/TiemposFine/test-tiempos-fine-bold.woff2) format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Tiempos Fine;
+  font-style: normal;
+  font-weight: 800;
+  src: url(../../assets/fonts/TiemposFine/test-tiempos-fine-black.woff2) format("woff2");
+}
+
+.OptimisticDisplay *:not(i) {
+  font-family: Optimistic Display, -apple-system, ui-sans-serif, system-ui,
+    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji,
+    Segoe UI Symbol;
+}
+
+.SanFrancisco *:not(i) {
+  letter-spacing: 0.4px;
+  font-family: San Francisco, -apple-system, ui-sans-serif, system-ui,
+    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji,
+    Segoe UI Symbol;
+}
+
+.TiemposFine *:not(i) {
+  letter-spacing: 1px;
+  font-family: Tiempos Fine, -apple-system, ui-sans-serif, system-ui,
+    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji,
+    Segoe UI Symbol;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+*::selection {
+  background-color: #4587f1;
+  color: #fff;
+}
+
+body {
+  overflow: hidden;
+  background: #09090b;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+*[contenteditable],
+input {
+  background: transparent;
+  resize: none;
+  border: none;
+  outline: none;
+  appearance: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+* {
+  box-sizing: border-box;
+  font-weight: 300;
+  cursor: default;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  scroll-behavior: smooth;
+  caret-color: #4587f1;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.font-light {
+  font-weight: 200 !important;
+}
+
+.font-normal {
+  font-weight: 300 !important;
+}
+
+.font-medium {
+  font-weight: 500 !important;
+}
+
+.font-bold {
+  font-weight: 700 !important;
+}
+
+.font-extrabold {
+  font-weight: 800 !important;
+}
+
+.Desktop {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+
+  &.hideCursor * {
+    cursor: none !important;
+  }
+
+  &.blackscr {
+    background: #000 !important;
+    cursor: none !important;
+    * {
+      display: none;
+    }
+  }
+
+  &.isBold * {
+    font-weight: 700;
+  }
+
+  &.animdisabled {
+    * {
+      transition-property: opacity !important;
+    }
+  }
+
+  &.inverted {
+    filter: invert(1);
+  }
+
+  .DesktopBody {
+    position: absolute;
+    overflow: hidden;
+    height: calc(100vh - 105px);
+    width: 100vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: all ease 0.3s;
+
+    &.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+    z-index: 99999999999;
+    background: #b1730038;
+    pointer-events: none;
+    transition: all 2s ease;
+  }
+
+  &.nightShift::before {
+    opacity: 0.8;
+  }
+
+  &.capture::before {
+    animation: capture ease 2s;
+  }
+
+  @keyframes capture {
+    0% {
+      background: #fff;
+      opacity: 1;
+    }
+    100% {
+      background: transparent;
+      opacity: 0;
+    }
+  }
+}
+
+.error {
+  font-size: 15px;
+  padding: 50px 25px;
+  color: #fff;
+  background: #000;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: 1000000000000;
+
+  p {
+    margin: 15px 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+#brightness {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000000000000;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+}

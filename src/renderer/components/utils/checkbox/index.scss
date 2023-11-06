@@ -1,0 +1,36 @@
+.Checkbox {
+  height: 24px;
+  width: 24px;
+  border-radius: 999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparentize(#f4f4f5, 0.9);
+  scale: 1;
+  transition: all ease 0.3s;
+
+  i {
+    color: #f4f4f5;
+    font-size: 13px;
+    opacity: 0;
+    transition: all ease 0.3s;
+  }
+
+  &:active {
+    transition: none;
+    scale: 0.95;
+  }
+
+  &.active {
+    background: #2563eb;
+
+    i {
+      opacity: 1;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}

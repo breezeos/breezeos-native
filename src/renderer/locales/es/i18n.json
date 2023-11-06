@@ -1,0 +1,93 @@
+{
+  "lockScreen": {
+    "passwordPlaceholder": "Contraseña...",
+    "incorrectPassword": "intento fallido",
+    "incorrectPasswordPlural": "intentos fallidos",
+    "locked": "intentos fallidos. Inténtalo de nuevo durante",
+    "lockedSecond": "segundo.",
+    "lockedSeconds": "segundos.",
+    "interactions": {
+      "sleep": "Dormir",
+      "lock": "Cerrar",
+      "shutdown": "Cerrar",
+      "restart": "Reanudar"
+    },
+    "editMenu": {
+      "fontFamily": "Fuentes",
+      "fontSize": {
+        "name": "Tamaño de fuente",
+        "medium": "Medio",
+        "large": "Grande"
+      }
+    }
+  },
+  "header": {
+    "notifications": {
+      "off": "Apagar",
+      "on": "Encender"
+    },
+    "lowBattery": "Batería baja",
+    "charging": "Cargando",
+    "fullyCharged": "Completamente cargado"
+  },
+  "panel": {
+    "volume": "Volumen",
+    "brightness": "Brillo",
+    "darkMode": "Modo oscuro",
+    "airplaneMode": "Modo avión",
+    "nightShift": "Luz de noche",
+    "boldText": "Texto en negrita"
+  },
+  "apps": {
+    "open": "Abierto",
+    "quit": "Abandonar",
+    "hide": "Esconder",
+    "unhide": "Mostrar",
+    "surface": {
+      "newTab": "Nueva pestaña",
+      "newPrivateTab": "Nueva pestaña privada",
+      "turnPrivateOff": "Desactivar el modo privado",
+      "turnPrivateOn": "Activar el modo privado",
+      "searchPlaceholder": "Busque con Bing o ingrese la dirección...",
+      "internetUnabled": "Internet no está activado.",
+      "internetUnabledDesc": "Necesita una conexión a Internet para conectarse a este sitio web.",
+      "internetUnabledReload": "Recargar",
+      "startupTitle": "Busque con Bing o ingrese una dirección o deje el campo en blanco para ser redirigido al sitio web oficial de BreezeOS.",
+      "settings": {
+        "privateMode": "Modo privado",
+        "searchEngine": "Buscador"
+      }
+    },
+    "calendar": {
+      "name": "Calendario"
+    },
+    "settings": {
+      "name": "Ajustes"
+    },
+    "clock": {
+      "name": "Reloj"
+    },
+    "camera": {
+      "name": "Cámara"
+    },
+    "files": {
+      "name": "Archivos"
+    },
+    "calculator": {
+      "name": "Calculadora",
+      "recentResult": "Resultado actual"
+    },
+    "terminal": {
+      "name": "Terminal"
+    },
+    "textEditor": {
+      "name": "Editor de texto"
+    },
+    "softwareStore": {
+      "name": "Tienda de software"
+    },
+    "imgview": {
+      "name": "Visor de imágenes"
+    }
+  }
+}

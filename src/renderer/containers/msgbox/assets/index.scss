@@ -1,0 +1,10 @@
+.Window {
+  height: fit-content;
+  opacity: 0;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "lockScreen": {
+    "passwordPlaceholder": "パスワード...",
+    "incorrectPassword": "回失敗しました",
+    "incorrectPasswordPlural": "回失敗しました",
+    "locked": "回失敗しました。",
+    "lockedSecond": "秒間もう一度試してください。",
+    "lockedSeconds": "秒間もう一度試してください。",
+    "interactions": {
+      "sleep": "寝る",
+      "lock": "ロック",
+      "shutdown": "シャットダウン",
+      "restart": "再起動"
+    },
+    "editMenu": {
+      "fontFamily": "フォント",
+      "fontSize": {
+        "name": "フォントサイズ",
+        "medium": "中くらい",
+        "large": "大きい"
+      }
+    }
+  },
+  "header": {
+    "notifications": {
+      "off": "消す",
+      "on": "オンにする"
+    },
+    "lowBattery": "バッテリー残量低下",
+    "charging": "充電",
+    "fullyCharged": "フル充電済み"
+  },
+  "panel": {
+    "volume": "音量",
+    "brightness": "輝度",
+    "darkMode": "ダークモード",
+    "airplaneMode": "機内モード",
+    "nightShift": "夜の光",
+    "boldText": "太字"
+  },
+  "apps": {
+    "open": "開く",
+    "quit": "やめる",
+    "hide": "隠す",
+    "unhide": "再表示",
+    "surface": {
+      "newTab": "新しいタブ",
+      "newPrivateTab": "新しいプライベート タブ",
+      "turnPrivateOff": "プライベート モードをオフにする",
+      "turnPrivateOn": "プライベート モードをオンにする",
+      "searchPlaceholder": "Bing で検索するか、アドレスを入力してください...",
+      "internetUnabled": "インターネットが有効になっていません。",
+      "internetUnabledDesc": "この Web サイトに接続するには、インターネット接続が必要です。",
+      "internetUnabledReload": "リロード",
+      "startupTitle": "Bing で検索するか、アドレスを入力するか、空白のままにすると、BreezeOS 公式 Web サイトにリダイレクトされます。",
+      "settings": {
+        "privateMode": "プライベートモード",
+        "searchEngine": "検索エンジン"
+      }
+    },
+    "calendar": {
+      "name": "カレンダー"
+    },
+    "settings": {
+      "name": "設定"
+    },
+    "clock": {
+      "name": "時計"
+    },
+    "camera": {
+      "name": "カメラ"
+    },
+    "files": {
+      "name": "ファイル"
+    },
+    "calculator": {
+      "name": "電卓",
+      "recentResult": "最近の結果"
+    },
+    "terminal": {
+      "name": "ターミナル"
+    },
+    "textEditor": {
+      "name": "テキストエディタ"
+    },
+    "softwareStore": {
+      "name": "ソフトウェア"
+    },
+    "imgview": {
+      "name": "画像ビューア"
+    }
+  }
+}

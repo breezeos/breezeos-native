@@ -1,0 +1,93 @@
+{
+  "lockScreen": {
+    "passwordPlaceholder": "Пароль...",
+    "incorrectPassword": "неудачная попытка",
+    "incorrectPasswordPlural": "неудачные попытки",
+    "locked": "неудачных попыток. Попробуйте еще раз в течение",
+    "lockedSecond": "секунд.",
+    "lockedSeconds": "секунды.",
+    "interactions": {
+      "sleep": "Спать",
+      "lock": "Замок",
+      "shutdown": "Неисправность",
+      "restart": "Перезапуск"
+    },
+    "editMenu": {
+      "fontFamily": "Шрифт",
+      "fontSize": {
+        "name": "Размер шрифта",
+        "medium": "Середина",
+        "large": "Большой"
+      }
+    }
+  },
+  "header": {
+    "notifications": {
+      "off": "Выключать",
+      "on": "Включать"
+    },
+    "lowBattery": "Низкий заряд батареи",
+    "charging": "Зарядка",
+    "fullyCharged": "Полностью заряжен"
+  },
+  "panel": {
+    "volume": "Объем",
+    "brightness": "Яркость",
+    "darkMode": "Темныйрежим",
+    "airplaneMode": "Авиарежим",
+    "nightShift": "Ночной свет",
+    "boldText": "Жирный текст"
+  },
+  "apps": {
+    "open": "Открыть",
+    "quit": "Выйти",
+    "hide": "Скрыть",
+    "unhide": "Показать",
+    "surface": {
+      "newTab": "Новая вкладка",
+      "newPrivateTab": "Новая приватная вкладка",
+      "turnPrivateOff": "Отключить приватный режим",
+      "turnPrivateOn": "Включить приватный режим",
+      "searchPlaceholder": "Выполните поиск с помощью Bing или введите адрес...",
+      "internetUnabled": "Интернет не включен.",
+      "internetUnabledDesc": "Чтобы подключиться к этому сайту, вам необходимо подключение к Интернету.",
+      "internetUnabledReload": "Перезагрузить",
+      "startupTitle": "Выполните поиск с помощью Bing или введите адрес или оставьте поле пустым, чтобы перейти на официальный сайт BreezeOS.",
+      "settings": {
+        "privateMode": "Частный режим",
+        "searchEngine": "Поисковая система"
+      }
+    },
+    "calendar": {
+      "name": "Календарь"
+    },
+    "settings": {
+      "name": "Настройки"
+    },
+    "clock": {
+      "name": "Часы"
+    },
+    "camera": {
+      "name": "Камера"
+    },
+    "files": {
+      "name": "Файлы"
+    },
+    "calculator": {
+      "name": "Калькулятор",
+      "recentResult": "Последний результат"
+    },
+    "terminal": {
+      "name": "Терминал"
+    },
+    "textEditor": {
+      "name": "Текстовый редактор"
+    },
+    "softwareStore": {
+      "name": "Магазин программного обеспечения"
+    },
+    "imgview": {
+      "name": "Просмотр изображений"
+    }
+  }
+}
