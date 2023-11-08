@@ -4,7 +4,7 @@
     ".prettierrc": "jsonc",
     ".eslintignore": "ignore"
   },
-  
+
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -29,5 +29,6 @@
   },
   "i18n-ally.localesPaths": [
     "src/renderer/locales"
-  ]
+  ],
+  "i18n-ally.keystyle": "nested"
 }

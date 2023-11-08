@@ -21,11 +21,12 @@
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "끄다",
-      "on": "켜다"
-    },
+  "notifications": {
+    "off": "끄다",
+    "on": "켜다"
+  },
+  "battery": {
+    "default": "배터리",
     "lowBattery": "배터리 부족",
     "charging": "충전 중",
     "fullyCharged": "완전히 충전됨"

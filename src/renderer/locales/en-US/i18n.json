@@ -19,14 +19,23 @@
         "medium": "Medium",
         "large": "Large"
       },
-      "widgets": "Widgets"
+      "widgets": "Widgets",
+      "foregroundColor": {
+        "white": "White",
+        "yellow": "Yellow",
+        "blue": "Blue",
+        "purple": "Purple",
+        "green": "Green",
+        "red": "Red"
+      }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "Off",
-      "on": "On"
-    },
+  "notifications": {
+    "off": "Off",
+    "on": "On"
+  },
+  "battery": {
+    "default": "Battery",
     "lowBattery": "Low Battery",
     "charging": "Charging",
     "fullyCharged": "Fully Charged"

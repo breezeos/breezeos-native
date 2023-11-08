@@ -21,11 +21,12 @@
       }
     }
   },
+  "notifications": {
+    "off": "Выключать",
+    "on": "Включать"
+  },
   "header": {
-    "notifications": {
-      "off": "Выключать",
-      "on": "Включать"
-    },
+    "default": "Батарея",
     "lowBattery": "Низкий заряд батареи",
     "charging": "Зарядка",
     "fullyCharged": "Полностью заряжен"

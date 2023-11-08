@@ -1,9 +1,9 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface StateType {
   user: {
     name: string;
-    role: 'user' | 'superuser';
+    role: "user" | "superuser";
     password: string;
     image: string | null;
   };
@@ -13,7 +13,7 @@ interface StateType {
   wifiList: {
     name: string;
     private: boolean;
-    status: 'weak' | 'fair' | 'good';
+    status: "weak" | "fair" | "good";
     connected?: boolean;
   }[];
   isLocked: boolean;
@@ -32,65 +32,65 @@ interface StateType {
 
 const initialState: StateType = {
   user: {
-    name: 'user',
-    role: 'superuser',
-    password: '123456',
+    name: "user",
+    role: "superuser",
+    password: "123456",
     image: null,
   },
-  deviceName: 'breezeos',
+  deviceName: "breezeos",
   airplaneMode: false,
   wifi: true,
   wifiList: [
     {
-      name: 'BreezeOS',
+      name: "BreezeOS",
       private: true,
-      status: 'good',
+      status: "good",
       connected: true,
     },
     {
-      name: 'Nokia Lumia',
+      name: "Nokia Lumia",
       private: true,
-      status: 'fair',
+      status: "fair",
     },
     {
-      name: 'APTEK',
+      name: "APTEK",
       private: true,
-      status: 'weak',
+      status: "weak",
     },
     {
       name: "daothanhminh's iPhone",
       private: true,
-      status: 'fair',
+      status: "fair",
     },
     {
-      name: 'FPT Telecom',
+      name: "FPT Telecom",
       private: true,
-      status: 'good',
+      status: "good",
     },
     {
-      name: 'Coffee Shop',
+      name: "Coffee Shop",
       private: true,
-      status: 'fair',
+      status: "fair",
     },
     {
-      name: 'Samsung Galaxy S20',
+      name: "Samsung Galaxy S20",
       private: true,
-      status: 'weak',
+      status: "weak",
     },
     {
-      name: 'KING COFFEE',
+      name: "KING COFFEE",
       private: true,
-      status: 'weak',
+      status: "weak",
     },
     {
-      name: 'VIETTEL',
+      name: "VIETTEL",
       private: true,
-      status: 'fair',
+      status: "fair",
     },
     {
-      name: 'Nguyet Thanh',
+      name: "Nguyet Thanh",
       private: true,
-      status: 'weak',
+      status: "weak",
     },
   ],
   isLocked: true,
@@ -104,15 +104,18 @@ const initialState: StateType = {
   batterySaver: false,
   animationsReduced: false,
   colorInverted: false,
-  fontFamily: 'OptimisticDisplay',
+  fontFamily: "OptimisticDisplay",
 };
 
 export const settingsSlice = createSlice({
-  name: 'settings',
+  name: "settings",
   initialState,
   reducers: {
     setName: (state, action: PayloadAction<string>) => {
       state.user.name = action.payload;
+    },
+    setUserImage: (state, action: PayloadAction<string>) => {
+      state.user.image = action.payload;
     },
     setPassword: (state, action: PayloadAction<string>) => {
       state.user.password = action.payload;
@@ -129,7 +132,7 @@ export const settingsSlice = createSlice({
         state.wifi = true;
       }
     },
-    toggleWifi: (state, action: PayloadAction<boolean>) => {
+    toggleWifi: (state, action) => {
       state.wifi = action.payload;
     },
     setLocked: (state, action: PayloadAction<boolean>) => {
@@ -138,11 +141,11 @@ export const settingsSlice = createSlice({
     setSleeping: (state, action: PayloadAction<boolean>) => {
       state.isSleeping = action.payload;
       if (action.payload === true) {
-        document.getElementsByClassName('Desktop')[0].classList.add('blackscr');
+        document.getElementsByClassName("Desktop")[0].classList.add("blackscr");
       } else {
         document
-          .getElementsByClassName('Desktop')[0]
-          .classList.remove('blackscr');
+          .getElementsByClassName("Desktop")[0]
+          .classList.remove("blackscr");
       }
     },
     setVolume: (state, action: PayloadAction<any>) => {
@@ -154,7 +157,7 @@ export const settingsSlice = createSlice({
     toggleNotifications: (state, action: PayloadAction<boolean>) => {
       state.notifications = action.payload;
     },
-    toggleBluetooth: (state, action: PayloadAction<boolean>) => {
+    toggleBluetooth: (state, action) => {
       state.bluetooth = action.payload;
     },
     toggleLightMode: (state, action: PayloadAction<boolean>) => {
@@ -180,6 +183,7 @@ export const settingsSlice = createSlice({
 
 export const {
   setName,
+  setUserImage,
   setPassword,
   setDeviceName,
   toggleAirplaneMode,

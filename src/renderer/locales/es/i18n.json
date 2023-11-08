@@ -18,14 +18,24 @@
         "name": "Tamaño de fuente",
         "medium": "Medio",
         "large": "Grande"
+      },
+      "widgets": "Aparatos",
+      "foregroundColor": {
+        "white": "Blanco",
+        "yellow": "Amarillo",
+        "blue": "Azul",
+        "purple": "Púrpura",
+        "green": "Verde",
+        "red": "Rojo"
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "Apagar",
-      "on": "Encender"
-    },
+  "notifications": {
+    "off": "Apagar",
+    "on": "Encender"
+  },
+  "battery": {
+    "default": "Batería",
     "lowBattery": "Batería baja",
     "charging": "Cargando",
     "fullyCharged": "Completamente cargado"

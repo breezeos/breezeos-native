@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import Desktop from './Desktop';
 import { Provider } from 'react-redux';
 import i18n from './translation/i18n';
-import { I18nextProvider } from 'react-i18next';
+import { I18nextProvider, useTranslation } from 'react-i18next';
 import store from './store';
 import { ipcRenderer } from 'electron';
 import {
@@ -36,13 +36,13 @@ import { insertPasswordFor } from './store/reducers/wifipassword';
 import { toggleActive } from './store/reducers/newwifi';
 
 function Body() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const system = useAppSelector((state) => state.system);
   const settings = useAppSelector((state) => state.settings);
   const isActive = useAppSelector((state) => state.touchbar.active);
   const lockScreen = useAppSelector((state) => state.lock);
   const lockScreenIsEditable = useAppSelector((state) => state.lock.isEditable);
-  const [hist, setHist] = useState([, 'default']);
 
   const brightnessElem = document.getElementById(
     'brightness',
@@ -113,21 +113,16 @@ function Body() {
               showCloseButton={true}
             >
               <Spacer size="flexible" />
-              <Scrubber
-                items={[
-                  {
-                    label: 'Medium',
-                  },
-                  {
-                    label: 'Large',
-                  },
-                ]}
-                selectedStyle="background"
-                onClick={(index) =>
-                  dispatch(setFontSize(index === 1 ? 'large' : 'medium'))
-                }
-                showArrowButtons
-              />
+              <Group>
+                <Button
+                  label={t('lockScreen.editMenu.fontSize.medium')}
+                  onClick={() => dispatch(setFontSize('medium'))}
+                />
+                <Button
+                  label={t('lockScreen.editMenu.fontSize.large')}
+                  onClick={() => dispatch(setFontSize('large'))}
+                />
+              </Group>
               <Spacer size="flexible" />
             </Popover>
             <Spacer size="large" />
@@ -192,17 +187,17 @@ function Body() {
               )}.png`}
               label={
                 lockScreen.foregroundColor === '#7dd3fc'
-                  ? 'Blue'
+                  ? t('lockScreen.editMenu.foregroundColor.blue')
                   : lockScreen.foregroundColor === '#86efac'
-                  ? 'Green'
+                  ? t('lockScreen.editMenu.foregroundColor.green')
                   : lockScreen.foregroundColor === '#e2e2e2'
-                  ? 'White'
+                  ? t('lockScreen.editMenu.foregroundColor.white')
                   : lockScreen.foregroundColor === '#f0abfc'
-                  ? 'Purple'
+                  ? t('lockScreen.editMenu.foregroundColor.purple')
                   : lockScreen.foregroundColor === '#f87171'
-                  ? 'Red'
+                  ? t('lockScreen.editMenu.foregroundColor.red')
                   : lockScreen.foregroundColor === '#fef08a'
-                  ? 'Yellow'
+                  ? t('lockScreen.editMenu.foregroundColor.yellow')
                   : ''
               }
               showCloseButton
@@ -332,7 +327,11 @@ function Body() {
               <Spacer size="large" />
               <Spacer size="large" />
               <Label
-                label={`${system.battery.charging ? 'Charging' : 'Battery'}`}
+                label={`${
+                  system.battery.charging
+                    ? t('battery.charging')
+                    : t('battery.default')
+                }`}
                 textColor="#f2f2f2"
               />
               <Spacer size="flexible" />
@@ -396,7 +395,7 @@ function Body() {
               <Spacer size="large" />
               <Spacer size="large" />
               <Spacer size="large" />
-              <Label label="Brightness" textColor="#f2f2f2" />
+              <Label label={t("panel.brightness")} textColor="#f2f2f2" />
               <Spacer size="large" />
               <Slider
                 value={settings.brightness}
@@ -417,7 +416,7 @@ function Body() {
               <Spacer size="large" />
               <Spacer size="large" />
               <Spacer size="large" />
-              <Label label="Volume" textColor="#f2f2f2" />
+              <Label label={t("panel.volume")} textColor="#f2f2f2" />
               <Spacer size="large" />
               <Slider
                 value={settings.volume}

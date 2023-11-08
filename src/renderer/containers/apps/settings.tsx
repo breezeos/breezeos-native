@@ -1549,7 +1549,7 @@ export default function Settings() {
               <div className="SettingsSectionFixedWidth">
                 <div className="UserCard">
                   <div className="UserInfo">
-                    <Avatar size={1.7} />
+                    <Avatar size={1.7} editable />
                     <div style={{ marginLeft: "30px" }}>
                       <p className="UserName">{settingsReducer.user.name}</p>
                       <p className="UserRole">{settingsReducer.user.role}</p>

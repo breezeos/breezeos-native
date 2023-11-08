@@ -18,14 +18,24 @@
         "name": "Schriftgröße",
         "medium": "Mittel",
         "large": "Groß"
+      },
+      "widgets": "Widgets",
+      "foregroundColor": {
+        "white": "Weiss",
+        "yellow": "Gelb",
+        "blue": "Blau",
+        "purple": "Lila",
+        "green": "Grün",
+        "red": "Rot"
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "Abschalten",
-      "on": "Anmachen"
-    },
+  "notifications": {
+    "off": "Abschalten",
+    "on": "Anmachen"
+  },
+  "battery": {
+    "default": "Batterie",
     "lowBattery": "Niedriger Batteriestatus",
     "charging": "Aufladen",
     "fullyCharged": "Voll aufgeladen"

@@ -21,11 +21,12 @@
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "Matikan",
-      "on": "Menyalakan"
-    },
+  "notifications": {
+    "off": "Matikan",
+    "on": "Menyalakan"
+  },
+  "battery": {
+    "default": "Baterai",
     "lowBattery": "Baterai lemah",
     "charging": "Mengisi daya",
     "fullyCharged": "Terisi penuh"

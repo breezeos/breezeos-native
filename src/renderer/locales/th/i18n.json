@@ -21,11 +21,12 @@
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "ปิด",
-      "on": "เปิด"
-    },
+  "notifications": {
+    "off": "ปิด",
+    "on": "เปิด"
+  },
+  "battery": {
+    "default": "แบตเตอรี่",
     "lowBattery": "แบตเตอร์รี่ต่ำ",
     "charging": "กำลังชาร์จ",
     "fullyCharged": "ชาร์จเต็มแล้ว"

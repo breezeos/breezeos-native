@@ -213,7 +213,7 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "BreezeOS Desktop",
+    "productName": "BreezeOS",
     "appId": "io.breezeos.desktop",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",

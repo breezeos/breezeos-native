@@ -7,7 +7,6 @@ import { useScreenshot } from "@breezeos-dev/use-react-screenshot";
 import "./Snapshot.scss";
 import FileSaver from "file-saver";
 import Checkbox from "./utils/checkbox";
-// import { globalShortcut } from "electron";
 
 export default function Snapshot() {
   const [image, takeScreenshot] = useScreenshot();
@@ -76,11 +75,6 @@ export default function Snapshot() {
   }
 
   function captureScreenshotKeydown() {
-    //   await register("CommandOrControl+Shift+P", () => {
-    //     if (!localStorage.getItem("snapshotIntroDisabled")) {
-    //       setIntroductionShown(true);
-    //     } else captureScreenshot();
-    //   });
     document.addEventListener("keydown", (e) => {
       if (e.ctrlKey && e.shiftKey && e.keyCode === 80) {
         if (!localStorage.getItem("snapshotIntroDisabled")) {

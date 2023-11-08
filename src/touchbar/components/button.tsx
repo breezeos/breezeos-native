@@ -2,7 +2,6 @@ import * as React from "react";
 import { useRegisterItem, useUpdateItem, useItemAction } from "../context";
 import { uuid } from "../util";
 import { ItemAction, ItemType } from "../types";
-import { NativeImage } from "electron";
 
 export interface ButtonProps {
   /**

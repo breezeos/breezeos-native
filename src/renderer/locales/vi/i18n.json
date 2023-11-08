@@ -18,14 +18,24 @@
         "name": "Cỡ chữ",
         "medium": "Trung bình",
         "large": "Lớn"
+      },
+      "widgets": "Tiện ích",
+      "foregroundColor": {
+        "white": "Trắng",
+        "yellow": "Vàng",
+        "blue": "Xanh dương",
+        "purple": "Tím",
+        "green": "Xanh lục",
+        "red": "Đỏ"
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "Tắt",
-      "on": "Bật"
-    },
+  "notifications": {
+    "off": "Tắt",
+    "on": "Bật"
+  },
+  "battery": {
+    "default": "Pin",
     "lowBattery": "Pin yếu",
     "charging": "Đang sạc",
     "fullyCharged": "Đã sạc đầy"

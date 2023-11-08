@@ -27,10 +27,10 @@ import { useBattery } from 'react-use';
 import checkDiskSpace from 'check-disk-space';
 import { useEffect } from 'react';
 import { setTouchbarActive } from './store/reducers/touchbar';
+import { setLocked } from './store/reducers/settings';
 
 const Desktop = () => {
   const dispatch = useAppDispatch();
-  const settings = useAppSelector((state) => state.settings);
   const fontFamily = useAppSelector((state) => state.settings.fontFamily);
   const themeLight = useAppSelector((state) => state.settings.themeLight);
   const boldText = useAppSelector((state) => state.settings.boldText);
@@ -45,6 +45,13 @@ const Desktop = () => {
   const batteryState = useBattery();
   const batteryLevel = batteryState.level * 100;
   const system = useAppSelector((state) => state.system);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.keyCode === 76) {
+      e.preventDefault();
+      dispatch(setLocked(true));
+    }
+  });
 
   function getHostname() {
     const hostname = os.hostname();

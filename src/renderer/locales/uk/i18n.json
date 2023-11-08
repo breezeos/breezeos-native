@@ -21,11 +21,12 @@
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "Вимикати",
-      "on": "Вмикати"
-    },
+  "notifications": {
+    "off": "Вимикати",
+    "on": "Вмикати"
+  },
+  "battery": {
+    "default": "Батареї",
     "lowBattery": "Низький заряд батареї",
     "charging": "Заряджання",
     "fullyCharged": "Повністю заряджений"

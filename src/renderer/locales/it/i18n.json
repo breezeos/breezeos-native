@@ -21,11 +21,12 @@
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "Spegnere",
-      "on": "Accendere"
-    },
+  "notifications": {
+    "off": "Spegnere",
+    "on": "Accendere"
+  },
+  "battery": {
+    "default": "Batteria",
     "lowBattery": "Batteria scarica",
     "charging": "In carica",
     "fullyCharged": "Completamente carico"

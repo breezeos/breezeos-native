@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface StateType {
   active: boolean;
@@ -8,6 +8,7 @@ interface StateType {
   };
   wrapperActive: boolean;
   isEditable: boolean;
+  type: string;
   fontFamily: string;
   fontSize: string;
   fontWeight: number;
@@ -32,13 +33,14 @@ const initialState: StateType = {
   },
   wrapperActive: false,
   isEditable: false,
-  fontFamily: 'OptimisticDisplay',
-  fontSize: 'medium',
+  type: "default",
+  fontFamily: "OptimisticDisplay",
+  fontSize: "medium",
   fontWeight: 700,
-  foregroundColor: '#e2e2e2',
+  foregroundColor: "#e2e2e2",
   style: [
     {
-      family: 'OptimisticDisplay',
+      family: "OptimisticDisplay",
       weight: {
         light: 200,
         medium: 500,
@@ -46,7 +48,7 @@ const initialState: StateType = {
       },
     },
     {
-      family: 'SanFrancisco',
+      family: "SanFrancisco",
       weight: {
         light: 200,
         medium: 500,
@@ -54,19 +56,19 @@ const initialState: StateType = {
       },
     },
     {
-      family: 'TiemposFine',
+      family: "TiemposFine",
       weight: {
         medium: 500,
         bold: 700,
       },
     },
   ],
-  widgets: ['date', 'battery'],
+  widgets: ["date", "battery"],
   optionsMenuShown: false,
 };
 
 export const lockSlice = createSlice({
-  name: 'lock',
+  name: "lock",
   initialState,
   reducers: {
     setLockScreenActive: (state, action: PayloadAction<boolean>) => {
@@ -83,6 +85,9 @@ export const lockSlice = createSlice({
     },
     setEditable: (state, action: PayloadAction<boolean>) => {
       state.isEditable = action.payload;
+    },
+    setLockScreenType: (state, action: PayloadAction<string>) => {
+      state.type = action.payload;
     },
     setFontFamily: (state, action: PayloadAction<string>) => {
       state.fontFamily = action.payload;
@@ -108,6 +113,7 @@ export const lockSlice = createSlice({
 export const {
   setLockScreenActive,
   setLockScreenWrapperActive,
+  setLockScreenType,
   setEditable,
   setFontFamily,
   setFontSize,

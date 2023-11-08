@@ -235,8 +235,8 @@ export default function Header() {
         <div className="Text">
           <p className="font-bold">
             {settingsReducer.notifications
-              ? t("header.notifications.off")
-              : t("header.notifications.on")}
+              ? t("notifications.off")
+              : t("notifications.on")}
           </p>
         </div>
       </div>
@@ -244,7 +244,7 @@ export default function Header() {
         className={`lowbattery ${headerType === "lowbattery" ? "active" : ""}`}
       >
         <div className="LowBatteryText">
-          <p className="font-bold">{t("header.lowBattery")}</p>
+          <p className="font-bold">{t("battery.lowBattery")}</p>
         </div>
         <div className="BatteryLevel">
           <p className="BatteryLevelText font-bold">
@@ -256,8 +256,8 @@ export default function Header() {
         <div className="ChargingText">
           <p className="font-bold">
             {batteryPercent === 100
-              ? t("header.fullyCharged")
-              : t("header.charging")}
+              ? t("battery.fullyCharged")
+              : t("battery.charging")}
           </p>
         </div>
         <div className="BatteryLevel">

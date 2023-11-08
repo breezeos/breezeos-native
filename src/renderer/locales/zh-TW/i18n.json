@@ -21,11 +21,12 @@
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "關",
-      "on": "打開"
-    },
+  "notifications": {
+    "off": "關",
+    "on": "打開"
+  },
+  "battery": {
+    "default": "電池",
     "lowBattery": "低電量",
     "charging": "收費",
     "fullyCharged": "充滿電"

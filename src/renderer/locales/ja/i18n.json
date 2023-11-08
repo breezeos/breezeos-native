@@ -21,11 +21,12 @@
       }
     }
   },
-  "header": {
-    "notifications": {
-      "off": "消す",
-      "on": "オンにする"
-    },
+  "notifications": {
+    "off": "消す",
+    "on": "オンにする"
+  },
+  "battery": {
+    "default": "バッテリー",
     "lowBattery": "バッテリー残量低下",
     "charging": "充電",
     "fullyCharged": "フル充電済み"
