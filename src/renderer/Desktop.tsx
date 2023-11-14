@@ -100,17 +100,6 @@ const Desktop = () => {
     });
   }
 
-  useEffect(() => {
-    getHostname();
-    getKernel();
-    getSystemVersion();
-    getPlatform();
-    getMemory();
-    getProcessor();
-    getDisks();
-    dispatch(setTouchbarActive(true));
-  }, []);
-
   dispatch(setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : "-"));
 
   if (batteryState.charging) {
@@ -143,6 +132,14 @@ const Desktop = () => {
   }
 
   useEffect(() => {
+    getHostname();
+    getKernel();
+    getSystemVersion();
+    getPlatform();
+    getMemory();
+    getProcessor();
+    getDisks();
+    dispatch(setTouchbarActive(true));
     getWeatherData();
   }, []);
 
