@@ -188,7 +188,7 @@ function Body() {
               label={
                 lockScreen.foregroundColor === '#7dd3fc'
                   ? t('lockScreen.editMenu.foregroundColor.blue')
-                  : lockScreen.foregroundColor === '#86efac'
+                  : lockScreen.foregroundColor === '#65ea95'
                   ? t('lockScreen.editMenu.foregroundColor.green')
                   : lockScreen.foregroundColor === '#e2e2e2'
                   ? t('lockScreen.editMenu.foregroundColor.white')
@@ -240,13 +240,13 @@ function Body() {
                 onClick={() => dispatch(setForegroundColor('#f0abfc'))}
               />
               <Button
-                backgroundColor="#86efac"
+                backgroundColor="#65ea95"
                 icon={
-                  lockScreen.foregroundColor === '#86efac'
+                  lockScreen.foregroundColor === '#65ea95'
                     ? '../../assets/images/checkmark-d.png'
                     : ''
                 }
-                onClick={() => dispatch(setForegroundColor('#86efac'))}
+                onClick={() => dispatch(setForegroundColor('#65ea95'))}
               />
               <Button
                 backgroundColor="#f87171"
