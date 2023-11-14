@@ -14,7 +14,7 @@ import VolumeAdjustSound from '../../../../assets/sounds/Oxygen-Sys-Special.mp3'
 import './Panel.scss';
 import Toggle from '../utils/toggle';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setPanelType } from '../../store/reducers/panel';
+import { inactivePanel, setPanelType } from '../../store/reducers/panel';
 
 interface PanelTypeProps extends React.HTMLAttributes<HTMLDivElement> {
   type: string;
@@ -120,7 +120,10 @@ export default function PanelType({
                     ) : (
                       <div
                         className="WifiListItem"
-                        onClick={() => connectWifi(i.name)}
+                        onClick={() => {
+                          connectWifi(i.name);
+                          dispatch(inactivePanel());
+                        }}
                       >
                         <p className="WifiName">{i.name}</p>
                         <div className="WifiListIcon">
@@ -140,13 +143,19 @@ export default function PanelType({
                   )}
                   <div
                     className="WifiListItem"
-                    onClick={() => openSettings(toggleActive(true))}
+                    onClick={() => {
+                      openSettings(toggleActive(true));
+                      dispatch(inactivePanel());
+                    }}
                   >
                     <p className="WifiName">Other...</p>
                   </div>
                   <div
                     className="WifiListItem"
-                    onClick={() => openSettings(setSettings('Wi-Fi'))}
+                    onClick={() => {
+                      openSettings(setSettings('Wi-Fi'));
+                      dispatch(inactivePanel());
+                    }}
                   >
                     <p className="WifiName">Wi-Fi Preferences</p>
                   </div>
@@ -176,7 +185,7 @@ export default function PanelType({
                   <p>
                     {batteryIsCharging
                       ? 'Charging'
-                      : batteryPercent <= 10
+                      : batteryPercent <= '10'
                       ? 'Low Battery'
                       : 'Battery'}
                   </p>
@@ -188,7 +197,10 @@ export default function PanelType({
                 >
                   <ActMenuSelector
                     title="Battery Preferences..."
-                    onClick={() => openSettings(setSettings('Battery'))}
+                    onClick={() => {
+                      openSettings(setSettings('Battery'));
+                      dispatch(inactivePanel());
+                    }}
                   />
                 </ActMenu>
               </div>

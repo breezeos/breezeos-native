@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react';
 import {
   setActive,
   setHide,
   setSettings,
-} from "../../store/reducers/apps/settings";
+} from '../../store/reducers/apps/settings';
 import {
   insertPasswordFor,
   cancelPassword,
@@ -11,14 +11,14 @@ import {
   setPasswordDisable,
   displayPassword,
   setWrongPassword,
-} from "../../store/reducers/wifipassword";
+} from '../../store/reducers/wifipassword';
 import {
   toggleActive,
   setSecurity,
   setWifiName,
   setInactive,
-} from "../../store/reducers/newwifi";
-import { switchIcons } from "../../store/reducers/appearance";
+} from '../../store/reducers/newwifi';
+import { switchIcons } from '../../store/reducers/appearance';
 import {
   toggleAirplaneMode,
   toggleLightMode,
@@ -31,48 +31,50 @@ import {
   setAnimationsReduced,
   setColorInverted,
   setBatterySaver,
-} from "../../store/reducers/settings";
-import { toggle12Hour, setSeconds } from "../../store/reducers/time";
-import { changeWallpaper } from "../../store/reducers/wallpaper";
-import "../../components/utils/window/Window.scss";
-import TopBar from "../../components/utils/window/TopBar";
-import WindowBody from "../../components/utils/window/WindowBody";
-import DockItem from "../../components/dock/DockItem";
-import "./assets/settings.scss";
-import "../../components/utils/widget/Clock.scss";
-import TopBarInteraction from "../../components/utils/window/TopBarInteraction";
-import StartApp from "../../components/startMenu/StartApp";
-import ActMenu, { ActMenuSelector } from "../../components/utils/menu/index";
-import Image1 from "../../../../assets/images/dark.png";
-import Image2 from "../../../../assets/images/light.png";
-import LogoD from "../../../../assets/images/logo-d.svg";
-import LogoL from "../../../../assets/images/logo-l.svg";
-import W1 from "../../../../assets/images/default.jpg";
-import W2 from "../../../../assets/images/52697.jpg";
-import W3 from "../../../../assets/images/52496.jpg";
-import W4 from "../../../../assets/images/52791.jpg";
-import W5 from "../../../../assets/images/52532.jpg";
-import W6 from "../../../../assets/images/52544.jpg";
-import W7 from "../../../../assets/images/breezeos-1.jpg";
-import W8 from "../../../../assets/images/breezeos-2.jpg";
-import QRD from "../../../../assets/images/qr-d.png";
-import QRL from "../../../../assets/images/qr-l.png";
-import { changeShell } from "../../store/reducers/shell";
+} from '../../store/reducers/settings';
+import { toggle12Hour, setSeconds } from '../../store/reducers/time';
+import { changeWallpaper } from '../../store/reducers/wallpaper';
+import '../../components/utils/window/Window.scss';
+import TopBar from '../../components/utils/window/TopBar';
+import WindowBody from '../../components/utils/window/WindowBody';
+import DockItem from '../../components/dock/DockItem';
+import './assets/settings.scss';
+import '../../components/utils/widget/Clock.scss';
+import TopBarInteraction from '../../components/utils/window/TopBarInteraction';
+import StartApp from '../../components/startMenu/StartApp';
+import ActMenu, { ActMenuSelector } from '../../components/utils/menu/index';
+import Image1 from '../../../../assets/images/dark.png';
+import Image2 from '../../../../assets/images/light.png';
+import LogoD from '../../../../assets/images/logo-d.svg';
+import LogoL from '../../../../assets/images/logo-l.svg';
+import W1 from '../../../../assets/images/default.jpg';
+import W2 from '../../../../assets/images/52697.jpg';
+import W3 from '../../../../assets/images/52496.jpg';
+import W4 from '../../../../assets/images/52791.jpg';
+import W5 from '../../../../assets/images/52532.jpg';
+import W6 from '../../../../assets/images/52544.jpg';
+import W7 from '../../../../assets/images/breezeos-1.jpg';
+import W8 from '../../../../assets/images/breezeos-2.jpg';
+import QRD from '../../../../assets/images/qr-d.png';
+import QRL from '../../../../assets/images/qr-l.png';
+import { changeShell } from '../../store/reducers/shell';
 import {
   setHeaderHide,
   setHeaderType,
   setProMode,
   setWidth,
-} from "../../store/reducers/header";
-import Avatar from "../../components/Avatar";
-import Toggle from "../../components/utils/toggle";
-import { useTranslation } from "react-i18next";
-import { setDesktopBodyActive } from "../../store/reducers/desktopbody";
-import { setStartMenuActive } from "../../store/reducers/startmenu";
-import Draggable from "react-draggable";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import Hammer from "react-hammerjs";
-import { useBattery } from "react-use";
+} from '../../store/reducers/header';
+import Avatar from '../../components/Avatar';
+import Toggle from '../../components/utils/toggle';
+import { useTranslation } from 'react-i18next';
+import { setDesktopBodyActive } from '../../store/reducers/desktopbody';
+import { setStartMenuActive } from '../../store/reducers/startmenu';
+import Draggable from 'react-draggable';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import Hammer from 'react-hammerjs';
+import { useBattery } from 'react-use';
+import Checkbox from '../../components/utils/checkbox';
+import { setTemperature } from '../../store/reducers/weather';
 
 export const SettingsApp = () => {
   const { t } = useTranslation();
@@ -81,7 +83,7 @@ export const SettingsApp = () => {
   const dispatch = useAppDispatch();
   const icon = useAppSelector((state) => state.appearance.iconTheme);
 
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.keyCode === 51) {
       dispatch(setActive(true));
     }
@@ -91,23 +93,23 @@ export const SettingsApp = () => {
     <>
       <DockItem
         id="settings"
-        className={`SettingsApp ${isActive && "clicked"} ${isHide && "hide"}`}
-        title={t("apps.settings.name")}
+        className={`SettingsApp ${isActive && 'clicked'} ${isHide && 'hide'}`}
+        title={t('apps.settings.name')}
         icon={
-          icon === "WhiteSur-icon-theme"
-            ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/original/applications-system.svg"
-            : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/applications-system.svg"
+          icon === 'WhiteSur-icon-theme'
+            ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/original/applications-system.svg'
+            : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/applications-system.svg'
         }
         menu={[
           [
             {
-              label: isHide ? t("apps.unhide") : t("apps.hide"),
+              label: isHide ? t('apps.unhide') : t('apps.hide'),
               disabled: isActive ? false : true,
               action: () =>
                 isHide ? dispatch(setHide(false)) : dispatch(setHide(true)),
             },
             {
-              label: isActive ? t("apps.quit") : t("apps.open"),
+              label: isActive ? t('apps.quit') : t('apps.open'),
               action: () =>
                 isActive
                   ? dispatch(setActive(false))
@@ -144,11 +146,11 @@ export const SettingsStartApp = () => {
     <StartApp
       key="settings"
       icon={
-        icon === "WhiteSur-icon-theme"
-          ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/original/applications-system.svg"
-          : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/applications-system.svg"
+        icon === 'WhiteSur-icon-theme'
+          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/original/applications-system.svg'
+          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/applications-system.svg'
       }
-      name={t("apps.settings.name")}
+      name={t('apps.settings.name')}
       onClick={toggle}
     />
   );
@@ -161,6 +163,9 @@ export default function Settings() {
   const [t, i18n] = useTranslation();
   const batteryState = useBattery();
   const batteryPercent = useAppSelector((state) => state.system.battery.level);
+  const batteryIsCharging = useAppSelector(
+    (state) => state.system.battery.charging,
+  );
   const system = useAppSelector((state) => state.system);
   const settingsReducer = useAppSelector((state) => state.settings);
   const isHour12 = useAppSelector((state) => state.time.hour12);
@@ -171,9 +176,10 @@ export default function Settings() {
   const header = useAppSelector((state) => state.header);
   const widget = useAppSelector((state) => state.widget);
   const wallpaper = useAppSelector((state) => state.wallpaper.img);
+  const weather = useAppSelector((state) => state.weather);
 
   useEffect(() => {
-    if (shellTheme === "WhiteSur") {
+    if (shellTheme === 'WhiteSur') {
       dispatch(setProMode(false));
     }
   }, [shellTheme]);
@@ -181,156 +187,156 @@ export default function Settings() {
   const navItems = [
     [
       {
-        name: "Wi-Fi",
-        icon: "fa-regular fa-wifi",
-        active: settings === "Wi-Fi",
-        onClick: () => dispatch(setSettings("Wi-Fi")),
+        name: 'Wi-Fi',
+        icon: 'fa-regular fa-wifi',
+        active: settings === 'Wi-Fi',
+        onClick: () => dispatch(setSettings('Wi-Fi')),
       },
       {
-        name: "Bluetooth",
-        icon: "fa-regular fa-bluetooth",
-        active: settings === "Bluetooth",
-        onClick: () => dispatch(setSettings("Bluetooth")),
+        name: 'Bluetooth',
+        icon: 'fa-regular fa-bluetooth',
+        active: settings === 'Bluetooth',
+        onClick: () => dispatch(setSettings('Bluetooth')),
       },
       {
-        name: "Network",
-        icon: "fa-regular fa-globe",
-        active: settings === "Network",
-        onClick: () => dispatch(setSettings("Network")),
-      },
-    ],
-    [
-      {
-        name: "Appearance",
-        icon: "fa-regular fa-paintbrush",
-        active: settings === "Appearance",
-        onClick: () => dispatch(setSettings("Appearance")),
-      },
-      {
-        name: "Widgets",
-        icon: "fa-regular fa-shapes",
-        active: settings === "Widgets",
-        onClick: () => dispatch(setSettings("Widgets")),
-      },
-      {
-        name: "Notifications",
-        icon: "fa-regular fa-bell",
-        active: settings === "Notifications",
-        onClick: () => dispatch(setSettings("Notifications")),
-      },
-      {
-        name: "Search",
-        icon: "fa-regular fa-magnifying-glass",
-        active: settings === "Search",
-        onClick: () => dispatch(setSettings("Search")),
+        name: 'Network',
+        icon: 'fa-regular fa-globe',
+        active: settings === 'Network',
+        onClick: () => dispatch(setSettings('Network')),
       },
     ],
     [
       {
-        name: "Apps",
-        icon: "fa-regular fa-grid-2",
-        active: settings === "Apps",
-        onClick: () => dispatch(setSettings("Apps")),
+        name: 'Appearance',
+        icon: 'fa-regular fa-paintbrush',
+        active: settings === 'Appearance',
+        onClick: () => dispatch(setSettings('Appearance')),
       },
       {
-        name: "Privacy",
-        icon: "fa-regular fa-lock",
-        active: settings === "Privacy",
-        onClick: () => dispatch(setSettings("Privacy")),
+        name: 'Widgets',
+        icon: 'fa-regular fa-shapes',
+        active: settings === 'Widgets',
+        onClick: () => dispatch(setSettings('Widgets')),
       },
       {
-        name: "Security",
-        icon: "fa-solid fa-shield-halved",
-        active: settings === "Security",
-        onClick: () => dispatch(setSettings("Security")),
+        name: 'Notifications',
+        icon: 'fa-regular fa-bell',
+        active: settings === 'Notifications',
+        onClick: () => dispatch(setSettings('Notifications')),
       },
       {
-        name: "Online Accounts",
-        icon: "fa-regular fa-at",
-        active: settings === "Online Accounts",
-        onClick: () => dispatch(setSettings("Online Accounts")),
-      },
-      {
-        name: "Share",
-        icon: "fa-regular fa-share-nodes",
-        active: settings === "Share",
-        onClick: () => dispatch(setSettings("Share")),
+        name: 'Search',
+        icon: 'fa-regular fa-magnifying-glass',
+        active: settings === 'Search',
+        onClick: () => dispatch(setSettings('Search')),
       },
     ],
     [
       {
-        name: "Updates",
-        icon: "fa-regular fa-rotate",
-        active: settings === "Updates",
-        onClick: () => dispatch(setSettings("Updates")),
+        name: 'Apps',
+        icon: 'fa-regular fa-grid-2',
+        active: settings === 'Apps',
+        onClick: () => dispatch(setSettings('Apps')),
       },
       {
-        name: "Sound",
-        icon: "fa-regular fa-volume",
-        active: settings === "Sound",
-        onClick: () => dispatch(setSettings("Sound")),
+        name: 'Privacy',
+        icon: 'fa-regular fa-lock',
+        active: settings === 'Privacy',
+        onClick: () => dispatch(setSettings('Privacy')),
       },
       {
-        name: "Battery",
-        icon: "fa-regular fa-battery-full",
-        active: settings === "Battery",
-        onClick: () => dispatch(setSettings("Battery")),
+        name: 'Security',
+        icon: 'fa-solid fa-shield-halved',
+        active: settings === 'Security',
+        onClick: () => dispatch(setSettings('Security')),
       },
       {
-        name: "Displays",
-        icon: "fa-regular fa-desktop",
-        active: settings === "Displays",
-        onClick: () => dispatch(setSettings("Displays")),
+        name: 'Online Accounts',
+        icon: 'fa-regular fa-at',
+        active: settings === 'Online Accounts',
+        onClick: () => dispatch(setSettings('Online Accounts')),
       },
       {
-        name: "Mouse & Touchpad",
-        icon: "fa-regular fa-computer-mouse",
-        active: settings === "Mouse & Touchpad",
-        onClick: () => dispatch(setSettings("Mouse & Touchpad")),
-      },
-      {
-        name: "Keyboard",
-        icon: "fa-regular fa-keyboard",
-        active: settings === "Keyboard",
-        onClick: () => dispatch(setSettings("Keyboard")),
-      },
-      {
-        name: "Printer",
-        icon: "fa-regular fa-print",
-        active: settings === "Printer",
-        onClick: () => dispatch(setSettings("Printer")),
+        name: 'Share',
+        icon: 'fa-regular fa-share-nodes',
+        active: settings === 'Share',
+        onClick: () => dispatch(setSettings('Share')),
       },
     ],
     [
       {
-        name: "Users",
-        icon: "fa-regular fa-user",
-        active: settings === "Users",
-        onClick: () => dispatch(setSettings("Users")),
+        name: 'Updates',
+        icon: 'fa-regular fa-rotate',
+        active: settings === 'Updates',
+        onClick: () => dispatch(setSettings('Updates')),
       },
       {
-        name: "Region & Language",
-        icon: "fa-regular fa-language",
-        active: settings === "Region & Language",
-        onClick: () => dispatch(setSettings("Region & Language")),
+        name: 'Sound',
+        icon: 'fa-regular fa-volume',
+        active: settings === 'Sound',
+        onClick: () => dispatch(setSettings('Sound')),
       },
       {
-        name: "Accessibility",
-        icon: "fa-regular fa-universal-access",
-        active: settings === "Accessibility",
-        onClick: () => dispatch(setSettings("Accessibility")),
+        name: 'Battery',
+        icon: 'fa-regular fa-battery-full',
+        active: settings === 'Battery',
+        onClick: () => dispatch(setSettings('Battery')),
       },
       {
-        name: "Date & Time",
-        icon: "fa-regular fa-clock",
-        active: settings === "Date & Time",
-        onClick: () => dispatch(setSettings("Date & Time")),
+        name: 'Displays',
+        icon: 'fa-regular fa-desktop',
+        active: settings === 'Displays',
+        onClick: () => dispatch(setSettings('Displays')),
       },
       {
-        name: "About",
-        icon: "fa-regular fa-circle-info",
-        active: settings === "About",
-        onClick: () => dispatch(setSettings("About")),
+        name: 'Mouse & Touchpad',
+        icon: 'fa-regular fa-computer-mouse',
+        active: settings === 'Mouse & Touchpad',
+        onClick: () => dispatch(setSettings('Mouse & Touchpad')),
+      },
+      {
+        name: 'Keyboard',
+        icon: 'fa-regular fa-keyboard',
+        active: settings === 'Keyboard',
+        onClick: () => dispatch(setSettings('Keyboard')),
+      },
+      {
+        name: 'Printer',
+        icon: 'fa-regular fa-print',
+        active: settings === 'Printer',
+        onClick: () => dispatch(setSettings('Printer')),
+      },
+    ],
+    [
+      {
+        name: 'Users',
+        icon: 'fa-regular fa-user',
+        active: settings === 'Users',
+        onClick: () => dispatch(setSettings('Users')),
+      },
+      {
+        name: 'Region & Language',
+        icon: 'fa-regular fa-language',
+        active: settings === 'Region & Language',
+        onClick: () => dispatch(setSettings('Region & Language')),
+      },
+      {
+        name: 'Accessibility',
+        icon: 'fa-regular fa-universal-access',
+        active: settings === 'Accessibility',
+        onClick: () => dispatch(setSettings('Accessibility')),
+      },
+      {
+        name: 'Date & Time',
+        icon: 'fa-regular fa-clock',
+        active: settings === 'Date & Time',
+        onClick: () => dispatch(setSettings('Date & Time')),
+      },
+      {
+        name: 'About',
+        icon: 'fa-regular fa-circle-info',
+        active: settings === 'About',
+        onClick: () => dispatch(setSettings('About')),
       },
     ],
   ];
@@ -356,9 +362,9 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -374,9 +380,9 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -392,9 +398,9 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -410,9 +416,9 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -428,10 +434,10 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -447,10 +453,10 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -466,10 +472,10 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -485,10 +491,10 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -504,10 +510,10 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -523,9 +529,9 @@ export default function Settings() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -537,9 +543,9 @@ export default function Settings() {
 
   function submitDeviceName(
     e: React.KeyboardEvent<HTMLInputElement> &
-      React.ChangeEvent<HTMLInputElement>
+      React.ChangeEvent<HTMLInputElement>,
   ) {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       if (e.target.value.length > 43) {
         displayMaximumExceeded(true);
         dispatch(setDeviceName(settingsReducer.deviceName));
@@ -551,7 +557,7 @@ export default function Settings() {
   }
 
   const [shareWifi, setShareWifi] = useState<boolean>(false);
-  const [usersTab, setUsersTab] = useState<string>("");
+  const [usersTab, setUsersTab] = useState<string>('');
   const [wallpaperInput, setWallpaperInput] = useState<string | null>(null);
 
   const appearanceReducer = useAppSelector((state) => state.appearance);
@@ -580,17 +586,17 @@ export default function Settings() {
 
   function toggleDoNotDisturb() {
     dispatch(toggleNotifications(!settingsReducer.notifications));
-    dispatch(setHeaderType(""));
+    dispatch(setHeaderType(''));
     dispatch(setWidth(300));
     setTimeout(() => {
-      dispatch(setHeaderType("notifications"));
+      dispatch(setHeaderType('notifications'));
     }, 200);
     setTimeout(() => {
-      dispatch(setHeaderType(""));
+      dispatch(setHeaderType(''));
       dispatch(setWidth(900));
     }, 2350);
     setTimeout(() => {
-      dispatch(setHeaderType("default"));
+      dispatch(setHeaderType('default'));
     }, 2500);
   }
 
@@ -602,27 +608,27 @@ export default function Settings() {
 
   function switchTab() {
     switch (settings) {
-      case "Wi-Fi":
+      case 'Wi-Fi':
         return (
           <>
-            <div style={{ height: !settingsReducer.wifi ? "100%" : "" }}>
+            <div style={{ height: !settingsReducer.wifi ? '100%' : '' }}>
               <div className="SettingsSectionBlock WiFi">
                 <div className="SettingsSectionFixedWidth">
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "40px",
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '40px',
                     }}
                   >
-                    <p className="font-bold" style={{ fontSize: "14px" }}>
+                    <p className="font-bold" style={{ fontSize: '14px' }}>
                       Airplane Mode
                     </p>
                     <Toggle
                       active={settingsReducer.airplaneMode}
                       onToggle={() =>
                         dispatch(
-                          toggleAirplaneMode(!settingsReducer.airplaneMode)
+                          toggleAirplaneMode(!settingsReducer.airplaneMode),
                         )
                       }
                     />
@@ -631,7 +637,7 @@ export default function Settings() {
                     <>
                       <p
                         className="font-bold"
-                        style={{ marginBottom: "30px", fontSize: "14px" }}
+                        style={{ marginBottom: '30px', fontSize: '14px' }}
                       >
                         Visible Networks
                       </p>
@@ -655,21 +661,21 @@ export default function Settings() {
                                     {i.connected ? (
                                       <i className="fa-solid fa-check" />
                                     ) : (
-                                      ""
+                                      ''
                                     )}
                                     {i.private ? (
                                       <i className="fa-solid fa-lock" />
                                     ) : (
-                                      ""
+                                      ''
                                     )}
-                                    {i.status === "good" ? (
+                                    {i.status === 'good' ? (
                                       <i className="fa-solid fa-wifi" />
-                                    ) : i.status === "fair" ? (
+                                    ) : i.status === 'fair' ? (
                                       <i className="fa-duotone fa-wifi-fair" />
-                                    ) : i.status === "weak" ? (
+                                    ) : i.status === 'weak' ? (
                                       <i className="fa-duotone fa-wifi-weak" />
                                     ) : (
-                                      ""
+                                      ''
                                     )}
                                   </div>
                                 </div>
@@ -687,21 +693,21 @@ export default function Settings() {
                                     {i.connected ? (
                                       <i className="fa-solid fa-check" />
                                     ) : (
-                                      ""
+                                      ''
                                     )}
                                     {i.private ? (
                                       <i className="fa-solid fa-lock" />
                                     ) : (
-                                      ""
+                                      ''
                                     )}
-                                    {i.status === "good" ? (
+                                    {i.status === 'good' ? (
                                       <i className="fa-solid fa-wifi" />
-                                    ) : i.status === "fair" ? (
+                                    ) : i.status === 'fair' ? (
                                       <i className="fa-duotone fa-wifi-fair" />
-                                    ) : i.status === "weak" ? (
+                                    ) : i.status === 'weak' ? (
                                       <i className="fa-duotone fa-wifi-weak" />
                                     ) : (
-                                      ""
+                                      ''
                                     )}
                                   </div>
                                 </div>
@@ -732,7 +738,7 @@ export default function Settings() {
             </div>
           </>
         );
-      case "Bluetooth":
+      case 'Bluetooth':
         return (
           <>
             <div className="SettingsSectionBlock Bluetooth">
@@ -742,10 +748,10 @@ export default function Settings() {
                     <p className="Description">
                       Now discoverable as "{settingsReducer.deviceName}".
                     </p>
-                    <div style={{ marginTop: "30px" }}>
+                    <div style={{ marginTop: '30px' }}>
                       <p
                         className="font-bold"
-                        style={{ marginBottom: "30px", fontSize: "14px" }}
+                        style={{ marginBottom: '30px', fontSize: '14px' }}
                       >
                         Other Devices
                       </p>
@@ -765,28 +771,28 @@ export default function Settings() {
             </div>
           </>
         );
-      case "Appearance":
+      case 'Appearance':
         return (
           <>
             <div
               className="SettingsSectionBlock Appearance"
-              style={{ height: "fit-content", marginBottom: "30px" }}
+              style={{ height: 'fit-content', marginBottom: '30px' }}
             >
               <div className="SettingsSectionFixedWidth">
                 <div
                   className="WindowColors"
-                  data-value={settingsReducer.themeLight ? "2" : "1"}
+                  data-value={settingsReducer.themeLight ? '2' : '1'}
                 >
                   <p
                     className="font-bold"
-                    style={{ marginBottom: "30px", fontSize: "14px" }}
+                    style={{ marginBottom: '30px', fontSize: '14px' }}
                   >
                     Window colors
                   </p>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <div
                       className="ImageContainer dark"
-                      style={{ marginRight: "20px" }}
+                      style={{ marginRight: '20px' }}
                       onClick={() => dispatch(toggleLightMode(false))}
                     >
                       <img src={Image1} />
@@ -803,28 +809,28 @@ export default function Settings() {
             </div>
             <div
               className="SettingsSectionBlock Appearance"
-              style={{ height: "fit-content", marginBottom: "30px" }}
+              style={{ height: 'fit-content', marginBottom: '30px' }}
             >
               <div className="Wallpapers">
                 <p
                   className="font-bold"
-                  style={{ marginBottom: "30px", fontSize: "14px" }}
+                  style={{ marginBottom: '30px', fontSize: '14px' }}
                 >
                   Wallpapers
                 </p>
                 <div
                   style={{
-                    width: "649.516px",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center",
+                    width: '649.516px',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
                   }}
                 >
                   <div
                     style={{
-                      position: "relative",
-                      width: "100%",
-                      marginBottom: "5px",
+                      position: 'relative',
+                      width: '100%',
+                      marginBottom: '5px',
                     }}
                   >
                     {wallpaperInput ? (
@@ -854,9 +860,9 @@ export default function Settings() {
                         <div className="AddWallpaper">
                           <i
                             className="fa-regular fa-plus"
-                            style={{ fontSize: "35px", marginBottom: "20px" }}
+                            style={{ fontSize: '35px', marginBottom: '20px' }}
                           />
-                          <p className="font-bold" style={{ fontSize: "14px" }}>
+                          <p className="font-bold" style={{ fontSize: '14px' }}>
                             Add wallpaper
                           </p>
                         </div>
@@ -871,7 +877,7 @@ export default function Settings() {
                   </div>
                   <div
                     className={`WImageContainer ${
-                      wallpaper === W1 && "active"
+                      wallpaper === W1 && 'active'
                     }`}
                     onClick={() => dispatch(changeWallpaper(W1))}
                   >
@@ -879,7 +885,7 @@ export default function Settings() {
                   </div>
                   <div
                     className={`WImageContainer ${
-                      wallpaper === W2 && "active"
+                      wallpaper === W2 && 'active'
                     }`}
                     onClick={() => dispatch(changeWallpaper(W2))}
                   >
@@ -887,7 +893,7 @@ export default function Settings() {
                   </div>
                   <div
                     className={`WImageContainer ${
-                      wallpaper === W3 && "active"
+                      wallpaper === W3 && 'active'
                     }`}
                     onClick={() => dispatch(changeWallpaper(W3))}
                   >
@@ -895,7 +901,7 @@ export default function Settings() {
                   </div>
                   <div
                     className={`WImageContainer ${
-                      wallpaper === W4 && "active"
+                      wallpaper === W4 && 'active'
                     }`}
                     onClick={() => dispatch(changeWallpaper(W4))}
                   >
@@ -903,7 +909,7 @@ export default function Settings() {
                   </div>
                   <div
                     className={`WImageContainer ${
-                      wallpaper === W5 && "active"
+                      wallpaper === W5 && 'active'
                     }`}
                     onClick={() => dispatch(changeWallpaper(W5))}
                   >
@@ -911,7 +917,7 @@ export default function Settings() {
                   </div>
                   <div
                     className={`WImageContainer ${
-                      wallpaper === W6 && "active"
+                      wallpaper === W6 && 'active'
                     }`}
                     onClick={() => dispatch(changeWallpaper(W6))}
                   >
@@ -919,7 +925,7 @@ export default function Settings() {
                   </div>
                   <div
                     className={`WImageContainer ${
-                      wallpaper === W7 && "active"
+                      wallpaper === W7 && 'active'
                     }`}
                     onClick={() => dispatch(changeWallpaper(W7))}
                   >
@@ -927,7 +933,7 @@ export default function Settings() {
                   </div>
                   <div
                     className={`WImageContainer ${
-                      wallpaper === W8 && "active"
+                      wallpaper === W8 && 'active'
                     }`}
                     onClick={() => dispatch(changeWallpaper(W8))}
                   >
@@ -938,31 +944,31 @@ export default function Settings() {
             </div>
             <div
               className="SettingsSectionBlock Appearance"
-              style={{ height: "fit-content", marginBottom: "30px" }}
+              style={{ height: 'fit-content', marginBottom: '30px' }}
             >
               <div className="HeaderAppearance">
                 <p
                   className="font-bold"
-                  style={{ marginBottom: "30px", fontSize: "14px" }}
+                  style={{ marginBottom: '30px', fontSize: '14px' }}
                 >
                   Header
                 </p>
-                <div style={{ width: "649.516px" }}>
+                <div style={{ width: '649.516px' }}>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "40px",
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '40px',
                     }}
                   >
                     <p>
-                      Enable ProMode{" "}
-                      {shellTheme === "WhiteSur" &&
+                      Enable ProMode{' '}
+                      {shellTheme === 'WhiteSur' &&
                         "(This theme doesn't support ProMode.)"}
                     </p>
                     <Toggle
                       active={header.proMode}
-                      disabled={shellTheme === "WhiteSur"}
+                      disabled={shellTheme === 'WhiteSur'}
                       onToggle={() => dispatch(setProMode(!header.proMode))}
                     />
                   </div>
@@ -971,21 +977,21 @@ export default function Settings() {
             </div>
             <div
               className="SettingsSectionBlock Appearance"
-              style={{ height: "fit-content", marginBottom: "30px" }}
+              style={{ height: 'fit-content', marginBottom: '30px' }}
             >
               <div className="Themes">
                 <p
                   className="font-bold"
-                  style={{ marginBottom: "30px", fontSize: "14px" }}
+                  style={{ marginBottom: '30px', fontSize: '14px' }}
                 >
                   Appearances
                 </p>
-                <div style={{ width: "649.516px" }}>
+                <div style={{ width: '649.516px' }}>
                   <div className="ThemesMenu">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <i
                         className="fa-regular fa-arrow-pointer"
-                        style={{ marginRight: "7px" }}
+                        style={{ marginRight: '7px' }}
                       />
                       <p>Cursor</p>
                     </div>
@@ -993,26 +999,26 @@ export default function Settings() {
                       className="MenuSection"
                       onClick={() => showCursorMenu(true)}
                     >
-                      <p style={{ marginRight: "7px" }}>Default</p>
+                      <p style={{ marginRight: '7px' }}>Default</p>
                       <i className="fa-regular fa-chevron-down" />
                     </div>
                     <ActMenu
                       style={{
-                        zIndex: "1",
-                        width: "200px",
-                        transform: "translate(450px, 0px)",
+                        zIndex: '1',
+                        width: '200px',
+                        transform: 'translate(450px, 0px)',
                       }}
-                      className={cursorMenu ? "active" : ""}
+                      className={cursorMenu ? 'active' : ''}
                       ref={cursorMenuRef}
                     >
                       <ActMenuSelector title="Default" active />
                     </ActMenu>
                   </div>
                   <div className="ThemesMenu">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <i
                         className="fa-regular fa-icons"
-                        style={{ marginRight: "7px" }}
+                        style={{ marginRight: '7px' }}
                       />
                       <p>Icons</p>
                     </div>
@@ -1020,51 +1026,51 @@ export default function Settings() {
                       className="MenuSection"
                       onClick={() => showIconsMenu(true)}
                     >
-                      <p style={{ marginRight: "7px" }}>
+                      <p style={{ marginRight: '7px' }}>
                         {appearanceReducer.iconTheme}
                       </p>
                       <i className="fa-regular fa-chevron-down" />
                     </div>
                     <ActMenu
                       style={{
-                        zIndex: "1",
-                        width: "200px",
-                        transform: "translate(450px, 0px)",
+                        zIndex: '1',
+                        width: '200px',
+                        transform: 'translate(450px, 0px)',
                       }}
-                      className={iconsMenu ? "active" : ""}
+                      className={iconsMenu ? 'active' : ''}
                       ref={iconsMenuRef}
                     >
-                      {appearanceReducer.iconTheme === "Default" ? (
+                      {appearanceReducer.iconTheme === 'Default' ? (
                         <ActMenuSelector
                           title="Default"
                           active
-                          onClick={() => changeIcons("Default")}
+                          onClick={() => changeIcons('Default')}
                         />
                       ) : (
                         <ActMenuSelector
                           title="Default"
-                          onClick={() => changeIcons("Default")}
+                          onClick={() => changeIcons('Default')}
                         />
                       )}
-                      {appearanceReducer.iconTheme === "WhiteSur-icon-theme" ? (
+                      {appearanceReducer.iconTheme === 'WhiteSur-icon-theme' ? (
                         <ActMenuSelector
                           title="WhiteSur-icon-theme"
                           active
-                          onClick={() => changeIcons("WhiteSur-icon-theme")}
+                          onClick={() => changeIcons('WhiteSur-icon-theme')}
                         />
                       ) : (
                         <ActMenuSelector
                           title="WhiteSur-icon-theme"
-                          onClick={() => changeIcons("WhiteSur-icon-theme")}
+                          onClick={() => changeIcons('WhiteSur-icon-theme')}
                         />
                       )}
                     </ActMenu>
                   </div>
                   <div className="ThemesMenu">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <i
                         className="fa-solid fa-font-case"
-                        style={{ marginRight: "7px" }}
+                        style={{ marginRight: '7px' }}
                       />
                       <p>Fonts</p>
                     </div>
@@ -1072,39 +1078,39 @@ export default function Settings() {
                       className="MenuSection"
                       onClick={() => showFontsMenu(true)}
                     >
-                      <p style={{ marginRight: "7px" }}>
+                      <p style={{ marginRight: '7px' }}>
                         {settingsReducer.fontFamily}
                       </p>
                       <i className="fa-regular fa-chevron-down" />
                     </div>
                     <ActMenu
                       style={{
-                        zIndex: "1",
-                        width: "200px",
-                        transform: "translate(450px, 0px)",
+                        zIndex: '1',
+                        width: '200px',
+                        transform: 'translate(450px, 0px)',
                       }}
-                      className={fontsMenu ? "active" : ""}
+                      className={fontsMenu ? 'active' : ''}
                       ref={fontsMenuRef}
                     >
                       <ActMenuSelector
                         title="OptimisticDisplay"
                         active={
-                          settingsReducer.fontFamily === "OptimisticDisplay"
+                          settingsReducer.fontFamily === 'OptimisticDisplay'
                         }
-                        onClick={() => changeFont("OptimisticDisplay")}
+                        onClick={() => changeFont('OptimisticDisplay')}
                       />
                       <ActMenuSelector
                         title="SanFrancisco"
-                        active={settingsReducer.fontFamily === "SanFrancisco"}
-                        onClick={() => changeFont("SanFrancisco")}
+                        active={settingsReducer.fontFamily === 'SanFrancisco'}
+                        onClick={() => changeFont('SanFrancisco')}
                       />
                     </ActMenu>
                   </div>
                   <div className="ThemesMenu">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <i
                         className="fa-solid fa-browser"
-                        style={{ marginRight: "7px" }}
+                        style={{ marginRight: '7px' }}
                       />
                       <p>Shell</p>
                     </div>
@@ -1112,49 +1118,49 @@ export default function Settings() {
                       className="MenuSection"
                       onClick={() => showShellMenu(true)}
                     >
-                      <p style={{ marginRight: "7px" }}>{shellTheme}</p>
+                      <p style={{ marginRight: '7px' }}>{shellTheme}</p>
                       <i className="fa-regular fa-chevron-down" />
                     </div>
                     <ActMenu
                       style={{
-                        zIndex: "1",
-                        width: "200px",
-                        transform: "translate(450px, 0px)",
+                        zIndex: '1',
+                        width: '200px',
+                        transform: 'translate(450px, 0px)',
                       }}
-                      className={shellMenu ? "active" : ""}
+                      className={shellMenu ? 'active' : ''}
                       ref={shellMenuRef}
                     >
-                      {shellTheme === "Breeze" ? (
+                      {shellTheme === 'Breeze' ? (
                         <ActMenuSelector
                           title="Breeze"
                           active
-                          onClick={() => switchShell("Breeze")}
+                          onClick={() => switchShell('Breeze')}
                         />
                       ) : (
                         <ActMenuSelector
                           title="Breeze"
-                          onClick={() => switchShell("Breeze")}
+                          onClick={() => switchShell('Breeze')}
                         />
                       )}
-                      {shellTheme === "WhiteSur" ? (
+                      {shellTheme === 'WhiteSur' ? (
                         <ActMenuSelector
                           title="WhiteSur (beta)"
                           active
-                          onClick={() => switchShell("WhiteSur")}
+                          onClick={() => switchShell('WhiteSur')}
                         />
                       ) : (
                         <ActMenuSelector
                           title="WhiteSur (beta)"
-                          onClick={() => switchShell("WhiteSur")}
+                          onClick={() => switchShell('WhiteSur')}
                         />
                       )}
                     </ActMenu>
                   </div>
                   <div className="ThemesMenu">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <i
                         className="fa-regular fa-volume"
-                        style={{ marginRight: "7px" }}
+                        style={{ marginRight: '7px' }}
                       />
                       <p>Sound</p>
                     </div>
@@ -1162,16 +1168,16 @@ export default function Settings() {
                       className="MenuSection"
                       onClick={() => showSoundMenu(true)}
                     >
-                      <p style={{ marginRight: "7px" }}>Oxygen</p>
+                      <p style={{ marginRight: '7px' }}>Oxygen</p>
                       <i className="fa-regular fa-chevron-down" />
                     </div>
                     <ActMenu
                       style={{
-                        zIndex: "1",
-                        width: "200px",
-                        transform: "translate(450px, 0px)",
+                        zIndex: '1',
+                        width: '200px',
+                        transform: 'translate(450px, 0px)',
                       }}
-                      className={soundMenu ? "active" : ""}
+                      className={soundMenu ? 'active' : ''}
                       ref={soundMenuRef}
                     >
                       <ActMenuSelector title="Oxygen" active />
@@ -1182,31 +1188,31 @@ export default function Settings() {
             </div>
           </>
         );
-      case "Widgets":
+      case 'Widgets':
         return (
           <>
             <div className="SettingsSectionBlock Widgets">
               <div className="CurrentWidgets">
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "30px",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '30px',
                   }}
                 >
-                  <p className="font-bold" style={{ fontSize: "14px" }}>
+                  <p className="font-bold" style={{ fontSize: '14px' }}>
                     Current widgets
                   </p>
                   <i className="fa-regular fa-plus WidgetsButton" />
                 </div>
                 <div
                   className="SettingsSectionFixedWidth"
-                  style={{ flexDirection: "row", height: "fit-content" }}
+                  style={{ flexDirection: 'row', height: 'fit-content' }}
                 >
                   <div className="WidgetsContainer">
                     <div
                       className={`ClockWidget ${
-                        widget.clock.active ? "active" : ""
+                        widget.clock.active ? 'active' : ''
                       } ${widget.clock.style}`}
                     >
                       <div className="ClockWidgetContainer">
@@ -1239,19 +1245,19 @@ export default function Settings() {
             </div>
           </>
         );
-      case "Notifications":
+      case 'Notifications':
         return (
           <>
             <div className="SettingsSectionBlock Notifications">
               <div className="SettingsSectionFixedWidth">
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "40px",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '40px',
                   }}
                 >
-                  <p className="font-bold" style={{ fontSize: "14px" }}>
+                  <p className="font-bold" style={{ fontSize: '14px' }}>
                     Do Not Disturb
                   </p>
                   <Toggle
@@ -1263,58 +1269,81 @@ export default function Settings() {
             </div>
           </>
         );
-      case "Battery":
+      case 'Battery':
         return (
           <div className="SettingsSectionBlock Battery">
             <div className="SettingsSectionFixedWidth">
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  marginBottom: "40px",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  marginBottom: '40px',
                 }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "15px",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '15px',
                   }}
                 >
-                  <p className="font-bold" style={{ fontSize: "14px" }}>
+                  <p className="font-bold" style={{ fontSize: '14px' }}>
                     Battery level
                   </p>
-                  <p style={{ fontSize: "14px" }}>
-                    {batteryState.dischargingTime} seconds
+                  <p style={{ fontSize: '14px' }}>
+                    {batteryIsCharging ? (
+                      <>
+                        {(batteryState.chargingTime / 3600).toFixed(0)}{' '}
+                        {(batteryState.chargingTime / 3600).toFixed(0) === '1'
+                          ? 'hour'
+                          : 'hours'}{' '}
+                        {(batteryState.chargingTime / 600).toFixed(0)}{' '}
+                        {(batteryState.chargingTime / 600).toFixed(0) === '1'
+                          ? 'minute'
+                          : 'minutes'}
+                      </>
+                    ) : (
+                      <>
+                        {(batteryState.dischargingTime / 3600).toFixed(0)}{' '}
+                        {(batteryState.dischargingTime / 3600).toFixed(0) ===
+                        '1'
+                          ? 'hour'
+                          : 'hours'}{' '}
+                        {(batteryState.dischargingTime / 600).toFixed(0)}{' '}
+                        {(batteryState.dischargingTime / 600).toFixed(0) === '1'
+                          ? 'minute'
+                          : 'minutes'}
+                      </>
+                    )}
                   </p>
                 </div>
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
                 >
                   <div className="BatteryLevelContainer">
                     <div
                       className={`BatteryLevel ${
-                        batteryPercent < 10 && "lowbattery"
+                        batteryPercent < "10" && 'lowbattery'
                       }`}
                       style={{ width: `${batteryPercent}%` }}
                     />
                   </div>
-                  <p style={{ fontSize: "14px" }}>{batteryPercent}%</p>
+                  <p style={{ fontSize: '14px' }}>{batteryPercent}%</p>
                 </div>
               </div>
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "40px",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '40px',
                 }}
               >
-                <p className="font-bold" style={{ fontSize: "14px" }}>
+                <p className="font-bold" style={{ fontSize: '14px' }}>
                   Battery saver
                 </p>
                 <Toggle
@@ -1327,23 +1356,23 @@ export default function Settings() {
             </div>
           </div>
         );
-      case "Displays":
+      case 'Displays':
         return (
           <>
             <div className="SettingsSectionBlock Displays">
               <div className="BuiltInDisplay">
                 <p
                   className="font-bold"
-                  style={{ marginBottom: "30px", fontSize: "14px" }}
+                  style={{ marginBottom: '30px', fontSize: '14px' }}
                 >
                   Built-in display
                 </p>
                 <div className="SettingsSectionFixedWidth">
                   <div className="BiDMenu">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <i
                         className="fa-regular fa-image-landscape"
-                        style={{ marginRight: "7px" }}
+                        style={{ marginRight: '7px' }}
                       />
                       <p>Orientation</p>
                     </div>
@@ -1351,16 +1380,16 @@ export default function Settings() {
                       className="MenuSection"
                       onClick={() => showOrientationMenu(true)}
                     >
-                      <p style={{ marginRight: "7px" }}>Landscape</p>
+                      <p style={{ marginRight: '7px' }}>Landscape</p>
                       <i className="fa-regular fa-chevron-down" />
                     </div>
                     <ActMenu
                       style={{
-                        zIndex: "1",
-                        width: "200px",
-                        transform: "translate(450px, 0px)",
+                        zIndex: '1',
+                        width: '200px',
+                        transform: 'translate(450px, 0px)',
                       }}
-                      className={orientationMenu ? "active" : ""}
+                      className={orientationMenu ? 'active' : ''}
                       ref={orientationMenuRef}
                     >
                       <ActMenuSelector title="Landscape" active />
@@ -1368,10 +1397,10 @@ export default function Settings() {
                     </ActMenu>
                   </div>
                   <div className="BiDMenu">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <i
                         className="fa-regular fa-expand-wide"
-                        style={{ marginRight: "7px" }}
+                        style={{ marginRight: '7px' }}
                       />
                       <p>Resolution</p>
                     </div>
@@ -1379,19 +1408,19 @@ export default function Settings() {
                       className="MenuSection"
                       onClick={() => showResolutionMenu(true)}
                     >
-                      <p style={{ marginRight: "7px" }}>
-                        {window.screen.width} &times; {window.screen.height}{" "}
+                      <p style={{ marginRight: '7px' }}>
+                        {window.screen.width} &times; {window.screen.height}{' '}
                         &#40;16:9&#41;
                       </p>
                       <i className="fa-regular fa-chevron-down" />
                     </div>
                     <ActMenu
                       style={{
-                        zIndex: "1",
-                        width: "200px",
-                        transform: "translate(450px, 0px)",
+                        zIndex: '1',
+                        width: '200px',
+                        transform: 'translate(450px, 0px)',
                       }}
-                      className={resolutionMenu ? "active" : ""}
+                      className={resolutionMenu ? 'active' : ''}
                       ref={resolutionMenuRef}
                     >
                       <ActMenuSelector
@@ -1401,10 +1430,10 @@ export default function Settings() {
                     </ActMenu>
                   </div>
                   <div className="BiDMenu">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <i
                         className="fa-regular fa-arrows-rotate"
-                        style={{ marginRight: "7px" }}
+                        style={{ marginRight: '7px' }}
                       />
                       <p>Refresh Rate</p>
                     </div>
@@ -1412,16 +1441,16 @@ export default function Settings() {
                       className="MenuSection"
                       onClick={() => showRefreshRateMenu(true)}
                     >
-                      <p style={{ marginRight: "7px" }}>60.00 Hz</p>
+                      <p style={{ marginRight: '7px' }}>60.00 Hz</p>
                       <i className="fa-regular fa-chevron-down" />
                     </div>
                     <ActMenu
                       style={{
-                        zIndex: "1",
-                        width: "200px",
-                        transform: "translate(450px, 0px)",
+                        zIndex: '1',
+                        width: '200px',
+                        transform: 'translate(450px, 0px)',
                       }}
-                      className={refreshRateMenu ? "active" : ""}
+                      className={refreshRateMenu ? 'active' : ''}
                       ref={refreshRateMenuRef}
                     >
                       <ActMenuSelector title="60.00 Hz" active />
@@ -1435,106 +1464,106 @@ export default function Settings() {
             </div>
           </>
         );
-      case "Region & Language":
+      case 'Region & Language':
         return (
           <>
             <div className="SettingsSectionBlock RegionNLanguage">
               <div className="SettingsSectionFixedWidth">
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "40px",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '40px',
                   }}
                 >
-                  <p className="font-bold" style={{ fontSize: "14px" }}>
+                  <p className="font-bold" style={{ fontSize: '14px' }}>
                     Language
                   </p>
                   <div
                     className="MenuSection"
                     onClick={() => showLanguageMenu(true)}
                   >
-                    <p style={{ marginRight: "7px" }}>{i18n.language}</p>
+                    <p style={{ marginRight: '7px' }}>{i18n.language}</p>
                     <i className="fa-regular fa-chevron-down" />
                   </div>
                   <ActMenu
                     style={{
-                      zIndex: "1",
-                      width: "200px",
-                      transform: "translate(450px, 0px)",
+                      zIndex: '1',
+                      width: '200px',
+                      transform: 'translate(450px, 0px)',
                     }}
-                    className={languageMenu ? "active" : ""}
+                    className={languageMenu ? 'active' : ''}
                     ref={languageMenuRef}
                   >
                     <ActMenuSelector
                       title="Deutsch"
-                      onClick={() => switchLanguage("Deutsch")}
-                      active={i18n.language === "Deutsch"}
+                      onClick={() => switchLanguage('Deutsch')}
+                      active={i18n.language === 'Deutsch'}
                     />
                     <ActMenuSelector
                       title="English (US)"
-                      onClick={() => switchLanguage("English (US)")}
-                      active={i18n.language === "English (US)"}
+                      onClick={() => switchLanguage('English (US)')}
+                      active={i18n.language === 'English (US)'}
                     />
                     <ActMenuSelector
                       title="Español"
-                      onClick={() => switchLanguage("Español")}
-                      active={i18n.language === "Español"}
+                      onClick={() => switchLanguage('Español')}
+                      active={i18n.language === 'Español'}
                     />
                     <ActMenuSelector
                       title="Français"
-                      onClick={() => switchLanguage("Français")}
-                      active={i18n.language === "Français"}
+                      onClick={() => switchLanguage('Français')}
+                      active={i18n.language === 'Français'}
                     />
                     <ActMenuSelector
                       title="Bahasa Indonesia"
-                      onClick={() => switchLanguage("Bahasa Indonesia")}
-                      active={i18n.language === "Bahasa Indonesia"}
+                      onClick={() => switchLanguage('Bahasa Indonesia')}
+                      active={i18n.language === 'Bahasa Indonesia'}
                     />
                     <ActMenuSelector
                       title="Italiano"
-                      onClick={() => switchLanguage("Italiano")}
-                      active={i18n.language === "Italiano"}
+                      onClick={() => switchLanguage('Italiano')}
+                      active={i18n.language === 'Italiano'}
                     />
                     <ActMenuSelector
                       title="日本語"
-                      onClick={() => switchLanguage("日本語")}
-                      active={i18n.language === "日本語"}
+                      onClick={() => switchLanguage('日本語')}
+                      active={i18n.language === '日本語'}
                     />
                     <ActMenuSelector
                       title="한국어"
-                      onClick={() => switchLanguage("한국어")}
-                      active={i18n.language === "한국어"}
+                      onClick={() => switchLanguage('한국어')}
+                      active={i18n.language === '한국어'}
                     />
                     <ActMenuSelector
                       title="Русский"
-                      onClick={() => switchLanguage("Русский")}
-                      active={i18n.language === "Русский"}
+                      onClick={() => switchLanguage('Русский')}
+                      active={i18n.language === 'Русский'}
                     />
                     <ActMenuSelector
                       title="แบบไทย"
-                      onClick={() => switchLanguage("แบบไทย")}
-                      active={i18n.language === "แบบไทย"}
+                      onClick={() => switchLanguage('แบบไทย')}
+                      active={i18n.language === 'แบบไทย'}
                     />
                     <ActMenuSelector
                       title="Український"
-                      onClick={() => switchLanguage("Український")}
-                      active={i18n.language === "Український"}
+                      onClick={() => switchLanguage('Український')}
+                      active={i18n.language === 'Український'}
                     />
                     <ActMenuSelector
                       title="Tiếng Việt"
-                      onClick={() => switchLanguage("Tiếng Việt")}
-                      active={i18n.language === "Tiếng Việt"}
+                      onClick={() => switchLanguage('Tiếng Việt')}
+                      active={i18n.language === 'Tiếng Việt'}
                     />
                     <ActMenuSelector
                       title="中文 (简体)"
-                      onClick={() => switchLanguage("中文 (简体)")}
-                      active={i18n.language === "中文 (简体)"}
+                      onClick={() => switchLanguage('中文 (简体)')}
+                      active={i18n.language === '中文 (简体)'}
                     />
                     <ActMenuSelector
                       title="中文 (繁體)"
-                      onClick={() => switchLanguage("中文 (繁體)")}
-                      active={i18n.language === "中文 (繁體)"}
+                      onClick={() => switchLanguage('中文 (繁體)')}
+                      active={i18n.language === '中文 (繁體)'}
                     />
                   </ActMenu>
                 </div>
@@ -1542,15 +1571,15 @@ export default function Settings() {
             </div>
           </>
         );
-      case "Users":
+      case 'Users':
         return (
-          <div style={{ margin: "10px 0" }}>
+          <div style={{ margin: '10px 0' }}>
             <div className="SettingsSectionBlock Users">
               <div className="SettingsSectionFixedWidth">
                 <div className="UserCard">
                   <div className="UserInfo">
-                    <Avatar size={1.7} editable />
-                    <div style={{ marginLeft: "30px" }}>
+                    <Avatar size={1.7} />
+                    <div style={{ marginLeft: '30px' }}>
                       <p className="UserName">{settingsReducer.user.name}</p>
                       <p className="UserRole">{settingsReducer.user.role}</p>
                     </div>
@@ -1558,9 +1587,9 @@ export default function Settings() {
                 </div>
                 <div
                   className="UserItem"
-                  onClick={() => setUsersTab("general")}
+                  onClick={() => setUsersTab('general')}
                 >
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <i className="fa-regular fa-gear UserIcon" />
                     <p>General</p>
                   </div>
@@ -1568,9 +1597,9 @@ export default function Settings() {
                 </div>
                 <div
                   className="UserItem"
-                  onClick={() => setUsersTab("security")}
+                  onClick={() => setUsersTab('security')}
                 >
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <i className="fa-regular fa-lock UserIcon" />
                     <p>Security</p>
                   </div>
@@ -1580,39 +1609,39 @@ export default function Settings() {
             </div>
           </div>
         );
-      case "Accessibility":
+      case 'Accessibility':
         return (
           <div className="SettingsSectionBlock Accessibility">
             <div className="SettingsSectionFixedWidth">
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "40px",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '40px',
                 }}
               >
-                <p className="font-bold" style={{ fontSize: "14px" }}>
+                <p className="font-bold" style={{ fontSize: '14px' }}>
                   Reduce animations
                 </p>
                 <Toggle
                   active={settingsReducer.animationsReduced}
                   onToggle={() =>
                     dispatch(
-                      setAnimationsReduced(!settingsReducer.animationsReduced)
+                      setAnimationsReduced(!settingsReducer.animationsReduced),
                     )
                   }
                 />
               </div>
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "40px",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '40px',
                 }}
               >
-                <p className="font-bold" style={{ fontSize: "14px" }}>
+                <p className="font-bold" style={{ fontSize: '14px' }}>
                   Invert color
                 </p>
                 <Toggle
@@ -1625,19 +1654,19 @@ export default function Settings() {
             </div>
           </div>
         );
-      case "Date & Time":
+      case 'Date & Time':
         return (
           <div className="SettingsSectionBlock DateNTime">
             <div className="SettingsSectionFixedWidth">
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "40px",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '40px',
                 }}
               >
-                <p className="font-bold" style={{ fontSize: "14px" }}>
+                <p className="font-bold" style={{ fontSize: '14px' }}>
                   24-hour time
                 </p>
                 <Toggle
@@ -1647,13 +1676,13 @@ export default function Settings() {
               </div>
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "40px",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '40px',
                 }}
               >
-                <p className="font-bold" style={{ fontSize: "14px" }}>
+                <p className="font-bold" style={{ fontSize: '14px' }}>
                   Display seconds
                 </p>
                 <Toggle
@@ -1661,38 +1690,80 @@ export default function Settings() {
                   onToggle={() => dispatch(setSeconds(!isSecondsEnabled))}
                 />
               </div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '40px',
+                }}
+              >
+                <p className="font-bold" style={{ fontSize: '14px' }}>
+                  Temperature
+                </p>
+                <div style={{ display: 'flex' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginLeft: '20px',
+                    }}
+                  >
+                    <Checkbox
+                      active={weather.temperature === 'celsius'}
+                      onToggle={() => dispatch(setTemperature('celsius'))}
+                      size={0.9}
+                    />
+                    <p style={{ marginLeft: '8px' }}>Celsius</p>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginLeft: '20px',
+                    }}
+                  >
+                    <Checkbox
+                      active={weather.temperature === 'fahrenheit'}
+                      onToggle={() => dispatch(setTemperature('fahrenheit'))}
+                      size={0.9}
+                    />
+                    <p style={{ marginLeft: '8px' }}>Fahrenheit</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         );
-      case "About":
+      case 'About':
         return (
           <div className="SettingsSectionBlock About">
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
+                display: 'flex',
+                flexDirection: 'column',
               }}
             >
               {settingsReducer.themeLight ? (
                 <img
                   src={LogoL}
-                  width={"331.133"}
+                  width={'331.133'}
                   height={140}
                   className="AboutLogo"
                 />
               ) : (
                 <img
                   src={LogoD}
-                  width={"331.133"}
+                  width={'331.133'}
                   height={140}
                   className="AboutLogo"
                 />
               )}
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginTop: "10px",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  marginTop: '10px',
                 }}
               >
                 <div
@@ -1700,20 +1771,20 @@ export default function Settings() {
                   onClick={() => allowEditDeviceName(!editDeviceName)}
                 >
                   <p>Device Name</p>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <p className="BlurText" style={{ marginRight: "15px" }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <p className="BlurText" style={{ marginRight: '15px' }}>
                       {settingsReducer.deviceName}
                     </p>
                     <i
                       className={`fa-regular fa-chevron-right ${
-                        editDeviceName ? "rotated" : ""
+                        editDeviceName ? 'rotated' : ''
                       }`}
                     />
                   </div>
                 </div>
                 <div
                   className={`AboutMenu EditName ${
-                    editDeviceName ? "active" : ""
+                    editDeviceName ? 'active' : ''
                   }`}
                 >
                   <input
@@ -1732,7 +1803,7 @@ export default function Settings() {
                   <p
                     className="BlurText"
                     style={{
-                      textTransform: "capitalize",
+                      textTransform: 'capitalize',
                     }}
                   >
                     {system.platform}
@@ -1791,7 +1862,7 @@ export default function Settings() {
     setTimeout(() => setWrongPasswordAni(false), 4550);
   }
 
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener('keydown', (e) => {
     if (e.keyCode === 27) {
       dispatch(cancelPassword());
     }
@@ -1809,14 +1880,14 @@ export default function Settings() {
 
   const wp = useAppSelector((state) => state.wifipassword);
 
-  const [userName, setUserName] = useState<string>("");
+  const [userName, setUserName] = useState<string>('');
 
   function switchUsersTab() {
     switch (usersTab) {
-      case "general":
+      case 'general':
         return (
           <>
-            <Avatar size={2} />
+            <Avatar size={2} editable />
             <div className="UserInfo">
               <input
                 placeholder={settingsReducer.user.name}
@@ -1828,9 +1899,9 @@ export default function Settings() {
               />
             </div>
             <div
-              className={`Button ${!userName && "disabled"}`}
+              className={`Button ${!userName && 'disabled'}`}
               onClick={() => {
-                setUsersTab("");
+                setUsersTab('');
                 dispatch(setName(userName));
               }}
             >
@@ -1845,9 +1916,9 @@ export default function Settings() {
     <div className="SettingsWindow">
       <Draggable handle=".TopBar">
         <div
-          className={`Window settings ${isActive && "active"} ${
-            isHide && "hide"
-          } ${min && "minimize"}`}
+          className={`Window settings ${isActive && 'active'} ${
+            isHide && 'hide'
+          } ${min && 'minimize'}`}
         >
           {maximumExceeded ? (
             <div className="MaximumExceededBox">
@@ -1875,25 +1946,25 @@ export default function Settings() {
               </div>
             </div>
           ) : (
-            ""
+            ''
           )}
           <TopBar
-            title={t("apps.settings.name")}
+            title={t('apps.settings.name')}
             onDblClick={() => isMin(!min)}
           >
-            <div className="TabBarWrapper" style={{ width: "100%" }}>
+            <div className="TabBarWrapper" style={{ width: '100%' }}>
               <div
                 className="TabBar"
-                style={{ display: "flex", justifyContent: "space-between" }}
+                style={{ display: 'flex', justifyContent: 'space-between' }}
               >
                 <div
                   className="TabBarItem"
                   style={{
-                    width: min ? "120px" : "80px",
+                    width: min ? '120px' : '80px',
                     paddingLeft: 0,
                     paddingRight: 0,
-                    flexDirection: "row-reverse",
-                    transition: "all ease .3s",
+                    flexDirection: 'row-reverse',
+                    transition: 'all ease .3s',
                   }}
                 >
                   <div className="TabBarInteraction">
@@ -1903,43 +1974,47 @@ export default function Settings() {
                 <div
                   className="TabBarItem TabBarSettingsName"
                   style={
-                    settings === "Wi-Fi" || settings === "Bluetooth"
-                      ? { justifyContent: "space-between", padding: "2px 9px" }
-                      : { justifyContent: "center" }
+                    settings === 'Wi-Fi' || settings === 'Bluetooth'
+                      ? { justifyContent: 'space-between', padding: '2px 9px' }
+                      : { justifyContent: 'center' }
                   }
                 >
-                  {settings === "Wi-Fi" ? (
+                  {settings === 'Wi-Fi' ? (
                     <>
                       <div
                         style={{
-                          width: "94%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                          width: '94%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
                       >
                         <p>{settings}</p>
                       </div>
                       <Toggle
                         active={settingsReducer.wifi}
-                        onToggle={() => dispatch(toggleWifi(!settingsReducer.wifi))}
+                        onToggle={() =>
+                          dispatch(toggleWifi(!settingsReducer.wifi))
+                        }
                       />
                     </>
-                  ) : settings === "Bluetooth" ? (
+                  ) : settings === 'Bluetooth' ? (
                     <>
                       <div
                         style={{
-                          width: "94%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                          width: '94%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
                       >
                         <p>{settings}</p>
                       </div>
                       <Toggle
                         active={settingsReducer.bluetooth}
-                        onToggle={() => dispatch(toggleBluetooth(!settingsReducer.bluetooth))}
+                        onToggle={() =>
+                          dispatch(toggleBluetooth(!settingsReducer.bluetooth))
+                        }
                       />
                     </>
                   ) : (
@@ -1950,14 +2025,14 @@ export default function Settings() {
             </div>
             <div
               className="TopBarInteractionWrapper"
-              style={{ display: "flex" }}
+              style={{ display: 'flex' }}
             >
               <TopBarInteraction
                 action="hide"
                 onHide={() => dispatch(setHide(true))}
               />
               <TopBarInteraction
-                action={min ? "max" : "min"}
+                action={min ? 'max' : 'min'}
                 onMinMax={() => isMin(!min)}
               />
               <TopBarInteraction
@@ -1967,11 +2042,11 @@ export default function Settings() {
             </div>
           </TopBar>
           <WindowBody>
-            <div className={`BlackScr ${shareWifi && "active"}`}>
+            <div className={`BlackScr ${shareWifi && 'active'}`}>
               <div
                 className={`WifiSharing ${
-                  shellTheme === "WhiteSur" ? "whitesur" : ""
-                } ${shareWifi ? "active" : ""}`}
+                  shellTheme === 'WhiteSur' ? 'whitesur' : ''
+                } ${shareWifi ? 'active' : ''}`}
               >
                 <div className="WindowTopBar">
                   <p className="WindowTopBarTitle">Wi-Fi Sharing</p>
@@ -1986,7 +2061,7 @@ export default function Settings() {
                 </div>
                 <div className="WindowBodyDefault">
                   <div className="WindowBodyContent">
-                    <p style={{ marginBottom: "30px" }} className="font-bold">
+                    <p style={{ marginBottom: '30px' }} className="font-bold">
                       BreezeOS
                     </p>
                     {settingsReducer.themeLight ? (
@@ -1998,28 +2073,28 @@ export default function Settings() {
                 </div>
               </div>
             </div>
-            <div className={`BlackScr ${wp.active && "active"}`}>
+            <div className={`BlackScr ${wp.active && 'active'}`}>
               <div
                 className={`InsertWifiPassword ${
-                  shellTheme === "WhiteSur" ? "whitesur" : ""
-                } ${wp.active ? "active" : ""}`}
+                  shellTheme === 'WhiteSur' ? 'whitesur' : ''
+                } ${wp.active ? 'active' : ''}`}
               >
                 <div className="WindowBodyDefault">
                   <div className="WindowBodyContent">
                     <div className="WindowBodyIcon">
                       <i className="fa-regular fa-key" />
                     </div>
-                    <div style={{ marginLeft: "10px", width: "100%" }}>
-                      <p className="font-bold" style={{ fontSize: "17px" }}>
+                    <div style={{ marginLeft: '10px', width: '100%' }}>
+                      <p className="font-bold" style={{ fontSize: '17px' }}>
                         Connect to Wi-Fi "{wp.passwordFor}"
                       </p>
                       <div
                         className={`PasswordContainer ${
-                          wp.disabled ? "disabled" : ""
+                          wp.disabled ? 'disabled' : ''
                         }`}
                       >
                         <input
-                          type={wp.isShow ? "text" : "password"}
+                          type={wp.isShow ? 'text' : 'password'}
                           id="password"
                           placeholder="Password"
                           autoComplete="false"
@@ -2029,14 +2104,14 @@ export default function Settings() {
                             dispatch(setInputPassword(e.target.value))
                           }
                           className={`InputPassword ${
-                            wp.isWrong ? "wrongPassword" : ""
-                          } ${wrongPasswordAni ? "activeAnimation" : ""}`}
+                            wp.isWrong ? 'wrongPassword' : ''
+                          } ${wrongPasswordAni ? 'activeAnimation' : ''}`}
                         />
                         <i
                           className={`fa-regular ${
-                            wp.isShow ? "fa-eye-slash" : "fa-eye"
+                            wp.isShow ? 'fa-eye-slash' : 'fa-eye'
                           } displayPassword ${
-                            wp.value === "" ? "disabled" : ""
+                            wp.value === '' ? 'disabled' : ''
                           }`}
                           onClick={() =>
                             wp.isShow
@@ -2049,15 +2124,15 @@ export default function Settings() {
                   </div>
                   <div className={`WindowBodyButton`}>
                     <button
-                      className={`Button ${wp.disabled ? "disabled" : ""}`}
+                      className={`Button ${wp.disabled ? 'disabled' : ''}`}
                       onClick={() => dispatch(cancelPassword())}
                     >
                       Cancel
                     </button>
                     <button
                       className={`Button ${
-                        wp.value.length < 8 ? "disabled" : ""
-                      } ${wp.disabled ? "disabled" : ""}`}
+                        wp.value.length < 8 ? 'disabled' : ''
+                      } ${wp.disabled ? 'disabled' : ''}`}
                       onClick={submitPassword}
                     >
                       Connect
@@ -2066,30 +2141,30 @@ export default function Settings() {
                 </div>
               </div>
             </div>
-            <div className={`BlackScr ${nw.active && "active"}`}>
+            <div className={`BlackScr ${nw.active && 'active'}`}>
               <div
                 className={`ConnectOtherNetworks ${
-                  shellTheme === "WhiteSur" ? "whitesur" : ""
-                } ${nw.active ? "active" : ""}`}
+                  shellTheme === 'WhiteSur' ? 'whitesur' : ''
+                } ${nw.active ? 'active' : ''}`}
               >
                 <div className="WindowBodyDefault">
                   <div className="WindowBodyContent">
                     <div className="WindowBodyIcon">
                       <i className="fa-regular fa-wifi" />
                     </div>
-                    <div style={{ marginLeft: "10px", width: "100%" }}>
-                      <p className="font-bold" style={{ fontSize: "17px" }}>
+                    <div style={{ marginLeft: '10px', width: '100%' }}>
+                      <p className="font-bold" style={{ fontSize: '17px' }}>
                         Connect to Hidden Networks
                       </p>
                       <p
                         className="font-normal"
-                        style={{ marginTop: "7px", fontSize: "11px" }}
+                        style={{ marginTop: '7px', fontSize: '11px' }}
                       >
                         Enter network information that you wish to connect to.
                       </p>
                       <div
                         className={`InfoContainer ${
-                          wp.disabled ? "disabled" : ""
+                          wp.disabled ? 'disabled' : ''
                         }`}
                       >
                         <input
@@ -2101,13 +2176,13 @@ export default function Settings() {
                           onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                             dispatch(setWifiName(e.target.value))
                           }
-                          className={`Input ${wp.isWrong ? "wrongInfo" : ""} ${
-                            wrongPasswordAni ? "activeAnimation" : ""
+                          className={`Input ${wp.isWrong ? 'wrongInfo' : ''} ${
+                            wrongPasswordAni ? 'activeAnimation' : ''
                           }`}
                         />
                         <div
-                          className={`Input ${wp.isWrong ? "wrongInfo" : ""} ${
-                            wrongPasswordAni ? "activeAnimation" : ""
+                          className={`Input ${wp.isWrong ? 'wrongInfo' : ''} ${
+                            wrongPasswordAni ? 'activeAnimation' : ''
                           }`}
                           onClick={() => showSecurityMenu(true)}
                         >
@@ -2115,54 +2190,54 @@ export default function Settings() {
                           <i className="fa-regular fa-chevron-down" />
                           <ActMenu
                             style={{
-                              zIndex: "1",
-                              width: "388px",
-                              top: "27px",
-                              right: "0",
+                              zIndex: '1',
+                              width: '382px',
+                              top: '0',
+                              right: '0',
                             }}
-                            className={securityMenu ? "active" : ""}
+                            className={securityMenu ? 'active' : ''}
                             ref={securityMenuRef}
                           >
                             <ActMenuSelector
                               title="None"
-                              active={nw.security === "None"}
-                              onClick={() => switchSecurity("None")}
+                              active={nw.security === 'None'}
+                              onClick={() => switchSecurity('None')}
                             />
                             <ActMenuSelector
                               title="WEP"
-                              active={nw.security === "WEP"}
-                              onClick={() => switchSecurity("WEP")}
+                              active={nw.security === 'WEP'}
+                              onClick={() => switchSecurity('WEP')}
                             />
                             <ActMenuSelector
                               title="WPA"
-                              active={nw.security === "WPA"}
-                              onClick={() => switchSecurity("WPA")}
+                              active={nw.security === 'WPA'}
+                              onClick={() => switchSecurity('WPA')}
                             />
                             <ActMenuSelector
                               title="WPA2"
-                              active={nw.security === "WPA2"}
-                              onClick={() => switchSecurity("WPA2")}
+                              active={nw.security === 'WPA2'}
+                              onClick={() => switchSecurity('WPA2')}
                             />
                             <ActMenuSelector
                               title="WPA Enterprise"
-                              active={nw.security === "WPA Enterprise"}
-                              onClick={() => switchSecurity("WPA Enterprise")}
+                              active={nw.security === 'WPA Enterprise'}
+                              onClick={() => switchSecurity('WPA Enterprise')}
                             />
                             <ActMenuSelector
                               title="WPA2 Enterprise"
-                              active={nw.security === "WPA2 Enterprise"}
-                              onClick={() => switchSecurity("WPA2 Enterprise")}
+                              active={nw.security === 'WPA2 Enterprise'}
+                              onClick={() => switchSecurity('WPA2 Enterprise')}
                             />
                             <ActMenuSelector
                               title="WPA3 Enterprise"
-                              active={nw.security === "WPA3 Enterprise"}
-                              onClick={() => switchSecurity("WPA3 Enterprise")}
+                              active={nw.security === 'WPA3 Enterprise'}
+                              onClick={() => switchSecurity('WPA3 Enterprise')}
                             />
                           </ActMenu>
                         </div>
-                        <div style={{ display: "flex", alignItems: "center" }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
                           <input
-                            type={wp.isShow ? "text" : "password"}
+                            type={wp.isShow ? 'text' : 'password'}
                             id="password"
                             placeholder="Password"
                             autoComplete="false"
@@ -2172,15 +2247,15 @@ export default function Settings() {
                               dispatch(setInputPassword(e.target.value))
                             }
                             className={`Input ${
-                              wp.isWrong ? "wrongInfo" : ""
-                            } ${wrongPasswordAni ? "activeAnimation" : ""}`}
-                            style={{ margin: "0" }}
+                              wp.isWrong ? 'wrongInfo' : ''
+                            } ${wrongPasswordAni ? 'activeAnimation' : ''}`}
+                            style={{ margin: '0' }}
                           />
                           <i
                             className={`fa-regular ${
-                              wp.isShow ? "fa-eye-slash" : "fa-eye"
+                              wp.isShow ? 'fa-eye-slash' : 'fa-eye'
                             } displayPassword ${
-                              wp.value === "" ? "disabled" : ""
+                              wp.value === '' ? 'disabled' : ''
                             }`}
                             onClick={() =>
                               wp.isShow
@@ -2194,15 +2269,15 @@ export default function Settings() {
                   </div>
                   <div className={`WindowBodyButton`}>
                     <button
-                      className={`Button ${wp.disabled ? "disabled" : ""}`}
+                      className={`Button ${wp.disabled ? 'disabled' : ''}`}
                       onClick={cancel}
                     >
                       Cancel
                     </button>
                     <button
                       className={`Button ${
-                        wp.value.length < 8 ? "disabled" : ""
-                      } ${wp.disabled ? "disabled" : ""}`}
+                        wp.value.length < 8 ? 'disabled' : ''
+                      } ${wp.disabled ? 'disabled' : ''}`}
                       onClick={submitPassword}
                     >
                       Connect
@@ -2211,18 +2286,18 @@ export default function Settings() {
                 </div>
               </div>
             </div>
-            <div className={`BlackScr ${usersTab !== "" && "active"}`}>
+            <div className={`BlackScr ${usersTab !== '' && 'active'}`}>
               <div
                 className={`UsersBox ${
-                  shellTheme === "WhiteSur" ? "whitesur" : ""
-                } ${usersTab !== "" && "active"}`}
+                  shellTheme === 'WhiteSur' ? 'whitesur' : ''
+                } ${usersTab !== '' && 'active'}`}
               >
                 <div className="WindowTopBar">
                   <p className="WindowTopBarTitle"></p>
                   <div className="WindowTopBarInteractionContainer">
                     <div
                       className="WindowTopBarInteraction close"
-                      onClick={() => setUsersTab("")}
+                      onClick={() => setUsersTab('')}
                     >
                       <i className="fa-solid fa-xmark fa-lg" />
                     </div>
@@ -2235,31 +2310,31 @@ export default function Settings() {
             </div>
             <div
               className={`Settings ${
-                shellTheme === "WhiteSur" ? "whitesur" : ""
+                shellTheme === 'WhiteSur' ? 'whitesur' : ''
               }`}
             >
               <div className="SettingsSection">
-                <div style={{ width: "295px", height: "100%" }}>
+                <div style={{ width: '295px', height: '100%' }}>
                   <div
                     style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "100%",
+                      position: 'relative',
+                      width: '100%',
+                      height: '100%',
                     }}
                   >
                     <div
                       style={{
-                        position: "absolute",
-                        width: "100%",
-                        maxHeight: "100%",
-                        overflowY: "auto",
+                        position: 'absolute',
+                        width: '100%',
+                        maxHeight: '100%',
+                        overflowY: 'auto',
                       }}
                     >
                       {navItems.map((e) => (
                         <div className="NavPanel">
                           {e.map((i) => (
                             <div
-                              className={`DropdownMenu ${i.active && "active"}`}
+                              className={`DropdownMenu ${i.active && 'active'}`}
                               onMouseDown={i.onClick}
                             >
                               <i className={i.icon} />
@@ -2272,7 +2347,7 @@ export default function Settings() {
                   </div>
                 </div>
                 <div
-                  style={{ overflow: "auto", width: "100%", height: "100%" }}
+                  style={{ overflow: 'auto', width: '100%', height: '100%' }}
                 >
                   <div className="SettingsContainer">
                     <div className="SettingsContainerInside">{switchTab()}</div>

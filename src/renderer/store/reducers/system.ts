@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface StateType {
   hostname: string;
@@ -16,34 +16,34 @@ interface StateType {
     used: string;
   };
   battery: {
-    level: number;
+    level: string;
     charging: boolean;
   };
 }
 
 const initialState: StateType = {
-  hostname: "BreezeOS",
-  kernel: "GNU/Linux 6.2.1 x86_64",
-  version: "",
-  platform: "BreezeOS",
+  hostname: 'BreezeOS',
+  kernel: 'GNU/Linux 6.2.1 x86_64',
+  version: '',
+  platform: 'BreezeOS',
   memory: {
     total: navigator.hardwareConcurrency,
     used: navigator.hardwareConcurrency / 2,
   },
-  processor: "Intel® Core™ i3-6100 CPU @ 3.70GHz × 4",
-  graphics: "Mesa Intel® HD Graphics 530 (SKL GT2)",
+  processor: 'Intel® Core™ i3-6100 CPU @ 3.70GHz × 4',
+  graphics: 'Mesa Intel® HD Graphics 530 (SKL GT2)',
   disks: {
-    total: "128",
-    used: "80.3",
+    total: '128',
+    used: '80.3',
   },
   battery: {
-    level: 0,
+    level: '',
     charging: false,
   },
 };
 
 const systemSlice = createSlice({
-  name: "system",
+  name: 'system',
   initialState,
   reducers: {
     setHostname: (state, action: PayloadAction<string>) => {
@@ -76,7 +76,7 @@ const systemSlice = createSlice({
     setUsedSpace: (state, action: PayloadAction<string>) => {
       state.disks.used = action.payload;
     },
-    setBatteryLevel: (state, action: PayloadAction<number>) => {
+    setBatteryLevel: (state, action: PayloadAction<string>) => {
       state.battery.level = action.payload;
     },
     setBatteryCharging: (state, action: PayloadAction<boolean>) => {

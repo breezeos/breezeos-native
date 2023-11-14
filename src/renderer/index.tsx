@@ -337,7 +337,7 @@ function Body() {
               <Spacer size="flexible" />
               <Label
                 label={`${system.battery.level}%`}
-                textColor={system.battery.level <= 10 ? '#e46a6a' : '#6ae4a9'}
+                textColor={system.battery.level <= "10" ? '#e46a6a' : '#6ae4a9'}
               />
               <Spacer size="large" />
               <Spacer size="large" />

@@ -14,6 +14,7 @@ import startMenuReducer from './reducers/startmenu';
 import wifiPasswordReducer from './reducers/wifipassword';
 import newWifiReducer from './reducers/newwifi';
 import wallpaperReducer from './reducers/wallpaper';
+import weatherReducer from "./reducers/weather";
 import imgViewReducer from './reducers/imgview';
 import shellReducer from './reducers/shell';
 import widgetReducer from './reducers/widget';
@@ -51,6 +52,7 @@ const reducers = {
   wifipassword: wifiPasswordReducer,
   newwifi: newWifiReducer,
   wallpaper: wallpaperReducer,
+  weather: weatherReducer,
   imgview: imgViewReducer,
   shell: shellReducer,
   widget: widgetReducer,

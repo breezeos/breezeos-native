@@ -510,7 +510,7 @@ export default function SplashScreen() {
         <div
           style={{
             position: "relative",
-            borderRadius: "15px",
+            borderRadius: "18px",
             overflow: "hidden",
           }}
         >
