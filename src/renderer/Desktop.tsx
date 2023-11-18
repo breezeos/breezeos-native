@@ -28,12 +28,13 @@ import checkDiskSpace from 'check-disk-space';
 import { useEffect } from 'react';
 import { setTouchbarActive } from './store/reducers/touchbar';
 import { setLocked } from './store/reducers/settings';
-import axios from "axios";
+import axios from 'axios';
 import {
   initializeData,
   setLocation,
   setTemperature,
-} from "./store/reducers/weather";
+} from './store/reducers/weather';
+import Setup from './components/Setup';
 
 const Desktop = () => {
   const dispatch = useAppDispatch();
@@ -53,7 +54,7 @@ const Desktop = () => {
   const system = useAppSelector((state) => state.system);
   const weather = useAppSelector((state) => state.weather);
 
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.keyCode === 76) {
       e.preventDefault();
       dispatch(setLocked(true));
@@ -100,7 +101,7 @@ const Desktop = () => {
     });
   }
 
-  dispatch(setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : "-"));
+  dispatch(setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : '-'));
 
   if (batteryState.charging) {
     dispatch(setBatteryCharging(true));
@@ -178,15 +179,21 @@ const Desktop = () => {
             onContextMenu={(e) => e.preventDefault()}
             id="Desktop"
           >
-            <TerminalWindow />
-            <Snapshot />
-            <LockScreen />
-            <StartMenu />
-            <Modal />
-            <Header />
-            <Wallpaper />
-            <DesktopBody />
-            <Dock />
+            {!localStorage.getItem('setupDisabled') ? (
+              <Setup />
+            ) : (
+              <>
+                <TerminalWindow />
+                <Snapshot />
+                <LockScreen />
+                <StartMenu />
+                <Modal />
+                <Header />
+                <Wallpaper />
+                <DesktopBody />
+                <Dock />
+              </>
+            )}
           </div>
           <div id="brightness"></div>
         </>

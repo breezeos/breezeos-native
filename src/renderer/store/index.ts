@@ -10,6 +10,7 @@ import modalReducer from './reducers/modal';
 import shutdownReducer from './reducers/shutdown';
 import systemReducer from './reducers/system';
 import settingsReducer from './reducers/settings';
+import setupReducer from './reducers/setup';
 import startMenuReducer from './reducers/startmenu';
 import wifiPasswordReducer from './reducers/wifipassword';
 import newWifiReducer from './reducers/newwifi';
@@ -48,6 +49,7 @@ const reducers = {
   shutdown: shutdownReducer,
   system: systemReducer,
   settings: settingsReducer,
+  setup: setupReducer,
   startmenu: startMenuReducer,
   wifipassword: wifiPasswordReducer,
   newwifi: newWifiReducer,

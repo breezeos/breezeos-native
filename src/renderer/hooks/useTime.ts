@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useAppSelector } from "../store/hooks";
+import { useEffect, useState } from 'react';
+import { useAppSelector } from '../store/hooks';
 
 export default function useTime() {
   const is12Hour = useAppSelector((state) => state.time.hour12);
@@ -8,18 +8,22 @@ export default function useTime() {
   const [min, setMin] = useState<number>(new Date().getMinutes());
   const [sec, setSec] = useState<number>(new Date().getSeconds());
   const fullHour = `${
-    is12Hour && hour > 12 ? addZero(hour - 12) : addZero(hour)
+    is12Hour && hour > 12
+      ? addZero(hour - 12)
+      : hour === 0
+      ? '12'
+      : addZero(hour)
   }`;
   const fullMin = addZero(min);
   const fullSec = addZero(sec);
-  const amPm = `${hour >= 12 ? "PM" : "AM"}`;
-  const timeFormat = `${fullHour}:${fullMin}${secEnabled ? `:` : ""}${
-    secEnabled ? fullSec : ""
-  } ${is12Hour ? amPm : ""}`;
+  const amPm = `${hour >= 12 ? 'PM' : 'AM'}`;
+  const timeFormat = `${fullHour}:${fullMin}${secEnabled ? `:` : ''}${
+    secEnabled ? fullSec : ''
+  } ${is12Hour ? amPm : ''}`;
 
   function addZero(i: any) {
     if (i < 10) {
-      i = "0" + i;
+      i = '0' + i;
     }
     return i;
   }
