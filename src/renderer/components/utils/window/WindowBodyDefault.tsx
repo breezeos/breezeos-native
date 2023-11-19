@@ -1,6 +1,6 @@
-import { useAppSelector } from "../../../store/hooks";
-import "./Window.scss";
-import React from "react";
+import { useAppSelector } from '../../../store/hooks';
+import './Window.scss';
+import React from 'react';
 
 interface WindowBodyDefaultProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
@@ -20,28 +20,28 @@ export default function WindowBodyDefault({
 
   function switchIcon() {
     switch (type) {
-      case "critical":
+      case 'critical':
         return (
           <img
             className="WindowBodyIcon"
             src="https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/master/src/32/status/dialog-error.svg"
           />
         );
-      case "exclamation":
+      case 'exclamation':
         return (
           <img
             className="WindowBodyIcon"
             src="https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/master/src/32/status/dialog-warning.svg"
           />
         );
-      case "question":
+      case 'question':
         return (
           <img
             className="WindowBodyIcon"
             src="https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/master/src/32/status/dialog-question.svg"
           />
         );
-      case "information":
+      case 'information':
         return (
           <img
             className="WindowBodyIcon"
@@ -56,14 +56,21 @@ export default function WindowBodyDefault({
   return (
     <div
       className={`WindowBodyDefault ${
-        shellTheme === "WhiteSur" ? "whitesur" : ""
+        shellTheme === 'WhiteSur' ? 'whitesur' : ''
       }`}
     >
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         {switchIcon()}
         <div className="WindowBodyRight">
-          <p className="WindowBodyTitle">{title}</p>
-          {content && <p className="WindowBodyContent">{content}</p>}
+          {title && <p className="WindowBodyTitle">{title}</p>}
+          {content && (
+            <p
+              className="WindowBodyContent"
+              style={{ marginTop: title ? '8px' : 0 }}
+            >
+              {content}
+            </p>
+          )}
         </div>
       </div>
       {children}
