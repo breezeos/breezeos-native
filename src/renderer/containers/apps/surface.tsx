@@ -1,27 +1,31 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import {
   setActive,
   setHide,
   setPrivate,
-} from "../../store/reducers/apps/surface";
-import { openUrl, closeUrl } from "../../store/reducers/surface";
-import { setStartMenuActive } from "../../store/reducers/startmenu";
-import { setDesktopBodyActive } from "../../store/reducers/desktopbody";
-import "../../components/utils/window/Window.scss";
-import TopBar from "../../components/utils/window/TopBar";
-import WindowBody from "../../components/utils/window/WindowBody";
-import DockItem from "../../components/dock/DockItem";
-import "./assets/surface.scss";
-import TopBarInteraction from "../../components/utils/window/TopBarInteraction";
-import StartApp from "../../components/startMenu/StartApp";
-import { setHeaderHide } from "../../store/reducers/header";
-import SurfaceIcon from "../../../../assets/icons/surface.svg";
-import SurfacePrivateIcon from "../../../../assets/icons/surface-private.svg";
-import Toggle from "../../components/utils/toggle";
-import ActMenu, { ActMenuSelector } from "../../components/utils/menu/index";
-import { useTranslation } from "react-i18next";
-import Draggable from "react-draggable";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+} from '../../store/reducers/apps/surface';
+import {
+  openUrl,
+  closeUrl,
+  setSearchEngine,
+} from '../../store/reducers/surface';
+import { setStartMenuActive } from '../../store/reducers/startmenu';
+import { setDesktopBodyActive } from '../../store/reducers/desktopbody';
+import '../../components/utils/window/Window.scss';
+import TopBar from '../../components/utils/window/TopBar';
+import WindowBody from '../../components/utils/window/WindowBody';
+import DockItem from '../../components/dock/DockItem';
+import './assets/surface.scss';
+import TopBarInteraction from '../../components/utils/window/TopBarInteraction';
+import StartApp from '../../components/startMenu/StartApp';
+import { setHeaderHide } from '../../store/reducers/header';
+import SurfaceIcon from '../../../../assets/icons/surface.svg';
+import SurfacePrivateIcon from '../../../../assets/icons/surface-private.svg';
+import Toggle from '../../components/utils/toggle';
+import ActMenu, { ActMenuSelector } from '../../components/utils/menu/index';
+import { useTranslation } from 'react-i18next';
+import Draggable from 'react-draggable';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export const SurfaceApp = () => {
   const { t } = useTranslation();
@@ -30,7 +34,7 @@ export const SurfaceApp = () => {
   const isPrivate = useAppSelector((state) => state.appsSurface.private);
   const dispatch = useAppDispatch();
 
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.keyCode === 49) {
       dispatch(setActive(true));
     }
@@ -39,19 +43,19 @@ export const SurfaceApp = () => {
   return (
     <DockItem
       id="surface"
-      className={`SurfaceApp ${isActive && "clicked"} ${isHide && "hide"}`}
+      className={`SurfaceApp ${isActive && 'clicked'} ${isHide && 'hide'}`}
       title="Surface"
       icon={SurfaceIcon}
       menu={[
         [
           {
-            label: t("apps.surface.newTab"),
+            label: t('apps.surface.newTab'),
             action: () => dispatch(setActive(true)),
           },
           {
             label: isPrivate
-              ? t("apps.surface.turnPrivateOff")
-              : t("apps.surface.turnPrivateOn"),
+              ? t('apps.surface.turnPrivateOff')
+              : t('apps.surface.turnPrivateOn'),
             disabled: isActive ? false : true,
             action: () =>
               isPrivate
@@ -61,13 +65,13 @@ export const SurfaceApp = () => {
         ],
         [
           {
-            label: isHide ? t("apps.unhide") : t("apps.hide"),
+            label: isHide ? t('apps.unhide') : t('apps.hide'),
             disabled: isActive ? false : true,
             action: () =>
               isHide ? dispatch(setHide(false)) : dispatch(setHide(true)),
           },
           {
-            label: isActive ? t("apps.quit") : t("apps.open"),
+            label: isActive ? t('apps.quit') : t('apps.open'),
             action: () =>
               isActive ? dispatch(setActive(false)) : dispatch(setActive(true)),
           },
@@ -110,13 +114,14 @@ export default function Surface() {
   const isHide = useAppSelector((state) => state.appsSurface.hide);
   const isPrivate = useAppSelector((state) => state.appsSurface.private);
   const { t } = useTranslation();
-  const iFrameRef = useRef<HTMLIFrameElement>(null);
+  const iFrameRef = useRef<HTMLWebViewElement>(null);
   const url = useAppSelector((state) => state.surface.url);
+  const searchEngine = useAppSelector((state) => state.surface.searchEngine);
   const wifi = useAppSelector((state) => state.settings.wifi);
   const dispatch = useAppDispatch();
   const [splashScreen, setSplashScreen] = useState(true);
-  const [searchValue, setSearchValue] = useState("");
-  const [hist, setHist] = useState(["", ""]);
+  const [searchValue, setSearchValue] = useState('');
+  const [hist, setHist] = useState(['', '']);
   const [settingsOpened, setSettingsOpened] = useState(false);
   const [supportOpened, setSupportOpened] = useState(false);
   const [searchEngineMenu, showSearchEngineMenu] = useState(false);
@@ -131,23 +136,32 @@ export default function Surface() {
 
   const isValidURL = (string: string) => {
     var res = string.match(
-      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
     );
     return res !== null;
   };
 
   const action = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       var qry = searchValue;
 
       if (isValidURL(qry)) {
-        if (!qry.startsWith("http")) {
-          qry = "https://" + qry;
+        if (!qry.startsWith('http')) {
+          qry = 'https://' + qry;
         }
-      } else if (qry === "") {
-        qry = "https://breezeos.github.io";
+      } else if (qry === '') {
+        qry = 'https://breezeos.github.io';
       } else {
-        qry = "https://www.bing.com/search?q=" + encodeURIComponent(qry);
+        qry =
+          searchEngine === 'Bing'
+            ? `https://www.bing.com/search?q=${encodeURIComponent(qry)}`
+            : searchEngine === 'Google'
+            ? `https://www.google.com/search?q=${encodeURIComponent(qry)}`
+            : searchEngine === 'DuckDuckGo'
+            ? `https://duckduckgo.com/?q=${encodeURIComponent(qry)}`
+            : searchEngine === 'Yahoo Search'
+            ? `https://search.yahoo.com/search?p=${encodeURIComponent(qry)}`
+            : '';
       }
 
       setSearchValue(qry);
@@ -164,10 +178,10 @@ export default function Surface() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -186,21 +200,21 @@ export default function Surface() {
     <div className="SurfaceWindow">
       <Draggable handle=".TopBar">
         <div
-          className={`Window surface ${isActive && "active"} ${
-            isHide && "hide"
-          } ${min && "minimize"}`}
+          className={`Window surface ${isActive && 'active'} ${
+            isHide && 'hide'
+          } ${min && 'minimize'}`}
         >
           <TopBar title="Surface" onDblClick={() => isMin(!min)}>
             <div className="TabBarWrapper">
               <div className="TabBar">
                 <div
                   className="TabBarItem TabSearchItem"
-                  style={{ justifyContent: "space-between" }}
+                  style={{ justifyContent: 'space-between' }}
                 >
                   <p>
                     {isPrivate
-                      ? t("apps.surface.newPrivateTab")
-                      : t("apps.surface.newTab")}
+                      ? t('apps.surface.newPrivateTab')
+                      : t('apps.surface.newTab')}
                   </p>
                   <div className="CloseButton" onClick={close}>
                     <i className="fa-regular fa-xmark" />
@@ -211,7 +225,7 @@ export default function Surface() {
             <div className="TabBar">
               <div
                 className="TabBarItem TabSearchItem"
-                style={{ width: min ? "610px" : "700px" }}
+                style={{ width: min ? '610px' : '700px' }}
               >
                 <div className="TabBarInteraction">
                   <i
@@ -222,24 +236,18 @@ export default function Surface() {
                     className="fa-regular fa-chevron-right"
                     onClick={() => dispatch(openUrl(hist[1]))}
                   />
-                  {url === "" || !wifi ? (
+                  {url === '' || !wifi ? (
                     <i className="fa-regular fa-rotate-right" />
                   ) : (
-                    <i
-                      className="fa-regular fa-rotate-right"
-                      onClick={() =>
-                        iFrameRefCurrent &&
-                        (iFrameRefCurrent.src = iFrameRefCurrent.src)
-                      }
-                    />
+                    <i className="fa-regular fa-rotate-right" />
                   )}
                 </div>
                 <input
-                  className={`TabSearch ${splashScreen && "disabled"}`}
+                  className={`TabSearch ${splashScreen && 'disabled'}`}
                   type="text"
                   spellCheck="false"
                   autoComplete="0"
-                  placeholder={t("apps.surface.searchPlaceholder")}
+                  placeholder={t('apps.surface.searchPlaceholder')}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setSearchValue(e.target.value)
                   }
@@ -251,7 +259,7 @@ export default function Surface() {
                 <div className="TabBarInteraction">
                   <i
                     className={`fa-regular fa-gear ${
-                      settingsOpened && "active"
+                      settingsOpened && 'active'
                     }`}
                     onMouseDown={() => setSettingsOpened(!settingsOpened)}
                   />
@@ -259,7 +267,7 @@ export default function Surface() {
                 <div className="TabBarInteraction">
                   <i
                     className={`fa-regular fa-circle-question ${
-                      supportOpened && "active"
+                      supportOpened && 'active'
                     }`}
                     onMouseDown={() => setSupportOpened(!supportOpened)}
                   />
@@ -268,14 +276,14 @@ export default function Surface() {
             </div>
             <div
               className="TopBarInteractionWrapper"
-              style={{ display: "flex" }}
+              style={{ display: 'flex' }}
             >
               <TopBarInteraction
                 action="hide"
                 onHide={() => dispatch(setHide(true))}
               />
               <TopBarInteraction
-                action={min ? "max" : "min"}
+                action={min ? 'max' : 'min'}
                 onMinMax={() => isMin(!min)}
               />
               <TopBarInteraction action="close" onClose={close} />
@@ -284,17 +292,17 @@ export default function Surface() {
           <WindowBody>
             <div className="Surface">
               <div className="SurfaceContentContainer">
-                <div className={`Settings ${settingsOpened && "active"}`}>
+                <div className={`Settings ${settingsOpened && 'active'}`}>
                   <div
                     style={{
-                      maxWidth: "840px",
-                      margin: "0 auto",
+                      maxWidth: '840px',
+                      margin: '0 auto',
                     }}
                   >
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "row-reverse",
+                        display: 'flex',
+                        flexDirection: 'row-reverse',
                       }}
                     >
                       <div
@@ -306,13 +314,13 @@ export default function Surface() {
                     </div>
                     <div
                       style={{
-                        maxWidth: "600px",
-                        margin: "0 auto",
+                        maxWidth: '600px',
+                        margin: '0 auto',
                       }}
                     >
                       <div className="SettingsItem">
                         <p className="SettingsName">
-                          {t("apps.surface.settings.privateMode")}
+                          {t('apps.surface.settings.privateMode')}
                         </p>
                         <Toggle
                           active={isPrivate}
@@ -321,65 +329,72 @@ export default function Surface() {
                       </div>
                       <div className="SettingsItem">
                         <p className="SettingsName">
-                          {t("apps.surface.settings.searchEngine")}
+                          {t('apps.surface.settings.searchEngine')}
                         </p>
                         <div
                           className="SettingsMenuSection"
                           onClick={() => showSearchEngineMenu(true)}
                         >
-                          <p style={{ marginRight: "7px" }}>Bing</p>
+                          <p style={{ marginRight: '7px' }}>{searchEngine}</p>
                           <i className="fa-regular fa-chevron-down" />
                         </div>
                         <ActMenu
                           style={{
-                            zIndex: "1",
-                            width: "200px",
-                            transform: "translate(340px, 44px)",
+                            zIndex: '1',
+                            width: '200px',
+                            transform: 'translate(340px, 44px)',
                           }}
-                          className={searchEngineMenu ? "active" : ""}
+                          className={searchEngineMenu ? 'active' : ''}
                           ref={searchEngineMenuRef}
                         >
                           <ActMenuSelector
                             title="Bing"
                             onClick={() => {
                               showSearchEngineMenu(false);
+                              dispatch(setSearchEngine('Bing'));
                             }}
-                            active
+                            active={searchEngine === 'Bing'}
                           />
                           <ActMenuSelector
                             title="Google"
                             onClick={() => {
                               showSearchEngineMenu(false);
+                              dispatch(setSearchEngine('Google'));
                             }}
+                            active={searchEngine === 'Google'}
                           />
                           <ActMenuSelector
                             title="DuckDuckGo"
                             onClick={() => {
                               showSearchEngineMenu(false);
+                              dispatch(setSearchEngine('DuckDuckGo'));
                             }}
+                            active={searchEngine === 'DuckDuckGo'}
                           />
                           <ActMenuSelector
                             title="Yahoo Search"
                             onClick={() => {
                               showSearchEngineMenu(false);
+                              dispatch(setSearchEngine('Yahoo Search'));
                             }}
+                            active={searchEngine === 'Yahoo Search'}
                           />
                         </ActMenu>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className={`Support ${supportOpened && "active"}`}>
+                <div className={`Support ${supportOpened && 'active'}`}>
                   <div
                     style={{
-                      maxWidth: "840px",
-                      margin: "0 auto",
+                      maxWidth: '840px',
+                      margin: '0 auto',
                     }}
                   >
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "row-reverse",
+                        display: 'flex',
+                        flexDirection: 'row-reverse',
                       }}
                     >
                       <div
@@ -396,21 +411,21 @@ export default function Surface() {
                 /> */}
                   <div
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     <p>iFrame is not available for this dialog.</p>
                   </div>
                 </div>
-                {url === "" ? (
+                {url === '' ? (
                   <>
                     <div
-                      className={`SplashScreen ${isPrivate && "private"} ${
-                        !splashScreen && "disabled"
+                      className={`SplashScreen ${isPrivate && 'private'} ${
+                        !splashScreen && 'disabled'
                       }`}
                     >
                       {isPrivate ? (
@@ -427,7 +442,7 @@ export default function Surface() {
                         <div className="NonCollapsibleSection">
                           <div className="SearchWrapper">
                             <p className="Text">
-                              {t("apps.surface.startupTitle")}
+                              {t('apps.surface.startupTitle')}
                             </p>
                           </div>
                         </div>
@@ -437,23 +452,23 @@ export default function Surface() {
                 ) : (
                   <>
                     {wifi ? (
-                      <iframe
+                      <webview
                         ref={iFrameRef}
                         className="iFrame"
                         src={url}
-                        title={t("apps.surface.newTab")}
+                        title={t('apps.surface.newTab')}
                         allowFullScreen={true}
                       />
                     ) : (
                       <div className="CantBeReached">
                         <p className="CantBeReachedText">
-                          {t("apps.surface.internetUnabled")}
+                          {t('apps.surface.internetUnabled')}
                         </p>
                         <div className="Description">
-                          <p>{t("apps.surface.internetUnabledDesc")}</p>
+                          <p>{t('apps.surface.internetUnabledDesc')}</p>
                           <div className="ButtonContainer">
                             <button className="Button">
-                              {t("apps.surface.internetUnabledReload")}
+                              {t('apps.surface.internetUnabledReload')}
                             </button>
                           </div>
                         </div>

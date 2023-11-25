@@ -54,10 +54,10 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'BreezeOS',
+      label: 'BreezeOS Native',
       submenu: [
         {
-          label: 'About BreezeOS',
+          label: 'About BreezeOS Native',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
@@ -92,6 +92,12 @@ export default class MenuBuilder {
         {
           label: 'Restart',
         },
+        { type: 'separator' },
+        {
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          selector: "performQuit:"
+        },
       ],
     };
     const subMenuEdit: DarwinMenuItemConstructorOptions = {
@@ -121,7 +127,9 @@ export default class MenuBuilder {
           },
         },
         {
-          label: this.mainWindow.isFullScreen() ? 'Exit Full Screen' : 'Enter Full Screen',
+          label: this.mainWindow.isFullScreen()
+            ? 'Exit Full Screen'
+            : 'Enter Full Screen',
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
@@ -140,7 +148,9 @@ export default class MenuBuilder {
       label: 'View',
       submenu: [
         {
-          label: this.mainWindow.isFullScreen() ? 'Exit Full Screen' : 'Enter Full Screen',
+          label: this.mainWindow.isFullScreen()
+            ? 'Exit Full Screen'
+            : 'Enter Full Screen',
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());

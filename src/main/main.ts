@@ -9,12 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import {
-  app,
-  BrowserWindow,
-  shell,
-  ipcMain,
-} from 'electron';
+import { app, BrowserWindow, shell, ipcMain, BrowserView } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -84,6 +79,7 @@ const createWindow = async () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      webviewTag: true,
     },
   });
 
@@ -113,7 +109,7 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  decorateWindow(mainWindow)
+  decorateWindow(mainWindow);
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line

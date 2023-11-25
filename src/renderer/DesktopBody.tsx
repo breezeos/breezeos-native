@@ -50,9 +50,12 @@ const DesktopBody = () => {
   }
 
   return (
-    <div className={`DesktopBody ${isActive && 'active'}`}>
+    <div className={`DesktopBody ${isActive && 'active'} ${isHide && 'hide'}`}>
       <div
-        style={{ width: '100vw', height: 'calc(100vh - 105px)' }}
+        style={{
+          width: '100vw',
+          height: 'calc(100vh - 105px)',
+        }}
         onContextMenu={displayContextMenu}
       >
         <ActMenu

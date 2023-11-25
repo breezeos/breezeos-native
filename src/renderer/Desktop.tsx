@@ -12,29 +12,29 @@ import Modal from './components/Modal';
 import {
   setBatteryCharging,
   setBatteryLevel,
+  setDataDisk,
+  setGraphics,
   setHostname,
   setKernel,
   setPlatform,
   setProcessor,
+  setSpaceDisk,
+  setSpaceMemory,
+  setTotalDisk,
   setTotalMemory,
-  setTotalSpace,
+  setUsedDisk,
   setUsedMemory,
-  setUsedSpace,
   setVersion,
 } from './store/reducers/system';
-import os, { CpuInfo } from 'node:os';
 import { useBattery } from 'react-use';
 import checkDiskSpace from 'check-disk-space';
 import { useEffect } from 'react';
 import { setTouchbarActive } from './store/reducers/touchbar';
-import { setLocked } from './store/reducers/settings';
+import { setBluetoothList, setLocked } from './store/reducers/settings';
 import axios from 'axios';
-import {
-  initializeData,
-  setLocation,
-  setTemperature,
-} from './store/reducers/weather';
+import { initializeData } from './store/reducers/weather';
 import Setup from './components/Setup';
+import si from 'systeminformation';
 
 const Desktop = () => {
   const dispatch = useAppDispatch();
@@ -51,8 +51,6 @@ const Desktop = () => {
   const poweroff = useAppSelector((state) => state.desktop.poweroff);
   const batteryState = useBattery();
   const batteryLevel = batteryState.level * 100;
-  const system = useAppSelector((state) => state.system);
-  const weather = useAppSelector((state) => state.weather);
 
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.keyCode === 76) {
@@ -61,44 +59,80 @@ const Desktop = () => {
     }
   });
 
-  function getHostname() {
-    const hostname = os.hostname();
+  async function getHostname() {
+    const hostname = await si.osInfo().then((data) => data.hostname);
     dispatch(setHostname(hostname));
   }
 
-  function getKernel() {
-    const kernelType = os.type();
-    const kernelVer = os.release();
-    const archName = os.arch();
+  async function getKernel() {
+    const kernelType = await si.osInfo().then((data) => data.platform);
+    const kernelVer = await si.osInfo().then((data) => data.kernel);
+    const archName = await si.osInfo().then((data) => data.arch);
     dispatch(setKernel(`${kernelType} ${kernelVer} ${archName}`));
   }
 
-  function getSystemVersion() {
-    const version = os.version();
+  async function getSystemVersion() {
+    const version = await si.osInfo().then((data) => data.release);
     dispatch(setVersion(version));
   }
 
-  function getPlatform() {
-    const platformName = os.platform();
+  async function getPlatform() {
+    const platformName = await si.osInfo().then((data) => data.platform);
     dispatch(setPlatform(platformName));
   }
 
-  function getProcessor() {
-    const processor = os.cpus();
-    dispatch(setProcessor(processor.map((i: CpuInfo) => i.model)[0]));
+  async function getProcessor() {
+    const manufacturer = await si.cpu().then((data) => data.manufacturer);
+    const brand = await si.cpu().then((data) => data.brand);
+    dispatch(setProcessor(`${manufacturer} ${brand}`));
   }
 
-  function getMemory() {
-    dispatch(setTotalMemory(os.totalmem() / Math.pow(1024, 3)));
-    dispatch(setUsedMemory(os.freemem() / Math.pow(1024, 3)));
+  async function getGraphics() {
+    const graphics = await si
+      .graphics()
+      .then((data) => data.displays.map((i) => i.model)[0]);
+    dispatch(setGraphics(graphics));
   }
 
-  function getDisks() {
-    let path = os.platform() === 'win32' ? 'C:' : '/';
-    checkDiskSpace(path).then((info) => {
-      dispatch(setTotalSpace((info.size / Math.pow(1024, 3)).toFixed()));
-      dispatch(setUsedSpace((info.free / Math.pow(1024, 3)).toFixed()));
-    });
+  async function getMemory() {
+    const totalSize = (
+      (await si.mem().then((data) => data.total)) / Math.pow(1024, 3)
+    ).toFixed();
+    const usedSize = (
+      (await si.mem().then((data) => data.used)) / Math.pow(1024, 3)
+    ).toFixed();
+    const freeSize = (
+      (await si.mem().then((data) => data.free)) / Math.pow(1024, 3)
+    ).toFixed();
+    dispatch(setTotalMemory(totalSize));
+    dispatch(setUsedMemory(usedSize));
+    dispatch(setSpaceMemory(freeSize));
+  }
+
+  async function getDisks() {
+    const diskData = await si.blockDevices().then((data) => data);
+    console.log(diskData);
+    const totalSize = (
+      (await si.fsSize().then((data) => data.map((i) => i.size)[0])) /
+      Math.pow(1024, 3)
+    ).toFixed();
+    const usedSize = (
+      (await si.fsSize().then((data) => data.map((i) => i.used)[0])) /
+      Math.pow(1024, 3)
+    ).toFixed();
+    const freeSize = (
+      (await si.fsSize().then((data) => data.map((i) => i.available)[0])) /
+      Math.pow(1024, 3)
+    ).toFixed();
+    dispatch(setDataDisk(diskData));
+    dispatch(setTotalDisk(totalSize));
+    dispatch(setUsedDisk(usedSize));
+    dispatch(setSpaceDisk(freeSize));
+  }
+
+  async function getBluetoothList() {
+    const bluetoothDevices = await si.bluetoothDevices().then((data) => data);
+    dispatch(setBluetoothList(bluetoothDevices));
   }
 
   dispatch(setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : '-'));
@@ -139,7 +173,9 @@ const Desktop = () => {
     getPlatform();
     getMemory();
     getProcessor();
+    getGraphics();
     getDisks();
+    getBluetoothList();
     dispatch(setTouchbarActive(true));
     getWeatherData();
   }, []);
@@ -159,13 +195,6 @@ const Desktop = () => {
             </a>
           </p>
         </div>
-      ) : system.memory.total <= 2.5 ? (
-        <div className="error OptimisticDisplay">
-          <p>
-            BreezeOS cannot be used because your system does not meet the
-            requirements.
-          </p>
-        </div>
       ) : (
         <>
           <div
@@ -179,11 +208,11 @@ const Desktop = () => {
             onContextMenu={(e) => e.preventDefault()}
             id="Desktop"
           >
+            <TerminalWindow />
             {!localStorage.getItem('setupDisabled') ? (
               <Setup />
             ) : (
               <>
-                <TerminalWindow />
                 <Snapshot />
                 <LockScreen />
                 <StartMenu />

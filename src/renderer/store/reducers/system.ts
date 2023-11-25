@@ -1,4 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import si from 'systeminformation';
+
+type DiskData = si.Systeminformation.BlockDevicesData[];
 
 interface StateType {
   hostname: string;
@@ -6,40 +9,52 @@ interface StateType {
   version: string;
   platform: string;
   memory: {
-    total: number;
-    used: number;
+    total: string;
+    used: string;
+    space: string;
   };
   processor: string;
   graphics: string;
   disks: {
+    data: DiskData;
     total: string;
     used: string;
+    space: string;
+    isEncrypted: boolean;
+    password: string;
   };
   battery: {
     level: string;
     charging: boolean;
   };
+  bootscreen: boolean;
 }
 
 const initialState: StateType = {
   hostname: 'BreezeOS',
-  kernel: 'GNU/Linux 6.2.1 x86_64',
+  kernel: '',
   version: '',
   platform: 'BreezeOS',
   memory: {
-    total: navigator.hardwareConcurrency,
-    used: navigator.hardwareConcurrency / 2,
+    total: '',
+    used: '',
+    space: '',
   },
-  processor: 'Intel® Core™ i3-6100 CPU @ 3.70GHz × 4',
-  graphics: 'Mesa Intel® HD Graphics 530 (SKL GT2)',
+  processor: '',
+  graphics: '',
   disks: {
-    total: '128',
-    used: '80.3',
+    data: [],
+    total: '',
+    used: '',
+    space: '',
+    isEncrypted: false,
+    password: '',
   },
   battery: {
     level: '',
     charging: false,
   },
+  bootscreen: true,
 };
 
 const systemSlice = createSlice({
@@ -58,11 +73,14 @@ const systemSlice = createSlice({
     setPlatform: (state, action: PayloadAction<string>) => {
       state.platform = action.payload;
     },
-    setTotalMemory: (state, action: PayloadAction<number>) => {
+    setTotalMemory: (state, action: PayloadAction<string>) => {
       state.memory.total = action.payload;
     },
-    setUsedMemory: (state, action: PayloadAction<number>) => {
+    setUsedMemory: (state, action: PayloadAction<string>) => {
       state.memory.used = action.payload;
+    },
+    setSpaceMemory: (state, action: PayloadAction<string>) => {
+      state.memory.space = action.payload;
     },
     setProcessor: (state, action: PayloadAction<string>) => {
       state.processor = action.payload;
@@ -70,17 +88,32 @@ const systemSlice = createSlice({
     setGraphics: (state, action: PayloadAction<string>) => {
       state.graphics = action.payload;
     },
-    setTotalSpace: (state, action: PayloadAction<string>) => {
+    setDataDisk: (state, action: PayloadAction<DiskData>) => {
+      state.disks.data = action.payload;
+    },
+    setTotalDisk: (state, action: PayloadAction<string>) => {
       state.disks.total = action.payload;
     },
-    setUsedSpace: (state, action: PayloadAction<string>) => {
+    setUsedDisk: (state, action: PayloadAction<string>) => {
       state.disks.used = action.payload;
+    },
+    setSpaceDisk: (state, action: PayloadAction<string>) => {
+      state.disks.space = action.payload;
+    },
+    encryptDisk: (state, action: PayloadAction<boolean>) => {
+      state.disks.isEncrypted = action.payload;
+    },
+    setPasswordDisk: (state, action: PayloadAction<string>) => {
+      state.disks.password = action.payload;
     },
     setBatteryLevel: (state, action: PayloadAction<string>) => {
       state.battery.level = action.payload;
     },
     setBatteryCharging: (state, action: PayloadAction<boolean>) => {
       state.battery.charging = action.payload;
+    },
+    setBootScreen: (state, action: PayloadAction<boolean>) => {
+      state.bootscreen = action.payload;
     },
   },
 });
@@ -92,12 +125,18 @@ export const {
   setPlatform,
   setTotalMemory,
   setUsedMemory,
+  setSpaceMemory,
   setProcessor,
   setGraphics,
-  setTotalSpace,
-  setUsedSpace,
+  setDataDisk,
+  setTotalDisk,
+  setUsedDisk,
+  setSpaceDisk,
+  encryptDisk,
+  setPasswordDisk,
   setBatteryLevel,
   setBatteryCharging,
+  setBootScreen,
 } = systemSlice.actions;
 
 export default systemSlice.reducer;

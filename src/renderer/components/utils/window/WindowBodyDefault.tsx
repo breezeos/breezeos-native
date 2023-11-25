@@ -1,9 +1,13 @@
 import { useAppSelector } from '../../../store/hooks';
 import './Window.scss';
 import React from 'react';
+import Error from '../../../../../assets/images/dialog-error.svg';
+import Information from '../../../../../assets/images/dialog-information.svg';
+import Question from '../../../../../assets/images/dialog-question.svg';
+import Warning from '../../../../../assets/images/dialog-warning.svg';
 
 interface WindowBodyDefaultProps extends React.HTMLAttributes<HTMLDivElement> {
-  type?: string;
+  type?: 'critical' | 'exclamation' | 'question' | 'information';
   icon?: string;
   title?: string;
   content?: string;
@@ -21,33 +25,13 @@ export default function WindowBodyDefault({
   function switchIcon() {
     switch (type) {
       case 'critical':
-        return (
-          <img
-            className="WindowBodyIcon"
-            src="https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/master/src/32/status/dialog-error.svg"
-          />
-        );
+        return <img className="WindowBodyIcon" src={Error} />;
       case 'exclamation':
-        return (
-          <img
-            className="WindowBodyIcon"
-            src="https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/master/src/32/status/dialog-warning.svg"
-          />
-        );
+        return <img className="WindowBodyIcon" src={Warning} />;
       case 'question':
-        return (
-          <img
-            className="WindowBodyIcon"
-            src="https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/master/src/32/status/dialog-question.svg"
-          />
-        );
+        return <img className="WindowBodyIcon" src={Question} />;
       case 'information':
-        return (
-          <img
-            className="WindowBodyIcon"
-            src="https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/master/src/32/status/dialog-information.svg"
-          />
-        );
+        return <img className="WindowBodyIcon" src={Information} />;
       default:
         return <img className="WindowBodyIcon" src={icon} />;
     }

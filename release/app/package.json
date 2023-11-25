@@ -15,6 +15,7 @@
     "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
   },
   "dependencies": {
+    "osx-temperature-sensor": "^1.0.8",
     "react-touchbar-electron": "^1.0.1"
   }
 }

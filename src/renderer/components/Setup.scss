@@ -27,10 +27,12 @@ $fgcolor: #e2e2e2;
       font-size: 36px;
       font-weight: 700;
       margin-top: 30px;
+      line-height: 1.2;
     }
 
     .Description {
       font-size: 14.5px;
+      line-height: 1.6;
     }
 
     .InteractionButtonWrapper {
@@ -68,11 +70,18 @@ $fgcolor: #e2e2e2;
       }
     }
 
-    .Dialog {
+    .Dialog,
+    .SubDialog {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
       border-radius: 12px;
       background-color: $bgcolor;
       padding: 45px 95px;
-      height: 720px;
+      height: 80%;
       width: 780px;
       display: flex;
       flex-direction: column;
@@ -83,16 +92,10 @@ $fgcolor: #e2e2e2;
       opacity: 0;
       scale: 0.9;
       transition: all ease 0.4s;
-      position: relative;
-
-      &.active {
-        opacity: 1;
-        scale: 1;
-      }
 
       .CloseButton {
         border-radius: 999px;
-        background: transparentize($bgcolor, 0.87);
+        background: transparentize($fgcolor, 0.93);
         width: 25px;
         height: 25px;
         display: flex;
@@ -107,7 +110,7 @@ $fgcolor: #e2e2e2;
         transition: all ease 0.3s;
 
         &:active {
-          background: transparentize($bgcolor, 0.78);
+          background: transparentize($fgcolor, 0.85);
           transition: none;
         }
       }
@@ -115,11 +118,201 @@ $fgcolor: #e2e2e2;
       .SelectionBlock {
         border-radius: 15px;
         padding: 20px 35px;
-        font-size: 15px;
+        font-size: 14.7px;
 
         &.active {
           background-color: #2563eb;
           color: $fgcolor;
+        }
+      }
+
+      .Button {
+        border-radius: 10px;
+        background-color: transparentize($fgcolor, 0.94);
+        font-size: 13.5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20px;
+        height: 40px;
+
+        &.disabled {
+          opacity: 0.3;
+        }
+      }
+
+      .Input {
+        position: relative;
+        appearance: none;
+        border: none;
+        outline: none;
+        color: $fgcolor;
+        border-radius: 5px;
+        width: 100%;
+        font-size: 13px;
+        padding: 5px 10px;
+        background: transparentize($fgcolor, 0.95);
+        transition: all ease 0.1s;
+
+        &::-ms-clear,
+        &::-ms-reveal {
+          display: none;
+        }
+
+        &:focus {
+          border-bottom: 1px solid #60a5fa;
+        }
+
+        &::placeholder {
+          color: transparentize($fgcolor, 0.8);
+        }
+
+        &.disabled {
+          background: transparentize($fgcolor, 0.98);
+          color: transparentize($fgcolor, 0.7);
+          pointer-events: none;
+        }
+
+        &.wrongPassword {
+          border-bottom: 1px solid #ff9191;
+          animation: wrongPassword 0.5s !important;
+
+          @keyframes wrongPassword {
+            0% {
+              right: 0;
+            }
+            20% {
+              right: 5px;
+            }
+            40% {
+              right: -5px;
+            }
+            60% {
+              right: 5px;
+            }
+            80% {
+              right: -5px;
+            }
+            100% {
+              right: 0px;
+            }
+          }
+        }
+      }
+
+      .MenuSection {
+        position: relative;
+        width: 200px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: $fgcolor;
+        border-radius: 7px;
+        font-size: 13px;
+        padding: 5px 10px;
+        background: transparentize($fgcolor, 0.93);
+        transition: all ease 0.1s;
+
+        i {
+          font-size: 12px;
+          margin-left: 10px;
+        }
+
+        &.disabled {
+          background: transparentize($fgcolor, 0.98);
+          color: transparentize($fgcolor, 0.7);
+          pointer-events: none;
+        }
+
+        &.wrongInfo {
+          border-bottom: 1px solid #ff9191;
+          animation: wrongPassword 0.5s !important;
+
+          @keyframes wrongPassword {
+            0% {
+              right: 0;
+            }
+            20% {
+              right: 5px;
+            }
+            40% {
+              right: -5px;
+            }
+            60% {
+              right: 5px;
+            }
+            80% {
+              right: -5px;
+            }
+            100% {
+              right: 0px;
+            }
+          }
+        }
+      }
+
+      .AppearanceBlock {
+        overflow: hidden;
+        border: 3.5px solid transparent;
+        border-radius: 12px;
+        transition: all ease 0.3s;
+
+        img {
+          width: auto;
+          height: 177px;
+          display: block;
+        }
+
+        &.active {
+          border: 3.5px solid #60a5fa;
+        }
+      }
+    }
+
+    .Dialog {
+      &.active {
+        opacity: 1;
+        scale: 1;
+      }
+
+      &.minimize {
+        filter: brightness(30%);
+        scale: 0.86;
+        bottom: 100px;
+        pointer-events: none;
+      }
+    }
+
+    .SubDialog {
+      top: 450px;
+      height: 75%;
+      width: 730px;
+      scale: 1.3;
+      pointer-events: none;
+      justify-content: space-between;
+      padding: 40px 50px;
+
+      &.active {
+        top: 35px;
+        opacity: 1;
+        scale: 1;
+        pointer-events: auto;
+      }
+
+      &.installer {
+        padding: 80px 50px;
+
+        .Range {
+          border-radius: 99px;
+          background: transparent;
+          border: 1.2px solid transparentize($fgcolor, 0.92);
+          height: 18px;
+          overflow: hidden;
+
+          .Value {
+            background-color: #257aeb;
+            height: 100%;
+          }
         }
       }
     }
@@ -128,9 +321,19 @@ $fgcolor: #e2e2e2;
 
 .lightMode {
   .Setup .SetupWrapper {
-    .Dialog {
+    .Dialog,
+    .SubDialog {
       background-color: $fgcolor;
       color: $bgcolor;
+
+      .CloseButton {
+        background: transparentize($bgcolor, 0.87);
+        color: $fgcolor;
+
+        &:active {
+          background: transparentize($bgcolor, 0.78);
+        }
+      }
 
       .InteractionButtonWrapper .InteractionButton {
         background-color: $bgcolor;
@@ -140,6 +343,29 @@ $fgcolor: #e2e2e2;
           background-color: lighten($bgcolor, 20%);
         }
       }
+
+      .Button {
+        background-color: transparentize($bgcolor, 0.94);
+      }
+
+      .Input,
+      .MenuSection {
+        background: transparentize($bgcolor, 0.94);
+        color: $bgcolor;
+
+        &.disabled {
+          background: darken($fgcolor, 2%);
+          color: lighten($bgcolor, 60%);
+        }
+      }
+
+      .Input::placeholder {
+        color: transparentize($bgcolor, 0.7);
+      }
+    }
+
+    .SubDialog.installer .Range {
+      border: 1.2px solid transparentize($bgcolor, 0.92);
     }
   }
 }
