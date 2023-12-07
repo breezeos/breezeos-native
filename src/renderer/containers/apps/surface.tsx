@@ -247,7 +247,17 @@ export default function Surface() {
                   type="text"
                   spellCheck="false"
                   autoComplete="0"
-                  placeholder={t('apps.surface.searchPlaceholder')}
+                  placeholder={
+                    searchEngine === 'Bing'
+                      ? t('apps.surface.searchPlaceholder.bing')
+                      : searchEngine === 'Google'
+                      ? t('apps.surface.searchPlaceholder.google')
+                      : searchEngine === 'DuckDuckGo'
+                      ? t('apps.surface.searchPlaceholder.duckduckgo')
+                      : searchEngine === 'Yahoo Search'
+                      ? t('apps.surface.searchPlaceholder.yahooSearch')
+                      : ''
+                  }
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setSearchValue(e.target.value)
                   }
@@ -442,7 +452,15 @@ export default function Surface() {
                         <div className="NonCollapsibleSection">
                           <div className="SearchWrapper">
                             <p className="Text">
-                              {t('apps.surface.startupTitle')}
+                              {searchEngine === 'Bing'
+                                ? t('apps.surface.startupTitle.bing')
+                                : searchEngine === 'Google'
+                                ? t('apps.surface.startupTitle.google')
+                                : searchEngine === 'DuckDuckGo'
+                                ? t('apps.surface.startupTitle.duckduckgo')
+                                : searchEngine === 'Yahoo Search'
+                                ? t('apps.surface.startupTitle.yahooSearch')
+                                : ''}
                             </p>
                           </div>
                         </div>

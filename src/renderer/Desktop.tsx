@@ -27,7 +27,6 @@ import {
   setVersion,
 } from './store/reducers/system';
 import { useBattery } from 'react-use';
-import checkDiskSpace from 'check-disk-space';
 import { useEffect } from 'react';
 import { setTouchbarActive } from './store/reducers/touchbar';
 import { setBluetoothList, setLocked } from './store/reducers/settings';
@@ -135,6 +134,11 @@ const Desktop = () => {
     dispatch(setBluetoothList(bluetoothDevices));
   }
 
+  async function getWifiList() {
+    const wifiDevices = await si.wifiNetworks().then((data) => data);
+    console.log(wifiDevices);
+  }
+
   dispatch(setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : '-'));
 
   if (batteryState.charging) {
@@ -176,6 +180,7 @@ const Desktop = () => {
     getGraphics();
     getDisks();
     getBluetoothList();
+    getWifiList()
     dispatch(setTouchbarActive(true));
     getWeatherData();
   }, []);

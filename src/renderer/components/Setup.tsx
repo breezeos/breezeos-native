@@ -1030,6 +1030,7 @@ export default function Setup() {
     'wifi',
     'disks',
     'encryptDisk',
+    'location',
     'users',
     'appearances',
     'bootscreen',
@@ -1657,6 +1658,84 @@ export default function Setup() {
             )}
           </>
         );
+      case 'location':
+        return (
+          <>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                margin: '10px 50px 35px 50px',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  margin: '0 30px',
+                }}
+              >
+                <p style={{ fontSize: '14px', marginRight: '10px' }}>Yes</p>
+                <Checkbox
+                  size={0.94}
+                  active={system.disks.isEncrypted}
+                  onToggle={() => dispatch(encryptDisk(true))}
+                />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  margin: '0 30px',
+                }}
+              >
+                <p style={{ fontSize: '14px', marginRight: '10px' }}>No</p>
+                <Checkbox
+                  size={0.94}
+                  active={!system.disks.isEncrypted}
+                  onToggle={() => {
+                    dispatch(encryptDisk(false));
+                    dispatch(setPasswordDisk(''));
+                    setPasswordDiskValue('');
+                  }}
+                />
+              </div>
+            </div>
+            {system.disks.isEncrypted && (
+              <div>
+                <input
+                  type="password"
+                  autoComplete="false"
+                  spellCheck={false}
+                  value={system.disks.password}
+                  onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    dispatch(setPasswordDisk(e.target.value))
+                  }
+                  placeholder="Password"
+                  className="Input"
+                  style={{
+                    padding: '8px 13px',
+                    marginBottom: '17px',
+                  }}
+                />
+                <input
+                  type="password"
+                  autoComplete="false"
+                  spellCheck={false}
+                  value={passwordDiskValue}
+                  onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPasswordDiskValue(e.target.value)
+                  }
+                  placeholder="Confirm Password"
+                  className="Input"
+                  style={{
+                    padding: '8px 13px',
+                  }}
+                />
+              </div>
+            )}
+          </>
+        );
       case 'users':
         return (
           <div>
@@ -1671,7 +1750,7 @@ export default function Setup() {
             >
               <Avatar size={3} editable />
             </div>
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: '16px' }}>
               <input
                 type="text"
                 autoComplete="false"
@@ -1691,7 +1770,7 @@ export default function Setup() {
                 }}
               />
             </div>
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: '16px' }}>
               <input
                 type="text"
                 autoComplete="false"
@@ -1709,7 +1788,7 @@ export default function Setup() {
             </div>
             <div
               style={{
-                marginBottom: '15px',
+                marginBottom: '16px',
                 opacity: passwordDisabled ? '0.3' : '1',
                 pointerEvents: passwordDisabled ? 'none' : 'auto',
               }}
@@ -1731,7 +1810,7 @@ export default function Setup() {
             </div>
             <div
               style={{
-                marginBottom: '15px',
+                marginBottom: '16px',
                 opacity: passwordDisabled ? '0.3' : '1',
                 pointerEvents: passwordDisabled ? 'none' : 'auto',
               }}
@@ -1751,7 +1830,7 @@ export default function Setup() {
                 }}
               />
             </div>
-            <div style={{ marginBottom: '15px', textAlign: 'start' }}>
+            <div style={{ marginBottom: '16px', textAlign: 'start' }}>
               <div
                 style={{
                   display: 'flex',
@@ -1932,6 +2011,8 @@ export default function Setup() {
                   ? 'Select Disk'
                   : currentSection === 'encryptDisk'
                   ? 'Disk Encryption'
+                  : currentSection === 'location'
+                  ? 'Location Services'
                   : currentSection === 'users'
                   ? 'Create New User'
                   : currentSection === 'appearances'
@@ -1945,6 +2026,8 @@ export default function Setup() {
                   ? 'The installation will erase all the current data in which the disk is selected. It is recommended for you to backup all data.'
                   : currentSection === 'encryptDisk'
                   ? `Do you want to encrypt disk "${selectedDisk?.model}"?`
+                  : currentSection === 'location'
+                  ? 'Select an appearance that you prefer, it can be changed later in the system settings.'
                   : currentSection === 'appearances'
                   ? 'Select an appearance that you prefer, it can be changed later in the system settings.'
                   : currentSection === 'bootscreen'

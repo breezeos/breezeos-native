@@ -35,8 +35,6 @@
   }
 
   &.darkTheme {
-    .Checkbox {
-      background: transparentize(#202023, 0.94);
-    }
+    background: transparentize(#202023, 0.94);
   }
 }

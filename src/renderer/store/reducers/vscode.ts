@@ -13,7 +13,7 @@ const vscodeSlice = createSlice({
   initialState,
   reducers: {
     openUrl: (state) => {
-      state.url = "https://github1s.com/baodaigov/BreezeOS";
+      state.url = "https://github.dev/baodaigov/BreezeOS";
     },
     closeUrl: (state) => {
       state.url = "";

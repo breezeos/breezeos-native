@@ -102,7 +102,7 @@ const initialState: StateType = {
   volume: 100,
   brightness: 100,
   notifications: true,
-  themeLight: true,
+  themeLight: false,
   boldText: false,
   batterySaver: false,
   animationsReduced: false,

@@ -58,11 +58,21 @@
       "newPrivateTab": "Neuer privater Tab",
       "turnPrivateOff": "Privaten Modus ausschalten",
       "turnPrivateOn": "Privaten Modus einschalten",
-      "searchPlaceholder": "Mit Bing suchen oder Adresse eingeben…",
+      "searchPlaceholder": {
+        "bing": "Mit Bing suchen oder Adresse eingeben...",
+        "google": "Mit Google suchen oder Adresse eingeben...",
+        "duckduckgo": "Mit DuckDuckGo suchen oder Adresse eingeben...",
+        "yahooSearch": "Mit Yahoo Search suchen oder Adresse eingeben..."
+      },
       "internetUnabled": "Internet ist nicht aktiviert.",
       "internetUnabledDesc": "Sie benötigen eine Internetverbindung, um eine Verbindung zu dieser Website herzustellen.",
       "internetUnabledReload": "Neu laden",
-      "startupTitle": "Suchen Sie mit Bing oder geben Sie eine Adresse ein oder lassen Sie das Feld leer, um zur offiziellen Website von BreezeOS weitergeleitet zu werden.",
+      "startupTitle": {
+        "bing": "Suchen Sie mit Bing oder geben Sie eine Adresse ein oder lassen Sie das Feld leer, um zur offiziellen Website von BreezeOS weitergeleitet zu werden.",
+        "google": "Suchen Sie mit Google oder geben Sie eine Adresse ein oder lassen Sie das Feld leer, um zur offiziellen Website von BreezeOS weitergeleitet zu werden.",
+        "duckduckgo": "Suchen Sie mit DuckDuckGo oder geben Sie eine Adresse ein oder lassen Sie das Feld leer, um zur offiziellen Website von BreezeOS weitergeleitet zu werden.",
+        "yahooSearch": "Suchen Sie mit Yahoo Search oder geben Sie eine Adresse ein oder lassen Sie das Feld leer, um zur offiziellen Website von BreezeOS weitergeleitet zu werden."
+      },
       "settings": {
         "privateMode": "Privatmodus",
         "searchEngine": "Suchmaschine"

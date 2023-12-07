@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { openUrl, closeUrl } from "../../store/reducers/vscode";
-import { setActive, setHide } from "../../store/reducers/apps/vscode";
-import "../../components/utils/window/Window.scss";
-import TopBar from "../../components/utils/window/TopBar";
-import WindowBody from "../../components/utils/window/WindowBody";
-import DockItem from "../../components/dock/DockItem";
-import "./assets/vscode.scss";
-import TopBarInteraction from "../../components/utils/window/TopBarInteraction";
-import StartApp from "../../components/startMenu/StartApp";
-import { setHeaderHide } from "../../store/reducers/header";
-import { useTranslation } from "react-i18next";
-import { setDesktopBodyActive } from "../../store/reducers/desktopbody";
-import { setStartMenuActive } from "../../store/reducers/startmenu";
-import Draggable from "react-draggable";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useState, useEffect } from 'react';
+import { openUrl, closeUrl } from '../../store/reducers/vscode';
+import { setActive, setHide } from '../../store/reducers/apps/vscode';
+import '../../components/utils/window/Window.scss';
+import TopBar from '../../components/utils/window/TopBar';
+import WindowBody from '../../components/utils/window/WindowBody';
+import DockItem from '../../components/dock/DockItem';
+import './assets/vscode.scss';
+import TopBarInteraction from '../../components/utils/window/TopBarInteraction';
+import StartApp from '../../components/startMenu/StartApp';
+import { setHeaderHide } from '../../store/reducers/header';
+import { useTranslation } from 'react-i18next';
+import { setDesktopBodyActive } from '../../store/reducers/desktopbody';
+import { setStartMenuActive } from '../../store/reducers/startmenu';
+import Draggable from 'react-draggable';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export const VSCodeApp = () => {
   const { t } = useTranslation();
@@ -25,23 +25,23 @@ export const VSCodeApp = () => {
   return (
     <DockItem
       id="vscode"
-      className={`VSCodeApp ${isActive && "clicked"} ${isHide && "hide"}`}
+      className={`VSCodeApp ${isActive && 'clicked'} ${isHide && 'hide'}`}
       title="Visual Studio Code"
       icon={
-        icon === "WhiteSur-icon-theme"
-          ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/visual-studio-code.svg"
-          : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/visual-studio-code.svg"
+        icon === 'WhiteSur-icon-theme'
+          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/visual-studio-code.svg'
+          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/visual-studio-code.svg'
       }
       menu={[
         [
           {
-            label: isHide ? t("apps.unhide") : t("apps.hide"),
+            label: isHide ? t('apps.unhide') : t('apps.hide'),
             disabled: isActive ? false : true,
             action: () =>
               isHide ? dispatch(setHide(false)) : dispatch(setHide(true)),
           },
           {
-            label: isActive ? t("apps.quit") : t("apps.open"),
+            label: isActive ? t('apps.quit') : t('apps.open'),
             action: () =>
               isActive ? dispatch(setActive(false)) : dispatch(setActive(true)),
           },
@@ -75,9 +75,9 @@ export const VSCodeStartApp = () => {
     <StartApp
       key="vscode"
       icon={
-        icon === "WhiteSur-icon-theme"
-          ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/visual-studio-code.svg"
-          : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/visual-studio-code.svg"
+        icon === 'WhiteSur-icon-theme'
+          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/visual-studio-code.svg'
+          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/visual-studio-code.svg'
       }
       name="Visual Studio Code"
       onClick={toggle}
@@ -104,9 +104,9 @@ export default function VSCode() {
     <div className="VSCodeWindow">
       <Draggable handle=".TopBar">
         <div
-          className={`Window vscode ${isActive && "active"} ${
-            isHide && "hide"
-          } ${min && "minimize"}`}
+          className={`Window vscode ${isActive && 'active'} ${
+            isHide && 'hide'
+          } ${min && 'minimize'}`}
         >
           <TopBar title="Visual Studio Code" onDblClick={() => isMin(!min)}>
             <TopBarInteraction
@@ -114,7 +114,7 @@ export default function VSCode() {
               onHide={() => dispatch(setHide(true))}
             />
             <TopBarInteraction
-              action={min ? "max" : "min"}
+              action={min ? 'max' : 'min'}
               onMinMax={() => isMin(!min)}
             />
             <TopBarInteraction
@@ -124,10 +124,9 @@ export default function VSCode() {
           </TopBar>
           <WindowBody>
             <div className="VSCode">
-              <iframe
+              <webview
                 src={url}
                 title="Visual Studio Code"
-                frameBorder="0"
                 allowFullScreen={true}
               />
             </div>
