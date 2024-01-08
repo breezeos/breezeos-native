@@ -36,7 +36,7 @@ export default function useProcess() {
     });
   }
 
-  function shutdown() {
+  function hibernate() {
     setTimeout(() => {
       dispatch(setSplashScreenWrapperHideInfo(true));
       dispatch(setHeaderActive(false));
@@ -93,8 +93,15 @@ export default function useProcess() {
     }, 13200);
   }
 
+  function shutdown() {
+    hibernate();
+    setTimeout(() => {
+      window.electron.ipcRenderer.invoke('quitWindow');
+    }, 13200);
+  }
+
   function restart() {
-    shutdown();
+    hibernate();
 
     setTimeout(() => dispatch(setDesktopPoweroff(false)), 16500);
 

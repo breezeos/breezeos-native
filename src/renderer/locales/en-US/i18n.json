@@ -117,6 +117,9 @@
     },
     "imgview": {
       "name": "Image Viewer"
+    },
+    "videoview": {
+      "name": "Video Viewer"
     }
   }
 }

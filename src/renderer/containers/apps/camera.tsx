@@ -1,24 +1,23 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import { setActive, setHide } from "../../store/reducers/apps/camera";
-import "../../components/utils/window/Window.scss";
-import TopBar from "../../components/utils/window/TopBar";
-import WindowBody from "../../components/utils/window/WindowBody";
-import DockItem from "../../components/dock/DockItem";
-import "./assets/camera.scss";
-import TopBarInteraction from "../../components/utils/window/TopBarInteraction";
-import StartApp from "../../components/startMenu/StartApp";
-import Webcam from "react-webcam";
-import ActMenu, { ActMenuSelector } from "../../components/utils/menu/index";
-import CountdownSound from "../../../../assets/sounds/mixkit-clock-countdown-bleeps-916_Bq9La32i.wav";
-import CameraShutter from "../../../../assets/sounds/camera_shutter.mp3";
-import { setHeaderHide } from "../../store/reducers/header";
-import { useTranslation } from "react-i18next";
-import { setDesktopBodyActive } from "../../store/reducers/desktopbody";
-import { setStartMenuActive } from "../../store/reducers/startmenu";
-import Draggable from "react-draggable";
-import WindowBodyDefault from "../../components/utils/window/WindowBodyDefault";
-import WindowBodyButton from "../../components/utils/window/WindowBodyButton";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { setActive, setHide } from '../../store/reducers/apps/camera';
+import '../../components/utils/window/Window.scss';
+import TopBar from '../../components/utils/window/TopBar';
+import WindowBody from '../../components/utils/window/WindowBody';
+import DockItem from '../../components/dock/DockItem';
+import './assets/camera.scss';
+import TopBarInteraction from '../../components/utils/window/TopBarInteraction';
+import StartApp from '../../components/startMenu/StartApp';
+import Webcam from 'react-webcam';
+import ActMenu, { ActMenuSelector } from '../../components/utils/menu/index';
+import CountdownSound from '../../../../assets/sounds/mixkit-clock-countdown-bleeps-916_Bq9La32i.wav';
+import CameraShutter from '../../../../assets/sounds/camera_shutter.mp3';
+import { setHeaderHide } from '../../store/reducers/header';
+import { useTranslation } from 'react-i18next';
+import { setDesktopBodyActive } from '../../store/reducers/desktopbody';
+import { setStartMenuActive } from '../../store/reducers/startmenu';
+import Draggable from 'react-draggable';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setBlocks } from '../../store/reducers/msgbox';
 
 export const CameraApp = () => {
   const { t } = useTranslation();
@@ -27,7 +26,7 @@ export const CameraApp = () => {
   const dispatch = useAppDispatch();
   const icon = useAppSelector((state) => state.appearance.iconTheme);
 
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.keyCode === 53) {
       dispatch(setActive(true));
     }
@@ -36,23 +35,23 @@ export const CameraApp = () => {
   return (
     <DockItem
       id="camera"
-      className={`CameraApp ${isActive && "clicked"} ${isHide && "hide"}`}
-      title={t("apps.camera.name")}
+      className={`CameraApp ${isActive && 'clicked'} ${isHide && 'hide'}`}
+      title={t('apps.camera.name')}
       icon={
-        icon === "WhiteSur-icon-theme"
-          ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/original/cheese.svg"
-          : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/accessories-camera.svg"
+        icon === 'WhiteSur-icon-theme'
+          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/original/cheese.svg'
+          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/accessories-camera.svg'
       }
       menu={[
         [
           {
-            label: isHide ? t("apps.unhide") : t("apps.hide"),
+            label: isHide ? t('apps.unhide') : t('apps.hide'),
             disabled: isActive ? false : true,
             action: () =>
               isHide ? dispatch(setHide(false)) : dispatch(setHide(true)),
           },
           {
-            label: isActive ? t("apps.quit") : t("apps.open"),
+            label: isActive ? t('apps.quit') : t('apps.open'),
             action: () =>
               isActive ? dispatch(setActive(false)) : dispatch(setActive(true)),
           },
@@ -86,11 +85,11 @@ export const CameraStartApp = () => {
     <StartApp
       key="camera"
       icon={
-        icon === "WhiteSur-icon-theme"
-          ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/original/cheese.svg"
-          : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/accessories-camera.svg"
+        icon === 'WhiteSur-icon-theme'
+          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/original/cheese.svg'
+          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/accessories-camera.svg'
       }
-      name={t("apps.camera.name")}
+      name={t('apps.camera.name')}
       onClick={toggle}
     />
   );
@@ -102,8 +101,8 @@ export default function Camera() {
   const isHide = useAppSelector((state) => state.appsCamera.hide);
   const { t } = useTranslation();
   const [webcam, setWebcam] = useState<boolean>(false);
-  const [interaction, disableInteraction] = useState<"" | "capturing">(
-    "capturing"
+  const [interaction, disableInteraction] = useState<'' | 'capturing'>(
+    'capturing',
   );
   const [img, setImg] = useState<string | null | undefined>(null);
   const [audio, setAudio] = useState<boolean>(false);
@@ -111,7 +110,7 @@ export default function Camera() {
   var countdownSound = new Audio(CountdownSound);
   var cameraShutter = new Audio(CameraShutter);
   const videoConstraints = {
-    facingMode: "user",
+    facingMode: 'user',
   };
 
   const [item, swapItem] = useState<boolean>(false);
@@ -159,55 +158,55 @@ export default function Camera() {
   const capture = useCallback(() => {
     if (countdown) {
       if (audio) {
-        disableInteraction("capturing");
+        disableInteraction('capturing');
         setTimeLeft(3);
         setTimeout(() => {
           document
-            .getElementsByClassName("Desktop")[0]
-            .classList.add("capture");
+            .getElementsByClassName('Desktop')[0]
+            .classList.add('capture');
           cameraShutter.play();
           const imageSrc = webcamRef.current?.getScreenshot();
           setImg(imageSrc);
-          disableInteraction("");
+          disableInteraction('');
           setTimeout(() => {
             document
-              .getElementsByClassName("Desktop")[0]
-              .classList.remove("capture");
+              .getElementsByClassName('Desktop')[0]
+              .classList.remove('capture');
           }, 1000);
         }, 3000);
       } else {
-        disableInteraction("capturing");
+        disableInteraction('capturing');
         setTimeLeft(3);
         setTimeout(() => {
           document
-            .getElementsByClassName("Desktop")[0]
-            .classList.add("capture");
+            .getElementsByClassName('Desktop')[0]
+            .classList.add('capture');
           const imageSrc = webcamRef.current?.getScreenshot();
           setImg(imageSrc);
-          disableInteraction("");
+          disableInteraction('');
           setTimeout(() => {
             document
-              .getElementsByClassName("Desktop")[0]
-              .classList.remove("capture");
+              .getElementsByClassName('Desktop')[0]
+              .classList.remove('capture');
           }, 1000);
         }, 3000);
       }
     } else if (audio) {
-      document.getElementsByClassName("Desktop")[0].classList.add("capture");
+      document.getElementsByClassName('Desktop')[0].classList.add('capture');
       cameraShutter.play();
       setTimeout(() => {
         document
-          .getElementsByClassName("Desktop")[0]
-          .classList.remove("capture");
+          .getElementsByClassName('Desktop')[0]
+          .classList.remove('capture');
       }, 1000);
       const imageSrc = webcamRef.current?.getScreenshot();
       setImg(imageSrc);
     } else {
-      document.getElementsByClassName("Desktop")[0].classList.add("capture");
+      document.getElementsByClassName('Desktop')[0].classList.add('capture');
       setTimeout(() => {
         document
-          .getElementsByClassName("Desktop")[0]
-          .classList.remove("capture");
+          .getElementsByClassName('Desktop')[0]
+          .classList.remove('capture');
       }, 1000);
       const imageSrc = webcamRef.current?.getScreenshot();
       setImg(imageSrc);
@@ -237,45 +236,45 @@ export default function Camera() {
         setRecordedChunks((prev) => prev.concat(data));
       }
     },
-    [setRecordedChunks]
+    [setRecordedChunks],
   );
 
   const record = useCallback(() => {
     if (countdown) {
-      disableInteraction("capturing");
+      disableInteraction('capturing');
       setTimeLeft(3);
       setTimeout(() => {
         setCapturing(true);
         mediaRecorderRef.current = new MediaRecorder(
           webcamRef.current?.stream!,
           {
-            mimeType: "video/webm",
-          }
+            mimeType: 'video/webm',
+          },
         );
         mediaRecorderRef.current.addEventListener(
-          "dataavailable",
-          handleDataAvailable
+          'dataavailable',
+          handleDataAvailable,
         );
         mediaRecorderRef.current.start();
         document
-          .getElementsByClassName("CameraRecordTime")[0]
-          .classList.add("active");
+          .getElementsByClassName('CameraRecordTime')[0]
+          .classList.add('active');
         setRunning(true);
       }, 3000);
     } else {
-      disableInteraction("capturing");
+      disableInteraction('capturing');
       setCapturing(true);
       mediaRecorderRef.current = new MediaRecorder(webcamRef.current?.stream!, {
-        mimeType: "video/webm",
+        mimeType: 'video/webm',
       });
       mediaRecorderRef.current.addEventListener(
-        "dataavailable",
-        handleDataAvailable
+        'dataavailable',
+        handleDataAvailable,
       );
       mediaRecorderRef.current.start();
       document
-        .getElementsByClassName("CameraRecordTime")[0]
-        .classList.add("active");
+        .getElementsByClassName('CameraRecordTime')[0]
+        .classList.add('active');
       setRunning(true);
     }
   }, [
@@ -289,38 +288,24 @@ export default function Camera() {
   const stopRecord = useCallback(() => {
     mediaRecorderRef.current.stop();
     setCapturing(false);
-    disableInteraction("");
+    disableInteraction('');
     document
-      .getElementsByClassName("CameraRecordTime")[0]
-      .classList.remove("active");
+      .getElementsByClassName('CameraRecordTime')[0]
+      .classList.remove('active');
     setRunning(false);
     console.log(recordedChunks);
   }, [mediaRecorderRef, setCapturing]);
 
   const [viewMedia, setViewMedia] = useState(false);
-
-  function displayCountdown() {
-    showSettingsMenu(!settingsMenu);
-    setCountdown(!countdown);
-  }
-
-  function toggleSounds() {
-    showSettingsMenu(!settingsMenu);
-    setAudio(!audio);
-  }
-
-  const [msgboxDelete, displayMsgboxDelete] = useState(false);
   const [imageInformationMsgbox, displayImageInformationMsgbox] =
     useState(false);
 
   function closeMsgBoxDelete() {
-    displayMsgboxDelete(false);
     displayImageInformationMsgbox(false);
     setIsUntouchable(false);
   }
 
   function deleteImage() {
-    displayMsgboxDelete(false);
     setImg(null);
     setIsUntouchable(false);
   }
@@ -333,10 +318,10 @@ export default function Camera() {
         }
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -348,15 +333,15 @@ export default function Camera() {
     if (isActive) {
       setTimeout(() => {
         setWebcam(true);
-        disableInteraction("");
+        disableInteraction('');
       }, 300);
     } else {
       setTimeout(() => {
         setWebcam(false);
-        disableInteraction("capturing");
+        disableInteraction('capturing');
         document
-          .getElementsByClassName("CameraRecordTime")[0]
-          .classList.remove("active");
+          .getElementsByClassName('CameraRecordTime')[0]
+          .classList.remove('active');
         setRunning(false);
         showSettingsMenu(false);
         setViewMedia(false);
@@ -364,51 +349,21 @@ export default function Camera() {
     }
   }, [isActive]);
 
-  const PermanentlyDeleteMedia = () => {
-    return (
-      <Draggable handle=".TopBar">
-        <div
-          className={`Window ${msgboxDelete && "active"}`}
-          style={{ width: "420px", zIndex: 2 }}
-          key={Math.random()}
-        >
-          <TopBar>
-            <TopBarInteraction action="close" onClose={closeMsgBoxDelete} />
-          </TopBar>
-          <WindowBodyDefault
-            type="question"
-            title="Delete this image?"
-            content="This action is irreversible!"
-          >
-            <WindowBodyButton>
-              <button className="Button" onClick={closeMsgBoxDelete}>
-                No
-              </button>
-              <button className="Button" onClick={deleteImage}>
-                Yes
-              </button>
-            </WindowBodyButton>
-          </WindowBodyDefault>
-        </div>
-      </Draggable>
-    );
-  };
-
   const [min, isMin] = useState(false);
   const [isUntouchable, setIsUntouchable] = useState(false);
+  const blocks = useAppSelector((state) => state.msgbox.blocks);
 
   return (
     <div className="CameraWindow">
-      <PermanentlyDeleteMedia />
       <Draggable handle=".TopBar">
         <div
-          className={`Window camera ${isActive && "active"} ${
-            isHide && "hide"
-          } ${min && "minimize"} ${isUntouchable && "untouchable"}`}
+          className={`Window camera ${isActive && 'active'} ${
+            isHide && 'hide'
+          } ${min && 'minimize'} ${isUntouchable && 'untouchable'}`}
         >
           <div
             className={`ImageInformationWrapper ${
-              imageInformationMsgbox ? "active" : ""
+              imageInformationMsgbox ? 'active' : ''
             }`}
           >
             <div className="ImageInformation">
@@ -427,7 +382,7 @@ export default function Camera() {
                 <div className="WindowBodyContent">
                   <p className="ImageTitle">Picture_{Date.now()}.jpeg</p>
                   <p>
-                    Intrinsic size: {imageRef.current?.naturalWidth} ×{" "}
+                    Intrinsic size: {imageRef.current?.naturalWidth} ×{' '}
                     {imageRef.current?.naturalHeight}px
                   </p>
                 </div>
@@ -435,25 +390,27 @@ export default function Camera() {
             </div>
           </div>
           <ActMenu
-            style={{ zIndex: "1", top: "30px", right: "80px" }}
-            className={settingsMenu ? "active" : ""}
+            style={{ zIndex: '1', top: '30px', right: '80px' }}
+            className={settingsMenu ? 'active' : ''}
             ref={settingsMenuRef}
           >
             <ActMenuSelector
+              onClose={() => showSettingsMenu(false)}
               title="Camera countdown"
               active={countdown}
-              onClick={displayCountdown}
+              onClick={() => setCountdown(!countdown)}
             />
             <ActMenuSelector
+              onClose={() => showSettingsMenu(false)}
               title="Enable sounds"
               active={audio}
-              onClick={toggleSounds}
+              onClick={() => setAudio(!audio)}
             />
           </ActMenu>
-          <TopBar title={t("apps.camera.name")} onDblClick={() => isMin(!min)}>
+          <TopBar title={t('apps.camera.name')} onDblClick={() => isMin(!min)}>
             <div className="TabBarWrapper">
-              <div className="TabBar" style={{ display: "block" }}>
-                <div className="TabBarItem" style={{ float: "right" }}>
+              <div className="TabBar" style={{ display: 'block' }}>
+                <div className="TabBarItem" style={{ float: 'right' }}>
                   {viewMedia && img != null && (
                     <div className="TabBarInteraction">
                       <i
@@ -476,7 +433,7 @@ export default function Camera() {
               onHide={() => dispatch(setHide(true))}
             />
             <TopBarInteraction
-              action={min ? "max" : "min"}
+              action={min ? 'max' : 'min'}
               onMinMax={() => isMin(!min)}
             />
             <TopBarInteraction
@@ -485,7 +442,7 @@ export default function Camera() {
             />
           </TopBar>
           <WindowBody>
-            <div className={`Camera ${viewMedia ? "blankscr" : ""}`}>
+            <div className={`Camera ${viewMedia ? 'blankscr' : ''}`}>
               {viewMedia ? (
                 <div className="CameraViewMedia">
                   {img != null ? (
@@ -507,7 +464,7 @@ export default function Camera() {
                       <i className="fa-regular fa-arrow-left" />
                     </div>
                     {img != null ? (
-                      <div style={{ display: "flex" }}>
+                      <div style={{ display: 'flex' }}>
                         <a href={img} download={`Picture_${Date.now()}`}>
                           <div className="CameraButton">
                             <p>Save image</p>
@@ -516,32 +473,45 @@ export default function Camera() {
                         <div
                           className="CameraButton"
                           onClick={() => {
-                            displayMsgboxDelete(true);
                             setIsUntouchable(true);
+                            dispatch(
+                              setBlocks([
+                                ...blocks,
+                                {
+                                  type: 'question',
+                                  title: 'Delete this image?',
+                                  content: 'This action is irreversible!',
+                                  buttons: [
+                                    { label: 'Yes', action: deleteImage },
+                                    { label: 'No' },
+                                  ],
+                                },
+                              ]),
+                            );
                           }}
                         >
                           <p>Delete</p>
                         </div>
                       </div>
                     ) : (
-                      ""
+                      ''
                     )}
                   </div>
                 </div>
               ) : (
-                ""
+                ''
               )}
               <div className="CameraVideo">
                 <div className="CameraRecordTime">
                   <p>
                     <span>
-                      {("0" + Math.floor((time / 3600000) % 60)).slice(-2)}:
+                      {('0' + Math.floor((time / 3600000) % 60)).slice(-2)}:
                     </span>
                     <span>
-                      {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
+                      {('0' + Math.floor((time / 60000) % 60)).slice(-2)}:
                     </span>
                     <span>
-                      {("0" + Math.floor((time / 1000) % 60)).slice(-2)}
+                      {('0' + Math.floor((time / 1000) % 60)).slice(-2)}
                     </span>
                   </p>
                 </div>
@@ -565,13 +535,13 @@ export default function Camera() {
                 <div className={`CameraInteraction ${interaction}`}>
                   <div className="CameraAct" onClick={() => swapItem(!item)}>
                     <i
-                      className={`fa-light ${item ? "fa-camera" : "fa-video"}`}
+                      className={`fa-light ${item ? 'fa-camera' : 'fa-video'}`}
                     />
                   </div>
                   {item ? (
                     <div
                       className={`CameraCapture ${
-                        capturing ? "isRecording" : ""
+                        capturing ? 'isRecording' : ''
                       }`}
                       onClick={capturing ? stopRecord : record}
                     >
@@ -590,7 +560,7 @@ export default function Camera() {
                     className="CameraCapturedImg"
                     onClick={() => setViewMedia(!viewMedia)}
                   >
-                    {img != null ? <img src={img} alt="screenshot" /> : ""}
+                    {img != null ? <img src={img} alt="screenshot" /> : ''}
                   </div>
                 </div>
               </div>

@@ -1,10 +1,12 @@
 import { useAppSelector } from '../../../store/hooks';
 import './Window.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Error from '../../../../../assets/images/dialog-error.svg';
 import Information from '../../../../../assets/images/dialog-information.svg';
 import Question from '../../../../../assets/images/dialog-question.svg';
 import Warning from '../../../../../assets/images/dialog-warning.svg';
+import CriticalError from '../../../../../assets/sounds/Oxygen-Sys-App-Error-Critical.mp3';
+import ExclamationError from '../../../../../assets/sounds/Oxygen-Sys-App-Error.mp3';
 
 interface WindowBodyDefaultProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: 'critical' | 'exclamation' | 'question' | 'information';
@@ -21,6 +23,17 @@ export default function WindowBodyDefault({
   children,
 }: WindowBodyDefaultProps) {
   const shellTheme = useAppSelector((state) => state.shell.theme);
+
+  useEffect(() => {
+    switch (type) {
+      case 'critical':
+        new Audio(CriticalError).play();
+        break;
+      case 'exclamation':
+        new Audio(ExclamationError).play();
+        break;
+    }
+  }, [type]);
 
   function switchIcon() {
     switch (type) {

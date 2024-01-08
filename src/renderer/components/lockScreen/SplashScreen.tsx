@@ -16,9 +16,7 @@ import useCountdown from '../../hooks/useCountdown';
 import { setHeaderHide } from '../../store/reducers/header';
 import { setDockHide } from '../../store/reducers/dock';
 import ActMenu, { ActMenuSelector } from '../utils/menu/index';
-import {
-  setAllowSwitchWorkspace,
-} from '../../store/reducers/wallpaper';
+import { setAllowSwitchWorkspace } from '../../store/reducers/wallpaper';
 import useTime from '../../hooks/useTime';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -489,11 +487,9 @@ export default function SplashScreen() {
               >
                 {lock.style.map((i) => (
                   <ActMenuSelector
+                    onClose={() => showFontFamilyMenu(false)}
                     title={i.family}
-                    onClick={() => {
-                      dispatch(setFontFamily(i.family));
-                      showFontFamilyMenu(false);
-                    }}
+                    onClick={() => dispatch(setFontFamily(i.family))}
                     active={lock.fontFamily === i.family}
                   />
                 ))}
@@ -520,19 +516,15 @@ export default function SplashScreen() {
                 ref={fontSizeMenuRef}
               >
                 <ActMenuSelector
+                  onClose={() => showFontSizeMenu(false)}
                   title={t('lockScreen.editMenu.fontSize.medium')}
-                  onClick={() => {
-                    dispatch(setFontSize('medium'));
-                    showFontSizeMenu(false);
-                  }}
+                  onClick={() => dispatch(setFontSize('medium'))}
                   active={lock.fontSize === 'medium'}
                 />
                 <ActMenuSelector
+                  onClose={() => showFontSizeMenu(false)}
                   title={t('lockScreen.editMenu.fontSize.large')}
-                  onClick={() => {
-                    dispatch(setFontSize('large'));
-                    showFontSizeMenu(false);
-                  }}
+                  onClick={() => dispatch(setFontSize('large'))}
                   active={lock.fontSize === 'large'}
                 />
               </ActMenu>
@@ -558,19 +550,15 @@ export default function SplashScreen() {
                 ref={typeMenuRef}
               >
                 <ActMenuSelector
+                  onClose={() => showTypeMenu(false)}
                   title="Default"
-                  onClick={() => {
-                    dispatch(setLockScreenType('default'));
-                    showTypeMenu(false);
-                  }}
+                  onClick={() => dispatch(setLockScreenType('default'))}
                   active={lock.type === 'default'}
                 />
                 <ActMenuSelector
+                  onClose={() => showTypeMenu(false)}
                   title="Transparent"
-                  onClick={() => {
-                    dispatch(setLockScreenType('transparent'));
-                    showTypeMenu(false);
-                  }}
+                  onClick={() => dispatch(setLockScreenType('transparent'))}
                   active={lock.type === 'transparent'}
                 />
               </ActMenu>

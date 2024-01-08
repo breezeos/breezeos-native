@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import "./StartMenu.scss";
-import StartApp from "./StartApp";
-import { TerminalStartApp } from "../../containers/apps/terminal";
-import { SurfaceStartApp } from "../../containers/apps/surface";
-import { ClockStartApp } from "../../containers/apps/clock";
-import { SettingsStartApp } from "../../containers/apps/settings";
-import { CameraStartApp } from "../../containers/apps/camera";
-import { FilesStartApp } from "../../containers/apps/files";
-import { CalculatorStartApp } from "../../containers/apps/calculator";
-import { TextEditorStartApp } from "../../containers/apps/texteditor";
-import { SoftwareStoreStartApp } from "../../containers/apps/softwarestore";
-import { CalendarStartApp } from "../../containers/apps/calendar";
-import { VSCodeStartApp } from "../../containers/apps/vscode";
-import { setHeaderHide } from "../../store/reducers/header";
-import { setDesktopBodyActive } from "../../store/reducers/desktopbody";
-import { setStartMenuActive } from "../../store/reducers/startmenu";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useEffect, useState } from 'react';
+import './StartMenu.scss';
+import StartApp from './StartApp';
+import { TerminalStartApp } from '../../containers/apps/terminal';
+import { SurfaceStartApp } from '../../containers/apps/surface';
+import { ClockStartApp } from '../../containers/apps/clock';
+import { SettingsStartApp } from '../../containers/apps/settings';
+import { CameraStartApp } from '../../containers/apps/camera';
+import { FilesStartApp } from '../../containers/apps/files';
+import { CalculatorStartApp } from '../../containers/apps/calculator';
+import { TextEditorStartApp } from '../../containers/apps/texteditor';
+import { SoftwareStoreStartApp } from '../../containers/apps/softwarestore';
+import { CalendarStartApp } from '../../containers/apps/calendar';
+import { VSCodeStartApp } from '../../containers/apps/vscode';
+import { setHeaderHide } from '../../store/reducers/header';
+import { setDesktopBodyActive } from '../../store/reducers/desktopbody';
+import { setStartMenuActive } from '../../store/reducers/startmenu';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 // import { globalShortcut } from "@electron/remote";
 
 export default function StartMenu() {
@@ -23,49 +23,45 @@ export default function StartMenu() {
   const icon = useAppSelector((state) => state.appearance.iconTheme);
   const dispatch = useAppDispatch();
 
-  // function hideStartMenuThruShortcut() {
-  //   globalShortcut.register("Esc", () => {
-  //     dispatch(setStartMenuActive(false));
-  //     dispatch(setHeaderHide(false));
-  //     dispatch(setDesktopBodyActive(true));
-  //   });
-  // }
-
-  // useEffect(() => {
-  //   hideStartMenuThruShortcut();
-  // }, []);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Esc') {
+      dispatch(setStartMenuActive(false));
+      dispatch(setHeaderHide(false));
+      dispatch(setDesktopBodyActive(true));
+    }
+  });
 
   const items = [
     {
-      name: "Thunderbird",
+      name: 'Thunderbird',
       icon: `${
-        icon === "WhiteSur-icon-theme"
-          ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/thunderbird.svg"
-          : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/internet-mail.svg"
+        icon === 'WhiteSur-icon-theme'
+          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/thunderbird.svg'
+          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/internet-mail.svg'
       }`,
-      id: "thunderbird",
+      id: 'thunderbird',
     },
     {
-      name: "GitHub Desktop",
+      name: 'GitHub Desktop',
       icon: `${
-        icon === "WhiteSur-icon-theme"
-          ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/github-desktop.svg"
-          : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/github-desktop.svg"
+        icon === 'WhiteSur-icon-theme'
+          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/github-desktop.svg'
+          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/github-desktop.svg'
       }`,
-      id: "githubdesktop",
+      id: 'githubdesktop',
     },
     {
-      name: "Vim",
+      name: 'Vim',
       icon: `${
-        icon === "WhiteSur-icon-theme"
-          ? "https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/vim.svg"
-          : "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/vim.svg"
+        icon === 'WhiteSur-icon-theme'
+          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/apps/scalable/vim.svg'
+          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/apps/vim.svg'
       }`,
-      id: "vim",
+      id: 'vim',
     },
   ];
 
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>('');
 
   function search() {
     let val = searchValue.toLowerCase();
@@ -74,7 +70,7 @@ export default function StartMenu() {
   }
 
   return (
-    <div className={`StartMenuWrapper ${isActive && "active"}`}>
+    <div className={`StartMenuWrapper ${isActive && 'active'}`}>
       <div className="StartMenu">
         <div className="SearchMenu">
           <input

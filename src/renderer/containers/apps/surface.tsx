@@ -358,35 +358,31 @@ export default function Surface() {
                           ref={searchEngineMenuRef}
                         >
                           <ActMenuSelector
+                            onClose={() => showSearchEngineMenu(false)}
                             title="Bing"
-                            onClick={() => {
-                              showSearchEngineMenu(false);
-                              dispatch(setSearchEngine('Bing'));
-                            }}
+                            onClick={() => dispatch(setSearchEngine('Bing'))}
                             active={searchEngine === 'Bing'}
                           />
                           <ActMenuSelector
+                            onClose={() => showSearchEngineMenu(false)}
                             title="Google"
-                            onClick={() => {
-                              showSearchEngineMenu(false);
-                              dispatch(setSearchEngine('Google'));
-                            }}
+                            onClick={() => dispatch(setSearchEngine('Google'))}
                             active={searchEngine === 'Google'}
                           />
                           <ActMenuSelector
+                            onClose={() => showSearchEngineMenu(false)}
                             title="DuckDuckGo"
-                            onClick={() => {
-                              showSearchEngineMenu(false);
-                              dispatch(setSearchEngine('DuckDuckGo'));
-                            }}
+                            onClick={() =>
+                              dispatch(setSearchEngine('DuckDuckGo'))
+                            }
                             active={searchEngine === 'DuckDuckGo'}
                           />
                           <ActMenuSelector
+                            onClose={() => showSearchEngineMenu(false)}
                             title="Yahoo Search"
-                            onClick={() => {
-                              showSearchEngineMenu(false);
-                              dispatch(setSearchEngine('Yahoo Search'));
-                            }}
+                            onClick={() =>
+                              dispatch(setSearchEngine('Yahoo Search'))
+                            }
                             active={searchEngine === 'Yahoo Search'}
                           />
                         </ActMenu>

@@ -99,48 +99,41 @@ export default function PanelType({
               </div>
               {settings.wifi ? (
                 <div className="WifiList">
-                  {settings.wifiList.map((i) =>
-                    i.connected ? (
-                      <div className="WifiListItem">
-                        <p className="WifiName">{i.name}</p>
-                        <div className="WifiListIcon">
-                          <i className="fa-solid fa-check" />
-                          {i.private ? <i className="fa-solid fa-lock" /> : ''}
-                          {i.status === 'good' ? (
-                            <i className="fa-solid fa-wifi" />
-                          ) : i.status === 'fair' ? (
-                            <i className="fa-duotone fa-wifi-fair" />
-                          ) : i.status === 'weak' ? (
-                            <i className="fa-duotone fa-wifi-weak" />
-                          ) : (
-                            ''
-                          )}
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className="WifiListItem"
-                        onClick={() => {
-                          connectWifi(i.name);
+                  {settings.wifiList.map((i) => (
+                    <div
+                      className="WifiListItem"
+                      onClick={() => {
+                        if (
+                          i.ssid !== settings.connectedWifi?.ssid ||
+                          i.security.length
+                        ) {
+                          connectWifi(i.ssid);
                           dispatch(inactivePanel());
-                        }}
-                      >
-                        <p className="WifiName">{i.name}</p>
-                        <div className="WifiListIcon">
-                          {i.private ? <i className="fa-solid fa-lock" /> : ''}
-                          {i.status === 'good' ? (
-                            <i className="fa-solid fa-wifi" />
-                          ) : i.status === 'fair' ? (
-                            <i className="fa-duotone fa-wifi-fair" />
-                          ) : i.status === 'weak' ? (
-                            <i className="fa-duotone fa-wifi-weak" />
-                          ) : (
-                            ''
-                          )}
-                        </div>
+                        }
+                      }}
+                    >
+                      <p className="WifiName">{i.ssid}</p>
+                      <div className="WifiListIcon">
+                        {i.ssid === settings.connectedWifi?.ssid && (
+                          <i className="fa-solid fa-check" />
+                        )}
+                        {i.security.length ? (
+                          <i className="fa-solid fa-lock" />
+                        ) : (
+                          ''
+                        )}
+                        {i.quality >= 70 ? (
+                          <i className="fa-solid fa-wifi" />
+                        ) : i.quality >= 30 ? (
+                          <i className="fa-duotone fa-wifi-fair" />
+                        ) : i.quality >= 0 ? (
+                          <i className="fa-duotone fa-wifi-weak" />
+                        ) : (
+                          ''
+                        )}
                       </div>
-                    ),
-                  )}
+                    </div>
+                  ))}
                   <div
                     className="WifiListItem"
                     onClick={() => {
@@ -197,10 +190,8 @@ export default function PanelType({
                 >
                   <ActMenuSelector
                     title="Battery Preferences..."
-                    onClick={() => {
-                      openSettings(setSettings('Battery'));
-                      dispatch(inactivePanel());
-                    }}
+                    onClose={() => dispatch(inactivePanel())}
+                    onClick={() => openSettings(setSettings('Battery'))}
                   />
                 </ActMenu>
               </div>

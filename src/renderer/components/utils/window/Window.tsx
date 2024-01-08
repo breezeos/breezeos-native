@@ -11,6 +11,7 @@ import SoftwareStore from "../../../containers/apps/softwarestore";
 import Calendar from "../../../containers/apps/calendar";
 import ImgView from "../../../containers/apps/imgview";
 import VSCode from "../../../containers/apps/vscode";
+import VideoView from "../../../containers/apps/videoview";
 
 export default function Window() {
   return (
@@ -27,6 +28,7 @@ export default function Window() {
       <SoftwareStore />
       <VSCode />
       <ImgView />
+      <VideoView />
     </div>
   );
 }

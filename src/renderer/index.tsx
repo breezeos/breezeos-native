@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import i18n from './translation/i18n';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import store from './store';
-import { ipcRenderer } from 'electron';
 import {
   Button,
   Group,
@@ -33,7 +32,6 @@ import {
 } from './store/reducers/lock';
 import { useEffect, useState } from 'react';
 import { insertPasswordFor } from './store/reducers/wifipassword';
-import { toggleActive } from './store/reducers/newwifi';
 
 function Body() {
   const { t } = useTranslation();
@@ -445,10 +443,3 @@ root.render(
     </Provider>
   </I18nextProvider>,
 );
-
-// calling IPC exposed from preload script
-ipcRenderer.once('ipc-example', (arg) => {
-  // eslint-disable-next-line no-console
-  console.log(arg);
-});
-ipcRenderer.postMessage('ipc-example', ['ping']);

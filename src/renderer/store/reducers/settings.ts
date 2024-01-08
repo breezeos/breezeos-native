@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import si from "systeminformation"
+import si from 'systeminformation';
 
 interface StateType {
   user: {
@@ -11,12 +11,8 @@ interface StateType {
   deviceName: string;
   airplaneMode: boolean;
   wifi: boolean;
-  wifiList: {
-    name: string;
-    private: boolean;
-    status: 'weak' | 'fair' | 'good';
-    connected?: boolean;
-  }[];
+  wifiList: si.Systeminformation.WifiNetworkData[];
+  connectedWifi?: si.Systeminformation.WifiConnectionData;
   bluetooth: boolean;
   bluetoothList: si.Systeminformation.BluetoothDeviceData[];
   isLocked: boolean;
@@ -29,6 +25,7 @@ interface StateType {
   batterySaver: boolean;
   animationsReduced: boolean;
   colorInverted: boolean;
+  transparencyReduced: boolean;
   fontFamily: string;
 }
 
@@ -42,59 +39,8 @@ const initialState: StateType = {
   deviceName: '',
   airplaneMode: false,
   wifi: true,
-  wifiList: [
-    {
-      name: 'BreezeOS',
-      private: true,
-      status: 'good',
-      connected: true,
-    },
-    {
-      name: 'Nokia Lumia',
-      private: true,
-      status: 'fair',
-    },
-    {
-      name: 'APTEK',
-      private: true,
-      status: 'weak',
-    },
-    {
-      name: "daothanhminh's iPhone",
-      private: true,
-      status: 'fair',
-    },
-    {
-      name: 'FPT Telecom',
-      private: true,
-      status: 'good',
-    },
-    {
-      name: 'Coffee Shop',
-      private: true,
-      status: 'fair',
-    },
-    {
-      name: 'Samsung Galaxy S20',
-      private: true,
-      status: 'weak',
-    },
-    {
-      name: 'KING COFFEE',
-      private: true,
-      status: 'weak',
-    },
-    {
-      name: 'VIETTEL',
-      private: true,
-      status: 'fair',
-    },
-    {
-      name: 'Nguyet Thanh',
-      private: true,
-      status: 'weak',
-    },
-  ],
+  wifiList: [],
+  connectedWifi: undefined,
   bluetooth: false,
   bluetoothList: [],
   isLocked: true,
@@ -107,6 +53,7 @@ const initialState: StateType = {
   batterySaver: false,
   animationsReduced: false,
   colorInverted: false,
+  transparencyReduced: false,
   fontFamily: 'OptimisticDisplay',
 };
 
@@ -160,8 +107,14 @@ export const settingsSlice = createSlice({
     toggleNotifications: (state, action: PayloadAction<boolean>) => {
       state.notifications = action.payload;
     },
-    toggleBluetooth: (state, action) => {
+    toggleBluetooth: (state, action: PayloadAction<boolean>) => {
       state.bluetooth = action.payload;
+    },
+    setWifiList: (state, action) => {
+      state.wifiList = action.payload;
+    },
+    setConnectedWifi: (state, action) => {
+      state.connectedWifi = action.payload;
     },
     setBluetoothList: (state, action) => {
       state.bluetoothList = action.payload;
@@ -180,6 +133,9 @@ export const settingsSlice = createSlice({
     },
     setColorInverted: (state, action: PayloadAction<boolean>) => {
       state.colorInverted = action.payload;
+    },
+    setTransparencyReduced: (state, action: PayloadAction<boolean>) => {
+      state.transparencyReduced = action.payload;
     },
     setFontFamily: (state, action: PayloadAction<string>) => {
       state.fontFamily = action.payload;
@@ -200,12 +156,14 @@ export const {
   setBrightness,
   toggleNotifications,
   toggleBluetooth,
+  setWifiList,
+  setConnectedWifi,
   setBluetoothList,
   toggleLightMode,
   setBoldText,
   setBatterySaver,
   setAnimationsReduced,
-  setColorInverted,
+  setColorInverted,setTransparencyReduced,
   setFontFamily,
 } = settingsSlice.actions;
 

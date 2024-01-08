@@ -36,6 +36,10 @@ const configuration: webpack.Configuration = {
         test: /\.(png|jpg|jpeg|gif|ico)$/i,
         type: 'asset/resource',
       },
+      {
+        test: /\.node$/,
+        loader: 'node-loader',
+      },
     ],
   },
 
@@ -60,7 +64,7 @@ const configuration: webpack.Configuration = {
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
-    })
+    }),
   ],
 };
 

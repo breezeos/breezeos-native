@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import './Setup.scss';
-import Draggable from 'react-draggable';
-import TopBar from './utils/window/TopBar';
-import WindowBodyDefault from './utils/window/WindowBodyDefault';
-import WindowBodyButton from './utils/window/WindowBodyButton';
-import TopBarInteraction from './utils/window/TopBarInteraction';
 import { useTranslation } from 'react-i18next';
 import Checkbox from './utils/checkbox';
 import ActMenu, { ActMenuSelector } from './utils/menu';
@@ -23,11 +18,11 @@ import {
   encryptDisk,
   setBootScreen,
   setPasswordDisk,
-  setTotalDisk,
 } from '../store/reducers/system';
 import InstallImage from '../../../assets/images/install.png';
 import useProcess from '../hooks/useProcess';
 import CryptoJS from 'crypto-js';
+import { setBlocks } from '../store/reducers/msgbox';
 
 export default function Setup() {
   const dispatch = useAppDispatch();
@@ -35,139 +30,11 @@ export default function Setup() {
   const [isInstalling, setIsInstalling] = useState<boolean>(false);
   const [installPercent, setInstallPercent] = useState<number>(0);
   const [installationStarted, setInstallationStart] = useState<boolean>(false);
-  const [quitInstallation, setQuitInstallation] = useState<boolean>(false);
-  const [cannotSelectDisk, setCannotSelectDisk] = useState<boolean>(false);
-  const [continueInstallation, setContinueInstallation] =
-    useState<boolean>(false);
   const settings = useAppSelector((state) => state.settings);
   const system = useAppSelector((state) => state.system);
   const [subDialog, setSubDialog] = useState<React.ReactElement>();
   const { restart } = useProcess();
-  const [t, i18n] = useTranslation();
-
-  const QuitInstallation = () => {
-    return (
-      <Draggable handle=".TopBar">
-        <div
-          className={`Window ${quitInstallation && 'active'}`}
-          style={{ width: '420px', zIndex: 2 }}
-          key={Math.random()}
-        >
-          <TopBar>
-            <TopBarInteraction
-              action="close"
-              onClose={() => setQuitInstallation(false)}
-            />
-          </TopBar>
-          <WindowBodyDefault
-            type="question"
-            content="Discard all changes and quit installation?"
-          >
-            <WindowBodyButton>
-              <button
-                className="Button"
-                onClick={() => setQuitInstallation(false)}
-              >
-                No
-              </button>
-              <button
-                className="Button"
-                onClick={() => {
-                  setQuitInstallation(false);
-                  setDefault();
-                }}
-              >
-                Yes
-              </button>
-            </WindowBodyButton>
-          </WindowBodyDefault>
-        </div>
-      </Draggable>
-    );
-  };
-
-  const CannotSelectDisk = () => {
-    return (
-      <Draggable handle=".TopBar">
-        <div
-          className={`Window ${cannotSelectDisk && 'active'}`}
-          style={{ width: '420px', zIndex: 2 }}
-          key={Math.random()}
-        >
-          <TopBar>
-            <TopBarInteraction
-              action="close"
-              onClose={() => setCannotSelectDisk(false)}
-            />
-          </TopBar>
-          <WindowBodyDefault
-            type="critical"
-            content="Cannot select disk that is under 50GB, please select another one."
-          >
-            <WindowBodyButton>
-              <button
-                className="Button"
-                onClick={() => setCannotSelectDisk(false)}
-              >
-                OK
-              </button>
-            </WindowBodyButton>
-          </WindowBodyDefault>
-        </div>
-      </Draggable>
-    );
-  };
-
-  const ContinueInstallation = () => {
-    return (
-      <Draggable handle=".TopBar">
-        <div
-          className={`Window ${continueInstallation && 'active'}`}
-          style={{ width: '460px', zIndex: 2 }}
-          key={Math.random()}
-        >
-          <TopBar>
-            <TopBarInteraction
-              action="close"
-              onClose={() => setContinueInstallation(false)}
-            />
-          </TopBar>
-          <WindowBodyDefault
-            type="question"
-            title="Continue?"
-            content="The installer is going to apply changes to your disk. You will not be able to undo these changes after this."
-          >
-            <WindowBodyButton>
-              <button
-                className="Button"
-                onClick={() => setContinueInstallation(false)}
-              >
-                No
-              </button>
-              <button
-                className="Button"
-                onClick={() => {
-                  setContinueInstallation(false);
-                  setIsInstalling(true);
-                }}
-              >
-                Yes
-              </button>
-              <button
-                className="Button"
-                onClick={() => {
-                  setContinueInstallation(false);
-                  setSubDialog(<Overview />);
-                }}
-              >
-                Overview...
-              </button>
-            </WindowBodyButton>
-          </WindowBodyDefault>
-        </div>
-      </Draggable>
-    );
-  };
+  const [_t, i18n] = useTranslation();
 
   const lang = [
     {
@@ -1035,9 +902,10 @@ export default function Setup() {
     'appearances',
     'bootscreen',
   ];
+
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentSection = section[currentIndex];
-  const [selectedNetwork, setSelectedNetwork] = useState<string>('BreezeOS');
+  const [selectedNetwork, setSelectedNetwork] = useState<string>();
   const [selectedDisk, setSelectedDisk] =
     useState<si.Systeminformation.BlockDevicesData>();
   const [passwordValue, setPasswordValue] = useState<string>('');
@@ -1050,7 +918,11 @@ export default function Setup() {
     i18n.changeLanguage('English (US)');
     setCurrentCountry('Argentina');
     setKeyboardLayout('American English');
-    setSelectedNetwork('BreezeOS');
+  }
+
+  function install() {
+    setIsInstalling(true);
+    window.electron.ipcRenderer.invoke('installFs');
   }
 
   useEffect(() => {
@@ -1181,11 +1053,6 @@ export default function Setup() {
     const securityMenuRef = useRef(null);
     useOutsideSecurityMenu(securityMenuRef);
 
-    function switchSecurity(e: string) {
-      showSecurityMenu(false);
-      setSecurity(e);
-    }
-
     function submitPassword() {
       setPasswordDisable(true);
       setPasswordWrong(false);
@@ -1302,39 +1169,46 @@ export default function Setup() {
                   ref={securityMenuRef}
                 >
                   <ActMenuSelector
+                    onClose={() => showSecurityMenu(false)}
                     title="None"
                     active={security === 'None'}
-                    onClick={() => switchSecurity('None')}
+                    onClick={() => setSecurity('None')}
                   />
                   <ActMenuSelector
+                    onClose={() => showSecurityMenu(false)}
                     title="WEP"
                     active={security === 'WEP'}
-                    onClick={() => switchSecurity('WEP')}
+                    onClick={() => setSecurity('WEP')}
                   />
                   <ActMenuSelector
+                    onClose={() => showSecurityMenu(false)}
                     title="WPA"
                     active={security === 'WPA'}
-                    onClick={() => switchSecurity('WPA')}
+                    onClick={() => setSecurity('WPA')}
                   />
                   <ActMenuSelector
+                    onClose={() => showSecurityMenu(false)}
                     title="WPA2"
                     active={security === 'WPA2'}
-                    onClick={() => switchSecurity('WPA2')}
+                    onClick={() => setSecurity('WPA2')}
                   />
                   <ActMenuSelector
+                    onClose={() => showSecurityMenu(false)}
                     title="WPA Enterprise"
                     active={security === 'WPA Enterprise'}
-                    onClick={() => switchSecurity('WPA Enterprise')}
+                    onClick={() => setSecurity('WPA Enterprise')}
                   />
                   <ActMenuSelector
+                    onClose={() => showSecurityMenu(false)}
                     title="WPA2 Enterprise"
                     active={security === 'WPA2 Enterprise'}
-                    onClick={() => switchSecurity('WPA2 Enterprise')}
+                    onClick={() => setSecurity('WPA2 Enterprise')}
                   />
                   <ActMenuSelector
+                    onClose={() => showSecurityMenu(false)}
                     title="WPA3 Enterprise"
                     active={security === 'WPA3 Enterprise'}
-                    onClick={() => switchSecurity('WPA3 Enterprise')}
+                    onClick={() => setSecurity('WPA3 Enterprise')}
                   />
                 </ActMenu>
               </div>
@@ -1440,7 +1314,7 @@ export default function Setup() {
             className="Button"
             onClick={() => {
               setSubDialog(undefined);
-              setTimeout(() => setIsInstalling(true), 500);
+              setTimeout(install, 500);
             }}
           >
             <p>Install</p>
@@ -1485,9 +1359,9 @@ export default function Setup() {
             {settings.wifiList.map((i) => (
               <div
                 className={`SelectionBlock ${
-                  selectedNetwork === i.name && 'active'
+                  selectedNetwork === i.ssid && 'active'
                 }`}
-                onClick={() => setSelectedNetwork(i.name)}
+                onClick={() => setSelectedNetwork(i.ssid)}
               >
                 <div
                   style={{
@@ -1496,17 +1370,15 @@ export default function Setup() {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <p>{i.name}</p>
+                  <p>{i.ssid}</p>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {i.connected ? (
+                    {i.ssid === settings.connectedWifi?.ssid && (
                       <i
                         className="fa-regular fa-check"
                         style={{ marginLeft: '12px', fontSize: '13.5px' }}
                       />
-                    ) : (
-                      ''
                     )}
-                    {i.private ? (
+                    {i.security.length ? (
                       <i
                         className="fa-regular fa-lock"
                         style={{ marginLeft: '12px', fontSize: '13.5px' }}
@@ -1514,17 +1386,17 @@ export default function Setup() {
                     ) : (
                       ''
                     )}
-                    {i.status === 'good' ? (
+                    {i.quality >= 70 ? (
                       <i
-                        className="fa-regular fa-wifi"
+                        className="fa-solid fa-wifi"
                         style={{ marginLeft: '12px', fontSize: '13.5px' }}
                       />
-                    ) : i.status === 'fair' ? (
+                    ) : i.quality >= 30 ? (
                       <i
                         className="fa-duotone fa-wifi-fair"
                         style={{ marginLeft: '12px', fontSize: '13.5px' }}
                       />
-                    ) : i.status === 'weak' ? (
+                    ) : i.quality >= 0 ? (
                       <i
                         className="fa-duotone fa-wifi-weak"
                         style={{ marginLeft: '12px', fontSize: '13.5px' }}
@@ -1933,6 +1805,8 @@ export default function Setup() {
     }
   }
 
+  const blocks = useAppSelector((state) => state.msgbox.blocks);
+
   return (
     <div className="Setup" style={{ backgroundImage: `url(${wallpaperImg})` }}>
       <div className="SetupWrapper">
@@ -1982,9 +1856,6 @@ export default function Setup() {
             </div>
           </div>
         )}
-        <QuitInstallation />
-        <CannotSelectDisk />
-        <ContinueInstallation />
         <div
           className={`Dialog ${installationStarted && 'active'} ${
             subDialog && 'minimize'
@@ -1994,7 +1865,24 @@ export default function Setup() {
             <>
               <div
                 className="CloseButton"
-                onClick={() => setQuitInstallation(true)}
+                onClick={() =>
+                  dispatch(
+                    setBlocks([
+                      ...blocks,
+                      {
+                        type: 'question',
+                        content: 'Discard all changes and quit installation?',
+                        buttons: [
+                          {
+                            label: 'Yes',
+                            action: setDefault,
+                          },
+                          { label: 'No' },
+                        ],
+                      },
+                    ]),
+                  )
+                }
               >
                 <i className="fa-solid fa-xmark" />
               </div>
@@ -2077,7 +1965,8 @@ export default function Setup() {
                   </div>
                   <p className="Label">Back</p>
                 </div>
-                {currentSection === 'wifi' && selectedNetwork !== 'BreezeOS' ? (
+                {currentSection === 'wifi' &&
+                selectedNetwork !== settings.connectedWifi?.ssid ? (
                   <div
                     className="Button"
                     onClick={() => setSubDialog(<ConnectWifi />)}
@@ -2096,7 +1985,17 @@ export default function Setup() {
                       className="InteractionButton"
                       onClick={() =>
                         selectedDisk?.size! / Math.pow(1024, 3) < 50
-                          ? setCannotSelectDisk(true)
+                          ? dispatch(
+                              setBlocks([
+                                ...blocks,
+                                {
+                                  type: 'critical',
+                                  content:
+                                    'Cannot select disk that is under 50GB, please select another one.',
+                                  buttons: [{ label: 'OK' }],
+                                },
+                              ]),
+                            )
                           : setCurrentIndex(currentIndex + 1)
                       }
                     >
@@ -2161,7 +2060,30 @@ export default function Setup() {
                 ) : currentSection === section[section.length - 1] ? (
                   <div
                     className="Button"
-                    onClick={() => setContinueInstallation(true)}
+                    onClick={() =>
+                      dispatch(
+                        setBlocks([
+                          ...blocks,
+                          {
+                            type: 'question',
+                            title: 'Continue?',
+                            content:
+                              'The installer is going to apply changes to your disk. You will not be able to undo these changes after this.',
+                            buttons: [
+                              {
+                                label: 'Overview...',
+                                action: () => setSubDialog(<Overview />),
+                              },
+                              {
+                                label: 'Yes',
+                                action: install,
+                              },
+                              { label: 'No' },
+                            ],
+                          },
+                        ]),
+                      )
+                    }
                   >
                     <p>Install</p>
                   </div>

@@ -1,12 +1,15 @@
 import './Desktop.scss';
 import Window from './components/utils/window/Window';
-import WindowDefault from './components/utils/window/WindowDefault';
 import Widget from './components/Widget';
 import { useAppSelector } from './store/hooks';
 import { useAppDispatch } from './store/hooks';
-import ActMenu, { ActMenuSelector } from './components/utils/menu';
+import ActMenu, {
+  ActMenuSelector,
+  ActMenuSeparator,
+} from './components/utils/menu';
 import { useEffect, useRef, useState } from 'react';
 import { setActive, setSettings } from './store/reducers/apps/settings';
+import DesktopIcons from './components/DesktopIcons';
 
 const DesktopBody = () => {
   const isActive = useAppSelector((state) => state.desktopbody.active);
@@ -18,6 +21,7 @@ const DesktopBody = () => {
     x: 0,
     y: 0,
   });
+  const [desktopIconShown, setDesktopIconShown] = useState<boolean>(false);
 
   function useOutsideContextMenu(ref: React.MutableRefObject<any>) {
     useEffect(() => {
@@ -67,29 +71,38 @@ const DesktopBody = () => {
             left: contextMenuPos.x,
             transition: 'opacity ease .1s',
           }}
-          className={contextMenuDisplayed ? 'active' : ''}
+          className={`ContextMenu ${contextMenuDisplayed ? 'active' : ''}`}
           ref={contextMenuRef}
         >
           <ActMenuSelector
+            title="New folder"
+            onClose={() => setContextMenuDisplayed(false)}
+          />
+          <ActMenuSelector
+            title="Show desktop icons"
+            onClose={() => setContextMenuDisplayed(false)}
+            onClick={() => setDesktopIconShown(!desktopIconShown)}
+            active={desktopIconShown}
+          />
+          <ActMenuSeparator />
+          <ActMenuSelector
             title="Change wallpaper"
+            onClose={() => setContextMenuDisplayed(false)}
             onClick={() => {
-              setContextMenuDisplayed(false);
               dispatch(setActive(true));
               dispatch(setSettings('Appearance'));
             }}
           />
           <ActMenuSelector
             title="Settings..."
-            onClick={() => {
-              setContextMenuDisplayed(false);
-              dispatch(setActive(true));
-            }}
+            onClose={() => setContextMenuDisplayed(false)}
+            onClick={() => dispatch(setActive(true))}
           />
         </ActMenu>
       </div>
       <Widget />
+      {desktopIconShown && <DesktopIcons />}
       <Window />
-      <WindowDefault />
     </div>
   );
 };

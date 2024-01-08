@@ -1,15 +1,18 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Apps } from "../../../types";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { Apps } from '../../../types';
 
-interface StateType extends Apps {}
+interface StateType extends Apps {
+  location: string;
+}
 
 const initialState: StateType = {
   active: false,
   hide: false,
+  location: '',
 };
 
 const textEditorSlice = createSlice({
-  name: "appsTextEditor",
+  name: 'appsTextEditor',
   initialState,
   reducers: {
     setActive: (state, action: PayloadAction<boolean>) => {
@@ -18,9 +21,12 @@ const textEditorSlice = createSlice({
     setHide: (state, action: PayloadAction<boolean>) => {
       state.hide = action.payload;
     },
+    setLocation: (state, action: PayloadAction<string>) => {
+      state.location = action.payload;
+    },
   },
 });
 
-export const { setActive, setHide } = textEditorSlice.actions;
+export const { setActive, setHide, setLocation } = textEditorSlice.actions;
 
 export default textEditorSlice.reducer;

@@ -1,5 +1,5 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Apps } from "../../../types";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { Apps } from '../../../types';
 
 interface StateType extends Apps {}
 
@@ -9,7 +9,7 @@ const initialState: StateType = {
 };
 
 const vscodeSlice = createSlice({
-  name: "appsVscode",
+  name: 'appsVscode',
   initialState,
   reducers: {
     setActive: (state, action: PayloadAction<boolean>) => {

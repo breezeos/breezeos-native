@@ -9,12 +9,14 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, BrowserView } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { decorateWindow } from '../touchbar/decorate-window';
+import fs, { constants } from 'fs';
+import { execSync } from 'child_process';
 
 class AppUpdater {
   constructor() {
@@ -26,11 +28,80 @@ class AppUpdater {
 
 let mainWindow: Electron.BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+const userData = app.getPath('userData');
+
+ipcMain.handle('quitWindow', () => {
+  return mainWindow?.close();
 });
+
+ipcMain.handle('installFs', () => {
+  const userDataPath = userData.split(' ').join('\\ ');
+  execSync(
+    `curl -L "https://drive.google.com/uc?export=download&id=1SaIC7tyhBec7_k9Q89UUcNx8HjJqC-Mp" -o ${userDataPath}/FileSystem.tar.xz && tar -xvf ${userDataPath}/FileSystem.tar.xz -C ${userDataPath} && rm -rf ${userDataPath}/FileSystem.tar.xz`,
+  );
+});
+
+ipcMain.handle('getDirContent', (_event, arg1, arg2) => {
+  const content = fs.readdirSync(`${userData}/FileSystem${arg1}`, arg2);
+  return content;
+});
+
+ipcMain.handle('getFileContent', (_event, arg1, arg2) => {
+  const content = fs.readFileSync(`${userData}/FileSystem${arg1}`, arg2);
+  return content;
+});
+
+ipcMain.handle('writeDirContent', (_event, arg1, arg2) => {
+  const content = fs.mkdirSync(`${userData}/FileSystem${arg1}`, arg2);
+  return content;
+});
+
+ipcMain.handle('writeFileContent', (_event, arg1, arg2) => {
+  const controller = new AbortController();
+  const { signal } = controller;
+  const content = new Uint8Array(Buffer.from(arg2));
+  const promise = fs.writeFileSync(`${userData}/FileSystem${arg1}`, content, {
+    signal,
+  });
+  controller.abort();
+  return promise;
+});
+
+ipcMain.handle('removePath', (_event, arg1) => {
+  const promise = fs.rmSync(`${userData}/FileSystem${arg1}`, { force: true });
+  return promise;
+});
+
+ipcMain.handle('renamePath', (_event, arg1, arg2) => {
+  const callback = fs.renameSync(
+    `${userData}/FileSystem${arg1}`,
+    `${userData}/FileSystem${arg2}`,
+  );
+  return callback;
+});
+
+ipcMain.handle('fileExists', (_event, arg1, arg2: fs.NoParamCallback) => {
+  const callback = fs.access(
+    `${userData}/FileSystem${arg1}`,
+    constants.F_OK,
+    arg2,
+  );
+  return callback;
+});
+
+ipcMain.handle('pathIsDir', (_event, arg) => {
+  const callback = fs.lstatSync(`${userData}/FileSystem${arg}`).isDirectory();
+  return callback;
+});
+
+// ipcMain.handle('installFs', async (_event, arg1) => {
+//   const callback = fs.access(
+//     `${userData}/FileSystem${arg1}`,
+//     constants.F_OK,
+//     arg2,
+//   );
+//   return callback;
+// });
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -58,6 +129,7 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
+  console.log(userData);
   if (isDebug) {
     await installExtensions();
   }
@@ -80,6 +152,9 @@ const createWindow = async () => {
       nodeIntegration: true,
       contextIsolation: false,
       webviewTag: true,
+      preload: app.isPackaged
+        ? path.join(__dirname, 'preload.js')
+        : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
 

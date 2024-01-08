@@ -29,13 +29,19 @@ import {
 import { useBattery } from 'react-use';
 import { useEffect } from 'react';
 import { setTouchbarActive } from './store/reducers/touchbar';
-import { setBluetoothList, setLocked } from './store/reducers/settings';
+import {
+  setBluetoothList,
+  setConnectedWifi,
+  setLocked,
+  setWifiList,
+} from './store/reducers/settings';
 import axios from 'axios';
 import { initializeData } from './store/reducers/weather';
 import Setup from './components/Setup';
 import si from 'systeminformation';
+import MsgBoxContainer from './components/utils/msgbox/container';
 
-const Desktop = () => {
+export default function Desktop() {
   const dispatch = useAppDispatch();
   const fontFamily = useAppSelector((state) => state.settings.fontFamily);
   const themeLight = useAppSelector((state) => state.settings.themeLight);
@@ -48,6 +54,9 @@ const Desktop = () => {
   const hideCursor = useAppSelector((state) => state.desktop.hideCursor);
   const blackScr = useAppSelector((state) => state.desktop.blackScr);
   const poweroff = useAppSelector((state) => state.desktop.poweroff);
+  const transparencyReduced = useAppSelector(
+    (state) => state.settings.transparencyReduced,
+  );
   const batteryState = useBattery();
   const batteryLevel = batteryState.level * 100;
 
@@ -110,7 +119,6 @@ const Desktop = () => {
 
   async function getDisks() {
     const diskData = await si.blockDevices().then((data) => data);
-    console.log(diskData);
     const totalSize = (
       (await si.fsSize().then((data) => data.map((i) => i.size)[0])) /
       Math.pow(1024, 3)
@@ -136,15 +144,9 @@ const Desktop = () => {
 
   async function getWifiList() {
     const wifiDevices = await si.wifiNetworks().then((data) => data);
-    console.log(wifiDevices);
-  }
-
-  dispatch(setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : '-'));
-
-  if (batteryState.charging) {
-    dispatch(setBatteryCharging(true));
-  } else {
-    dispatch(setBatteryCharging(false));
+    const connectedWifi = await si.wifiConnections().then((data) => data[0]);
+    dispatch(setWifiList(wifiDevices));
+    dispatch(setConnectedWifi(connectedWifi));
   }
 
   function isMobile() {
@@ -180,10 +182,45 @@ const Desktop = () => {
     getGraphics();
     getDisks();
     getBluetoothList();
-    getWifiList()
+    getWifiList();
     dispatch(setTouchbarActive(true));
     getWeatherData();
-  }, []);
+
+    dispatch(
+      setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : '-'),
+    );
+
+    if (batteryState.charging) {
+      dispatch(setBatteryCharging(true));
+    } else {
+      dispatch(setBatteryCharging(false));
+    }
+
+    // if (!batteryLevel) {
+    //   dispatch(
+    //     setBlocks([
+    //       ...blocks,
+    //       {
+    //         type: 'exclamation',
+    //         title: 'Unsuitable web browser',
+    //         content:
+    //           'For full experiences, we recommend you to switch to a different browser platform.',
+    //         buttons: [
+    //           {
+    //             label: 'OK',
+    //             closeAction: true,
+    //           },
+    //         ],
+    //         width: '550px',
+    //       },
+    //     ]),
+    //   );
+    // }
+  }, [batteryState, batteryLevel]);
+
+  window.electron.ipcRenderer.once('err-no-exception', (arg) => {
+    console.log(arg);
+  });
 
   return (
     <>
@@ -209,11 +246,14 @@ const Desktop = () => {
               blackScr && 'blackscr'
             } ${animationsReduced && 'animdisabled'} ${
               colorInverted && 'inverted'
-            } ${poweroff && 'poweroff'}`}
+            } ${poweroff && 'poweroff'} ${
+              transparencyReduced && 'transdisabled'
+            }`}
             onContextMenu={(e) => e.preventDefault()}
             id="Desktop"
           >
             <TerminalWindow />
+            <MsgBoxContainer />
             {!localStorage.getItem('setupDisabled') ? (
               <Setup />
             ) : (
@@ -234,6 +274,4 @@ const Desktop = () => {
       )}
     </>
   );
-};
-
-export default Desktop;
+}
