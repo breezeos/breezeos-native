@@ -224,7 +224,6 @@ export default function Files() {
   ];
 
   const [tree, setTree] = useState<string[]>(['']);
-  const blocks = useAppSelector((state) => state.msgbox.blocks);
 
   async function getDirContent() {
     const content = await window.electron.ipcRenderer.invoke(
@@ -244,7 +243,7 @@ export default function Files() {
     getDirContent();
   }, [directory]);
 
-  function useOutsideSettingsMenu(ref: React.MutableRefObject<any>) {
+  function useOutsideSettingsMenu(ref: React.RefObject<HTMLElement>) {
     useEffect(() => {
       function handleClickOutside(event: any) {
         if (ref.current && !ref.current.contains(event.target)) {

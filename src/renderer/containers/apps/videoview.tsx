@@ -20,9 +20,7 @@ export default function VideoView() {
     const content = await window.electron.ipcRenderer.invoke(
       'getFileContent',
       location,
-      {
-        encoding: 'base64',
-      },
+      'base64'
     );
 
     setSrc(content);

@@ -6,6 +6,7 @@ interface StateType {
     name: string;
     role?: 'user' | 'superuser';
     password: string;
+    touchid: boolean;
     image: string | null;
   };
   deviceName: string;
@@ -34,6 +35,7 @@ const initialState: StateType = {
     name: '',
     role: undefined,
     password: '',
+    touchid: false,
     image: null,
   },
   deviceName: '',
@@ -69,6 +71,10 @@ export const settingsSlice = createSlice({
     },
     setPassword: (state, action: PayloadAction<string>) => {
       state.user.password = action.payload;
+      if(!state.user.password) state.user.touchid = false;
+    },
+    setTouchID: (state, action: PayloadAction<boolean>) => {
+      state.user.touchid = action.payload;
     },
     setDeviceName: (state, action: PayloadAction<string>) => {
       state.deviceName = action.payload;
@@ -147,6 +153,7 @@ export const {
   setName,
   setUserImage,
   setPassword,
+  setTouchID,
   setDeviceName,
   toggleAirplaneMode,
   toggleWifi,
@@ -163,7 +170,8 @@ export const {
   setBoldText,
   setBatterySaver,
   setAnimationsReduced,
-  setColorInverted,setTransparencyReduced,
+  setColorInverted,
+  setTransparencyReduced,
   setFontFamily,
 } = settingsSlice.actions;
 

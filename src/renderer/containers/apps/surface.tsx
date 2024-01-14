@@ -22,10 +22,14 @@ import { setHeaderHide } from '../../store/reducers/header';
 import SurfaceIcon from '../../../../assets/icons/surface.svg';
 import SurfacePrivateIcon from '../../../../assets/icons/surface-private.svg';
 import Toggle from '../../components/utils/toggle';
-import ActMenu, { ActMenuSelector } from '../../components/utils/menu/index';
+import ActMenu, {
+  ActMenuSelector,
+  ActMenuSeparator,
+} from '../../components/utils/menu/index';
 import { useTranslation } from 'react-i18next';
 import Draggable from 'react-draggable';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { WebviewTag } from 'electron';
 
 export const SurfaceApp = () => {
   const { t } = useTranslation();
@@ -114,25 +118,55 @@ export default function Surface() {
   const isHide = useAppSelector((state) => state.appsSurface.hide);
   const isPrivate = useAppSelector((state) => state.appsSurface.private);
   const { t } = useTranslation();
-  const iFrameRef = useRef<HTMLWebViewElement>(null);
+  const webviewRef = useRef<WebviewTag>(null);
   const url = useAppSelector((state) => state.surface.url);
   const searchEngine = useAppSelector((state) => state.surface.searchEngine);
   const wifi = useAppSelector((state) => state.settings.wifi);
   const dispatch = useAppDispatch();
   const [splashScreen, setSplashScreen] = useState(true);
   const [searchValue, setSearchValue] = useState('');
-  const [hist, setHist] = useState(['', '']);
+  const [histDir, setHistDir] = useState(['', '']);
   const [settingsOpened, setSettingsOpened] = useState(false);
   const [supportOpened, setSupportOpened] = useState(false);
   const [searchEngineMenu, showSearchEngineMenu] = useState(false);
   isActive && setTimeout(() => setSplashScreen(false), 5000);
-  const iFrameRefCurrent = iFrameRef.current;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [menuOpened, setMenuOpened] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isActive) {
       dispatch(closeUrl());
     }
+
+    webviewRef.current?.addEventListener('did-start-loading', () => {
+      setIsLoading(true);
+    });
+
+    webviewRef.current?.addEventListener('did-stop-loading', () => {
+      setIsLoading(false);
+    });
+
+    webviewRef.current?.addEventListener('did-navigate-in-page', (e) => {
+      setSearchValue(e.url);
+    });
+
+    webviewRef.current?.addEventListener('dom-ready', () => {
+      setSearchValue(webviewRef.current?.getURL()!);
+    });
   }, [isActive]);
+
+  type History = {
+    title: string;
+    url: string;
+  }[];
+
+  const [hist, setHist] = useState<History>([]);
+
+  type Tabs = {
+    url: string;
+  }[];
+
+  const [tabs, setTabs] = useState<Tabs>([]);
 
   const isValidURL = (string: string) => {
     var res = string.match(
@@ -165,12 +199,13 @@ export default function Surface() {
       }
 
       setSearchValue(qry);
-      setHist([hist[0], qry]);
       dispatch(openUrl(qry));
+      setHistDir([histDir[0], qry]);
+      setHist([{ title: qry, url: qry }, ...hist]);
     }
   };
 
-  function useOutsideSearchEngineMenu(ref: React.MutableRefObject<any>) {
+  function useOutsideSearchEngineMenu(ref: React.RefObject<HTMLElement>) {
     useEffect(() => {
       function handleClickOutside(event: any) {
         if (ref.current && !ref.current.contains(event.target)) {
@@ -189,6 +224,25 @@ export default function Surface() {
   const searchEngineMenuRef = useRef(null);
   useOutsideSearchEngineMenu(searchEngineMenuRef);
 
+  function useOutsideMenu(ref: React.RefObject<HTMLElement>) {
+    useEffect(() => {
+      function handleClickOutside(event: any) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setMenuOpened(false);
+        }
+      }
+
+      document.addEventListener('mousedown', handleClickOutside);
+
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  const menuRef = useRef(null);
+  useOutsideMenu(menuRef);
+
   const [min, isMin] = useState(false);
 
   function close() {
@@ -204,6 +258,24 @@ export default function Surface() {
             isHide && 'hide'
           } ${min && 'minimize'}`}
         >
+          <ActMenu
+            style={{ zIndex: '1', top: '30px', right: '300px', width: '200px' }}
+            className={menuOpened ? 'active' : ''}
+            ref={menuRef}
+          >
+            <ActMenuSelector
+              icon="fa-regular fa-clock-rotate-left"
+              title="History"
+              onClose={() => setMenuOpened(false)}
+            />
+            <ActMenuSeparator />
+            <ActMenuSelector
+              icon="fa-regular fa-gear"
+              title="Settings"
+              onClick={() => setSettingsOpened(true)}
+              onClose={() => setMenuOpened(false)}
+            />
+          </ActMenu>
           <TopBar title="Surface" onDblClick={() => isMin(!min)}>
             <div className="TabBarWrapper">
               <div className="TabBar">
@@ -224,23 +296,22 @@ export default function Surface() {
             </div>
             <div className="TabBar">
               <div
-                className="TabBarItem TabSearchItem"
+                className={`TabBarItem TabSearchItem ${isLoading && 'loading'}`}
                 style={{ width: min ? '610px' : '700px' }}
               >
                 <div className="TabBarInteraction">
                   <i
                     className="fa-regular fa-chevron-left"
-                    onClick={() => dispatch(openUrl(hist[0]))}
+                    onClick={() => webviewRef.current?.goBack()}
                   />
                   <i
                     className="fa-regular fa-chevron-right"
-                    onClick={() => dispatch(openUrl(hist[1]))}
+                    onClick={() => webviewRef.current?.goForward()}
                   />
-                  {url === '' || !wifi ? (
-                    <i className="fa-regular fa-rotate-right" />
-                  ) : (
-                    <i className="fa-regular fa-rotate-right" />
-                  )}
+                  <i
+                    className="fa-regular fa-rotate-right"
+                    onClick={() => webviewRef.current?.reload()}
+                  />
                 </div>
                 <input
                   className={`TabSearch ${splashScreen && 'disabled'}`}
@@ -268,10 +339,10 @@ export default function Surface() {
               <div className="TabBarItem TabSettingsItem">
                 <div className="TabBarInteraction">
                   <i
-                    className={`fa-regular fa-gear ${
-                      settingsOpened && 'active'
+                    className={`fa-regular fa-ellipsis ${
+                      menuOpened && 'active'
                     }`}
-                    onMouseDown={() => setSettingsOpened(!settingsOpened)}
+                    onClick={() => setMenuOpened(!menuOpened)}
                   />
                 </div>
                 <div className="TabBarInteraction">
@@ -427,7 +498,14 @@ export default function Surface() {
                     <p>iFrame is not available for this dialog.</p>
                   </div>
                 </div>
-                {url === '' ? (
+                <webview
+                  ref={webviewRef}
+                  className={`iFrame ${!wifi || !url && "hide"}`}
+                  src={url}
+                  title={t('apps.surface.newTab')}
+                  allowFullScreen={true}
+                />
+                {!url && (
                   <>
                     <div
                       className={`SplashScreen ${isPrivate && 'private'} ${
@@ -463,32 +541,21 @@ export default function Surface() {
                       </div>
                     </div>
                   </>
-                ) : (
-                  <>
-                    {wifi ? (
-                      <webview
-                        ref={iFrameRef}
-                        className="iFrame"
-                        src={url}
-                        title={t('apps.surface.newTab')}
-                        allowFullScreen={true}
-                      />
-                    ) : (
-                      <div className="CantBeReached">
-                        <p className="CantBeReachedText">
-                          {t('apps.surface.internetUnabled')}
-                        </p>
-                        <div className="Description">
-                          <p>{t('apps.surface.internetUnabledDesc')}</p>
-                          <div className="ButtonContainer">
-                            <button className="Button">
-                              {t('apps.surface.internetUnabledReload')}
-                            </button>
-                          </div>
-                        </div>
+                )}
+                {!wifi && (
+                  <div className="CantBeReached">
+                    <p className="CantBeReachedText">
+                      {t('apps.surface.internetUnabled')}
+                    </p>
+                    <div className="Description">
+                      <p>{t('apps.surface.internetUnabledDesc')}</p>
+                      <div className="ButtonContainer">
+                        <button className="Button">
+                          {t('apps.surface.internetUnabledReload')}
+                        </button>
                       </div>
-                    )}
-                  </>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>

@@ -113,6 +113,7 @@ export default function TextEditor() {
     const content = await window.electron.ipcRenderer.invoke(
       'getFileContent',
       location,
+      'utf-8'
     );
     setContent(content);
   }
@@ -122,7 +123,7 @@ export default function TextEditor() {
       'writeFileContent',
       location,
       content,
-      { encoding: 'utf-8' },
+      'utf-8',
     );
   }
 
@@ -158,10 +159,10 @@ export default function TextEditor() {
               action: dontSaveChangesAndExit,
             },
             {
-              label: 'Cancel'
+              label: 'Cancel',
             },
           ],
-          width: "450px"
+          width: '450px',
         },
       ]),
     );

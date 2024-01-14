@@ -3,13 +3,13 @@ import './index.scss';
 import { useAppSelector } from '../../../store/hooks';
 
 export const ActMenuSeparator: React.FC<{
-  space?: number;
-}> = ({ space = 3 }) => {
+  margin?: number;
+}> = ({ margin = 3 }) => {
   return (
     <div style={{ width: '100%', padding: '0 4px' }}>
       <div
         className="ActMenuSeparator"
-        style={{ marginTop: `${space}px`, marginBottom: `${space}px` }}
+        style={{ marginTop: `${margin}px`, marginBottom: `${margin}px` }}
       />
     </div>
   );
@@ -17,6 +17,7 @@ export const ActMenuSeparator: React.FC<{
 
 interface ActMenuSelectorProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
+  icon?: string;
   active?: boolean;
   disabled?: boolean;
   delay?: number;
@@ -25,6 +26,7 @@ interface ActMenuSelectorProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const ActMenuSelector: React.FC<ActMenuSelectorProps> = ({
   title,
+  icon,
   active,
   disabled,
   delay = 0,
@@ -40,7 +42,10 @@ export const ActMenuSelector: React.FC<ActMenuSelectorProps> = ({
       onMouseUp={onClose}
       {...props}
     >
-      <p>{title}</p>
+      <div style={{ display: 'flex', alignItems: "center" }}>
+        {icon && <i className={icon} style={{ marginRight: '8px' }} />}
+        <p>{title}</p>
+      </div>
       <i className={`fa-regular fa-check ${active ? 'active' : ''}`} />
       {children}
     </div>

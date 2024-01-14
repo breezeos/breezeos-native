@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog, nativeImage, systemPreferences } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -31,13 +31,13 @@ let mainWindow: Electron.BrowserWindow | null = null;
 const userData = app.getPath('userData');
 
 ipcMain.handle('quitWindow', () => {
-  return mainWindow?.close();
+  mainWindow?.close();
 });
 
 ipcMain.handle('installFs', () => {
   const userDataPath = userData.split(' ').join('\\ ');
   execSync(
-    `curl -L "https://drive.google.com/uc?export=download&id=1SaIC7tyhBec7_k9Q89UUcNx8HjJqC-Mp" -o ${userDataPath}/FileSystem.tar.xz && tar -xvf ${userDataPath}/FileSystem.tar.xz -C ${userDataPath} && rm -rf ${userDataPath}/FileSystem.tar.xz`,
+    `if [ -d "${userDataPath}/FileSystem" ]; then rm -rf ${userDataPath}/FileSystem; fi; curl -L "https://drive.google.com/uc?export=download&id=1SaIC7tyhBec7_k9Q89UUcNx8HjJqC-Mp" -o ${userDataPath}/FileSystem.tar.xz && tar -xvf ${userDataPath}/FileSystem.tar.xz -C ${userDataPath} && rm -rf ${userDataPath}/FileSystem.tar.xz`,
   );
 });
 
@@ -56,12 +56,15 @@ ipcMain.handle('writeDirContent', (_event, arg1, arg2) => {
   return content;
 });
 
-ipcMain.handle('writeFileContent', (_event, arg1, arg2) => {
+ipcMain.handle('writeFileContent', (_event, arg1, arg2, arg3, arg4, arg5) => {
   const controller = new AbortController();
   const { signal } = controller;
   const content = new Uint8Array(Buffer.from(arg2));
   const promise = fs.writeFileSync(`${userData}/FileSystem${arg1}`, content, {
     signal,
+    encoding: arg3,
+    flag: arg4,
+    mode: arg5
   });
   controller.abort();
   return promise;
@@ -80,7 +83,7 @@ ipcMain.handle('renamePath', (_event, arg1, arg2) => {
   return callback;
 });
 
-ipcMain.handle('fileExists', (_event, arg1, arg2: fs.NoParamCallback) => {
+ipcMain.handle('fileExists', (_event, arg1, arg2) => {
   const callback = fs.access(
     `${userData}/FileSystem${arg1}`,
     constants.F_OK,
@@ -91,6 +94,16 @@ ipcMain.handle('fileExists', (_event, arg1, arg2: fs.NoParamCallback) => {
 
 ipcMain.handle('pathIsDir', (_event, arg) => {
   const callback = fs.lstatSync(`${userData}/FileSystem${arg}`).isDirectory();
+  return callback;
+});
+
+ipcMain.handle('canPromptTouchID', () => {
+  const canPromptTouchID = systemPreferences.canPromptTouchID();
+  return canPromptTouchID;
+});
+
+ipcMain.handle('promptTouchID', (_event, arg) => {
+  const callback = systemPreferences.promptTouchID(arg);
   return callback;
 });
 
@@ -173,6 +186,14 @@ const createWindow = async () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  mainWindow.on('unresponsive', () => {
+    dialog.showMessageBox(mainWindow!, {
+      message: "BreezeOS Native is currently unresponding due to unexpected issues occured while it was running. You can choose to wait until the simulator become responsive or re-start the simulator.",
+      type: "error",
+      buttons: ["Close BreezeOS Native", "Wait until it responds"],
+    })
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);

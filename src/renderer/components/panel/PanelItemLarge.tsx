@@ -44,7 +44,7 @@ const PanelItemLarge = ({ type }: PanelItemLargeProps) => {
             />
             <p
               className={`${
-                settingsReducer.wifi ? 'font-medium' : 'font-bold'
+                settingsReducer.wifi && settingsReducer.connectedWifi?.ssid ? 'font-medium' : 'font-bold'
               } activeAnimation ${
                 settingsReducer.wifi && settingsReducer.connectedWifi?.ssid
                   ? 'minimize'

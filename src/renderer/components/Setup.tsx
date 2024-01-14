@@ -8,6 +8,7 @@ import si from 'systeminformation';
 import Avatar from './Avatar';
 import {
   setDeviceName,
+  setTouchID,
   setName,
   setPassword,
   toggleLightMode,
@@ -23,6 +24,7 @@ import InstallImage from '../../../assets/images/install.png';
 import useProcess from '../hooks/useProcess';
 import CryptoJS from 'crypto-js';
 import { setBlocks } from '../store/reducers/msgbox';
+import TouchID from '../../../assets/images/touchid.png';
 
 export default function Setup() {
   const dispatch = useAppDispatch();
@@ -890,18 +892,33 @@ export default function Setup() {
     },
   ];
 
-  const section = [
-    'language',
-    'country',
-    'keyboard',
-    'wifi',
-    'disks',
-    'encryptDisk',
-    'location',
-    'users',
-    'appearances',
-    'bootscreen',
-  ];
+  const section =
+    system.platform === 'darwin'
+      ? [
+          'language',
+          'country',
+          'keyboard',
+          'wifi',
+          'disks',
+          'encryptDisk',
+          'location',
+          'users',
+          'touchid',
+          'appearances',
+          'bootscreen',
+        ]
+      : [
+          'language',
+          'country',
+          'keyboard',
+          'wifi',
+          'disks',
+          'encryptDisk',
+          'location',
+          'users',
+          'appearances',
+          'bootscreen',
+        ];
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentSection = section[currentIndex];
@@ -1035,7 +1052,7 @@ export default function Setup() {
     const [securityMenu, showSecurityMenu] = useState<boolean>(false);
     const [security, setSecurity] = useState<string>('WPA2');
 
-    function useOutsideSecurityMenu(ref: React.MutableRefObject<any>) {
+    function useOutsideSecurityMenu(ref: React.RefObject<HTMLElement>) {
       useEffect(() => {
         function handleClickOutside(event: any) {
           if (ref.current && !ref.current.contains(event.target)) {
@@ -1158,60 +1175,59 @@ export default function Setup() {
               >
                 <p>{security}</p>
                 <i className="fa-regular fa-chevron-down" />
-                <ActMenu
-                  style={{
-                    zIndex: '1',
-                    width: '200px',
-                    top: '0',
-                    right: '0',
-                  }}
-                  className={securityMenu ? 'active' : ''}
-                  ref={securityMenuRef}
-                >
-                  <ActMenuSelector
-                    onClose={() => showSecurityMenu(false)}
-                    title="None"
-                    active={security === 'None'}
-                    onClick={() => setSecurity('None')}
-                  />
-                  <ActMenuSelector
-                    onClose={() => showSecurityMenu(false)}
-                    title="WEP"
-                    active={security === 'WEP'}
-                    onClick={() => setSecurity('WEP')}
-                  />
-                  <ActMenuSelector
-                    onClose={() => showSecurityMenu(false)}
-                    title="WPA"
-                    active={security === 'WPA'}
-                    onClick={() => setSecurity('WPA')}
-                  />
-                  <ActMenuSelector
-                    onClose={() => showSecurityMenu(false)}
-                    title="WPA2"
-                    active={security === 'WPA2'}
-                    onClick={() => setSecurity('WPA2')}
-                  />
-                  <ActMenuSelector
-                    onClose={() => showSecurityMenu(false)}
-                    title="WPA Enterprise"
-                    active={security === 'WPA Enterprise'}
-                    onClick={() => setSecurity('WPA Enterprise')}
-                  />
-                  <ActMenuSelector
-                    onClose={() => showSecurityMenu(false)}
-                    title="WPA2 Enterprise"
-                    active={security === 'WPA2 Enterprise'}
-                    onClick={() => setSecurity('WPA2 Enterprise')}
-                  />
-                  <ActMenuSelector
-                    onClose={() => showSecurityMenu(false)}
-                    title="WPA3 Enterprise"
-                    active={security === 'WPA3 Enterprise'}
-                    onClick={() => setSecurity('WPA3 Enterprise')}
-                  />
-                </ActMenu>
               </div>
+              <ActMenu
+                style={{
+                  zIndex: '1',
+                  width: '200px',
+                  transform: 'translate(67.5px, 86px)',
+                }}
+                className={securityMenu ? 'active' : ''}
+                ref={securityMenuRef}
+              >
+                <ActMenuSelector
+                  onClose={() => showSecurityMenu(false)}
+                  title="None"
+                  active={security === 'None'}
+                  onClick={() => setSecurity('None')}
+                />
+                <ActMenuSelector
+                  onClose={() => showSecurityMenu(false)}
+                  title="WEP"
+                  active={security === 'WEP'}
+                  onClick={() => setSecurity('WEP')}
+                />
+                <ActMenuSelector
+                  onClose={() => showSecurityMenu(false)}
+                  title="WPA"
+                  active={security === 'WPA'}
+                  onClick={() => setSecurity('WPA')}
+                />
+                <ActMenuSelector
+                  onClose={() => showSecurityMenu(false)}
+                  title="WPA2"
+                  active={security === 'WPA2'}
+                  onClick={() => setSecurity('WPA2')}
+                />
+                <ActMenuSelector
+                  onClose={() => showSecurityMenu(false)}
+                  title="WPA Enterprise"
+                  active={security === 'WPA Enterprise'}
+                  onClick={() => setSecurity('WPA Enterprise')}
+                />
+                <ActMenuSelector
+                  onClose={() => showSecurityMenu(false)}
+                  title="WPA2 Enterprise"
+                  active={security === 'WPA2 Enterprise'}
+                  onClick={() => setSecurity('WPA2 Enterprise')}
+                />
+                <ActMenuSelector
+                  onClose={() => showSecurityMenu(false)}
+                  title="WPA3 Enterprise"
+                  active={security === 'WPA3 Enterprise'}
+                  onClick={() => setSecurity('WPA3 Enterprise')}
+                />
+              </ActMenu>
             </div>
           </div>
         </div>
@@ -1321,6 +1337,102 @@ export default function Setup() {
           </div>
         </div>
       </div>
+    );
+  }
+
+  function PromptTouchId() {
+    const [isSucceeded, setIsSucceeded] = useState<boolean | null>(null);
+    const [canPromptTouchID, setCanPromptTouchID] = useState<boolean>(false);
+
+    async function setUpTouchID() {
+      const canPromptTouchID =
+        await window.electron.ipcRenderer.invoke('canPromptTouchID');
+
+      setCanPromptTouchID(canPromptTouchID);
+
+      if (canPromptTouchID && settings.user.password && isSucceeded === null) {
+        window.electron.ipcRenderer
+          .invoke('promptTouchID', 'add a fingerprint')
+          .then(() => {
+            setIsSucceeded(true);
+            dispatch(setTouchID(true));
+          })
+          .catch(() => setIsSucceeded(false));
+      }
+    }
+
+    useEffect(() => {
+      setUpTouchID();
+    }, [isSucceeded]);
+
+    return (
+      <>
+        <div style={{ width: '100%', height: '100%' }}>
+          {!settings.user.password ? (
+            <p
+              style={{
+                fontSize: '17px',
+                fontWeight: 'bold',
+                margin: '0 30px',
+              }}
+            >
+              A password is required to enable Touch ID.
+            </p>
+          ) : canPromptTouchID ? (
+            isSucceeded === true ? (
+              <>
+                <p className="Title">Successfully set up Touch ID</p>
+                <p className="Description" style={{ margin: '14px 0 5px 0' }}>
+                  From now on, Touch ID will be used as the main sign-in option
+                  whenever you unlock your computer.
+                </p>
+              </>
+            ) : isSucceeded === false ? (
+              <>
+                <p className="Title" style={{ marginBottom: '20px' }}>
+                  Failed to set up Touch ID
+                </p>
+                <div style={{ width: '100%' }}>
+                  <div
+                    className="Button"
+                    style={{ width: 'fit-content', margin: '0 auto' }}
+                    onClick={() => setIsSucceeded(null)}
+                  >
+                    Retry
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div
+                style={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column-reverse',
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    margin: '0 30px',
+                  }}
+                >
+                  Please wait a moment, a prompt will appear and ask to place
+                  your finger on the sensor.
+                </p>
+              </div>
+            )
+          ) : (
+            <>
+              <p className="Title">Failed to set up Touch ID</p>
+              <p className="Description" style={{ margin: '14px 0 5px 0' }}>
+                There's an issue with your Touch ID sensor, and we can't fix it
+                for you unfortunately.
+              </p>
+            </>
+          )}
+        </div>
+      </>
     );
   }
 
@@ -1731,6 +1843,72 @@ export default function Setup() {
             </div>
           </div>
         );
+      case 'touchid':
+        return (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            {settings.user.touchid ? (
+              <>
+                <p
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Touch ID is enabled in BreezeOS Native.
+                </p>
+                <div style={{ width: '100%' }}>
+                  <div
+                    className="Button"
+                    style={{ width: 'fit-content', margin: '0 auto' }}
+                    onClick={() =>
+                      dispatch(
+                        setBlocks([
+                          ...blocks,
+                          {
+                            type: 'question',
+                            content: 'Disable Touch ID temporarily?',
+                            buttons: [
+                              {
+                                label: 'Yes',
+                                action: () => dispatch(setTouchID(false)),
+                              },
+                              {
+                                label: 'No',
+                              },
+                            ],
+                          },
+                        ]),
+                      )
+                    }
+                  >
+                    Disable
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <p
+                  className="TextInteraction"
+                  style={{ fontSize: '14.5px', marginBottom: '20px' }}
+                  onClick={() => setSubDialog(<PromptTouchId />)}
+                >
+                  Set up Touch ID...
+                </p>
+              </>
+            )}
+            <img
+              src={TouchID}
+              style={{ width: '100%', height: '100%', margin: '10px 0' }}
+            />
+          </div>
+        );
       case 'appearances':
         return (
           <div
@@ -1903,6 +2081,8 @@ export default function Setup() {
                   ? 'Location Services'
                   : currentSection === 'users'
                   ? 'Create New User'
+                  : currentSection === 'touchid'
+                  ? 'Set up Touch ID'
                   : currentSection === 'appearances'
                   ? 'Select Appearance'
                   : currentSection === 'bootscreen'
@@ -1916,6 +2096,8 @@ export default function Setup() {
                   ? `Do you want to encrypt disk "${selectedDisk?.model}"?`
                   : currentSection === 'location'
                   ? 'Select an appearance that you prefer, it can be changed later in the system settings.'
+                  : currentSection === 'touchid'
+                  ? 'You can set up Touch ID to unlock instead of typing password. To get started, click "Set up Touch ID...".'
                   : currentSection === 'appearances'
                   ? 'Select an appearance that you prefer, it can be changed later in the system settings.'
                   : currentSection === 'bootscreen'
@@ -2057,6 +2239,25 @@ export default function Setup() {
                     </div>
                     <p className="Label">Next</p>
                   </div>
+                ) : currentSection === 'touchid' ? (
+                  settings.user.touchid ? (
+                    <div className="InteractionButtonWrapper">
+                      <div
+                        className="InteractionButton"
+                        onClick={() => setCurrentIndex(currentIndex + 1)}
+                      >
+                        <i className="fa-regular fa-arrow-right" />
+                      </div>
+                      <p className="Label">Next</p>
+                    </div>
+                  ) : (
+                    <div
+                      className="Button"
+                      onClick={() => setCurrentIndex(currentIndex + 1)}
+                    >
+                      <p>Skip</p>
+                    </div>
+                  )
                 ) : currentSection === section[section.length - 1] ? (
                   <div
                     className="Button"

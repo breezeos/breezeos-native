@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './LockScreen.scss';
-import { setLocked, setSleeping } from '../../store/reducers/settings';
+import { setLocked } from '../../store/reducers/settings';
 import {
   setEditable,
   setFontFamily,
@@ -28,6 +28,8 @@ export default function SplashScreen() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const settings = useAppSelector((state) => state.settings);
+  const isLocked = useAppSelector((state) => state.settings.isLocked);
+  const isSleeping = useAppSelector((state) => state.settings.isSleeping);
   const lock = useAppSelector((state) => state.lock);
   const optionsMenuShown = useAppSelector(
     (state) => state.lock.optionsMenuShown,
@@ -56,8 +58,13 @@ export default function SplashScreen() {
   const { timeFormat } = useTime();
   const inputFieldRef = useRef<HTMLInputElement>(null);
   const { sleep, shutdown, restart } = useProcess();
+  const isTouchIDEnabled = useAppSelector(
+    (state) => state.settings.user.touchid,
+  );
+  const [requireTouchID, setRequireTouchID] =
+    useState<boolean>(isTouchIDEnabled);
 
-  function useOutsideFontFamilyMenu(ref: React.MutableRefObject<any>) {
+  function useOutsideFontFamilyMenu(ref: React.RefObject<HTMLElement>) {
     useEffect(() => {
       /**
        * Alert if clicked on outside of element
@@ -79,7 +86,7 @@ export default function SplashScreen() {
   const fontFamilyMenuRef = useRef(null);
   useOutsideFontFamilyMenu(fontFamilyMenuRef);
 
-  function useOutsideFontSizeMenu(ref: React.MutableRefObject<any>) {
+  function useOutsideFontSizeMenu(ref: React.RefObject<HTMLElement>) {
     useEffect(() => {
       /**
        * Alert if clicked on outside of element
@@ -101,7 +108,7 @@ export default function SplashScreen() {
   const fontSizeMenuRef = useRef(null);
   useOutsideFontSizeMenu(fontSizeMenuRef);
 
-  function useOutsideTypeMenu(ref: React.MutableRefObject<any>) {
+  function useOutsideTypeMenu(ref: React.RefObject<HTMLElement>) {
     useEffect(() => {
       /**
        * Alert if clicked on outside of element
@@ -127,11 +134,38 @@ export default function SplashScreen() {
     if (e.keyCode === 27) dispatch(setOptionsMenuShown(false));
   });
 
+  async function promptTouchID() {
+    if (
+      isLocked &&
+      !optionsMenuShown &&
+      !isEditable &&
+      !isSleeping &&
+      requireTouchID
+    ) {
+      window.electron.ipcRenderer
+        .invoke('promptTouchID', 'unlock your computer with Touch ID')
+        .then(login)
+        .catch(() => {
+          setRequireTouchID(false);
+          inputFieldRef.current?.focus();
+        });
+    }
+  }
+
   useEffect(() => {
     if (secondsLeft <= 0) {
       setInvalidCount(0);
     }
-  }, [secondsLeft]);
+
+    promptTouchID();
+  }, [
+    secondsLeft,
+    isLocked,
+    optionsMenuShown,
+    isEditable,
+    isSleeping,
+    requireTouchID,
+  ]);
 
   function login() {
     dispatch(setLocked(false));
@@ -139,6 +173,7 @@ export default function SplashScreen() {
       setInvalidCount(0);
       setPasswordValue('');
       inputFieldRef.current?.blur();
+      setRequireTouchID(isTouchIDEnabled);
     }
     if (allowSwitchWorkspace) {
       dispatch(setAllowSwitchWorkspace(false));
@@ -236,7 +271,11 @@ export default function SplashScreen() {
                   <div className="SignIn">
                     {settings.user.password ? (
                       <>
-                        {invalidCount === invalidLimit ? (
+                        {requireTouchID ? (
+                          <p style={{ fontWeight: 'bold', fontSize: '13px' }}>
+                            Touch ID to unlock
+                          </p>
+                        ) : invalidCount === invalidLimit ? (
                           <p>
                             {invalidLimit} {t('lockScreen.locked')}{' '}
                             {secondsLeft}{' '}
@@ -276,18 +315,44 @@ export default function SplashScreen() {
                                 </div>
                               )}
                             </div>
-                            <div
-                              className={`LoginButton ${
-                                passwordValue.length === 0 && 'disabled'
-                              }`}
-                              onClick={
-                                passwordValue !== settings.user.password
-                                  ? wrongPassword
-                                  : login
-                              }
-                            >
-                              <i className="fa-regular fa-arrow-right SplashScreenIcon" />
-                            </div>
+                            {isTouchIDEnabled ? (
+                              passwordValue.length === 0 ? (
+                                <div
+                                  className="LoginButton"
+                                  onClick={() => setRequireTouchID(true)}
+                                >
+                                  <i className="fa-regular fa-fingerprint SplashScreenIcon" />
+                                </div>
+                              ) : (
+                                <div
+                                  className="LoginButton"
+                                  onClick={
+                                    CryptoJS.MD5(passwordValue).toString(
+                                      CryptoJS.enc.Hex,
+                                    ) !== settings.user.password
+                                      ? wrongPassword
+                                      : login
+                                  }
+                                >
+                                  <i className="fa-regular fa-arrow-right SplashScreenIcon" />
+                                </div>
+                              )
+                            ) : (
+                              <div
+                                className={`LoginButton ${
+                                  passwordValue.length === 0 && 'disabled'
+                                }`}
+                                onClick={
+                                  CryptoJS.MD5(passwordValue).toString(
+                                    CryptoJS.enc.Hex,
+                                  ) !== settings.user.password
+                                    ? wrongPassword
+                                    : login
+                                }
+                              >
+                                <i className="fa-regular fa-arrow-right SplashScreenIcon" />
+                              </div>
+                            )}
                           </>
                         )}
                       </>

@@ -23,7 +23,7 @@ const DesktopBody = () => {
   });
   const [desktopIconShown, setDesktopIconShown] = useState<boolean>(false);
 
-  function useOutsideContextMenu(ref: React.MutableRefObject<any>) {
+  function useOutsideContextMenu(ref: React.RefObject<HTMLElement>) {
     useEffect(() => {
       /**
        * Alert if clicked on outside of element

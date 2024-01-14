@@ -125,6 +125,10 @@ $fgcolor: #e2e2e2;
         }
       }
 
+      .TextInteraction {
+        color: #60a5fa;
+      }
+
       .Button {
         border-radius: 10px;
         background-color: transparentize($fgcolor, 0.94);
