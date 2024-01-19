@@ -1,5 +1,126 @@
 {
+  "setup": {
+    "title": {
+      "language": "เลือกภาษา",
+      "country": "เลือกประเทศ",
+      "keyboard": "เลือกรูปแบบแป้นพิมพ์",
+      "wifi": "เลือกเครือข่าย Wi-Fi",
+      "disks": "เลือกดิสก์",
+      "encryptDisk": "การเข้ารหัสดิสก์",
+      "location": "บริการระบุตำแหน่ง",
+      "users": "สร้างผู้ใช้ใหม่",
+      "touchid": "ตั้งค่า Touch ID",
+      "appearances": "เลือกลักษณะที่ปรากฏ",
+      "bootscreen": "หน้าจอบูต"
+    },
+    "description": {
+      "disks": "การติดตั้งจะลบข้อมูลปัจจุบันทั้งหมดที่เลือกดิสก์ไว้ ",
+      "encryptDisk": {
+        "leftHand": "คุณต้องการเข้ารหัสดิสก์",
+        "rightHand": "หรือไม่"
+      },
+      "appearances": "เลือกรูปลักษณ์ที่คุณต้องการ โดยสามารถเปลี่ยนแปลงได้ภายหลังในการตั้งค่าระบบ",
+      "touchid": "คุณสามารถตั้งค่า Touch ID เพื่อปลดล็อคแทนการพิมพ์รหัสผ่าน ",
+      "bootscreen": "หากเปิดใช้งาน โลโก้จะแสดงแทนข้อความการบู๊ตขณะอยู่ในขั้นตอนการบู๊ตนับจากนี้เป็นต้นไป"
+    },
+    "subdialog": {
+      "connectWifi": {
+        "titleLeftHand": "ป้อนรหัสผ่านของ Wi-Fi",
+        "titleRightHand": "เพื่อสร้างการเชื่อมต่อ",
+        "passwordLabel": "รหัสผ่าน",
+        "showPasswordLabel": "แสดงรหัสผ่าน",
+        "connectButtonLabel": "เชื่อมต่อ"
+      },
+      "connectOtherWifi": {
+        "title": "เชื่อมต่อกับเครือข่ายที่ซ่อนอยู่",
+        "nameLabel": "ชื่อเครือข่าย",
+        "passwordLabel": "รหัสผ่าน",
+        "showPasswordLabel": "แสดงรหัสผ่าน",
+        "securityLabel": "ความปลอดภัย",
+        "connectButtonLabel": "เชื่อมต่อ"
+      },
+      "overview": {
+        "language": "ภาษา",
+        "country": "ประเทศ",
+        "keyboardLayout": "รูปแบบแป้นพิมพ์",
+        "disks": "ดิสก์",
+        "encryptDisk": "การเข้ารหัสดิสก์",
+        "bootscreen": "หน้าจอบูต"
+      },
+      "promptTouchID": {
+        "requirePassword": "ต้องใช้รหัสผ่านเพื่อเปิดใช้งาน Touch ID",
+        "waiting": "โปรดรอสักครู่ ข้อความแจ้งจะปรากฏขึ้นและขอให้วางนิ้วของคุณบนเซ็นเซอร์",
+        "failed": {
+          "title": "ไม่สามารถตั้งค่า Touch ID",
+          "buttonLabel": "ลองอีกครั้ง"
+        },
+        "success": {
+          "title": "ตั้งค่า Touch ID สำเร็จแล้ว",
+          "description": "จากนี้ไป Touch ID จะถูกใช้เป็นตัวเลือกการลงชื่อเข้าใช้หลักทุกครั้งที่คุณปลดล็อคคอมพิวเตอร์"
+        },
+        "touchIDIssue": "มีปัญหากับเซ็นเซอร์ Touch ID ของคุณ และเราไม่สามารถแก้ไขปัญหาให้คุณได้"
+      },
+      "installation": {
+        "success": {
+          "title": "การติดตั้งเสร็จสมบูรณ์",
+          "description": "ขอขอบคุณที่เลือก BreezeOS เป็นระบบปฏิบัติการหลักของคุณ ",
+          "restartButtonLabel": "เริ่มต้นใหม่"
+        },
+        "waiting": "การดำเนินการนี้จะใช้เวลาสักครู่"
+      }
+    },
+    "checkbox": {
+      "yes": "ใช่",
+      "no": "เลขที่"
+    },
+    "backLabel": "กลับ",
+    "nextLabel": "ต่อไป",
+    "installLabel": "ติดตั้ง",
+    "msgbox": {
+      "yesLabel": "ใช่",
+      "noLabel": "เลขที่",
+      "discard": "ยกเลิกการเปลี่ยนแปลงทั้งหมดและออกจากการติดตั้งใช่ไหม",
+      "touchid": "ปิดการใช้งาน Touch ID อย่างถาวรหรือไม่",
+      "disks": "ไม่สามารถเลือกดิสก์ที่มีขนาดต่ำกว่า 50GB ได้ โปรดเลือกดิสก์อื่น",
+      "continue": {
+        "title": "ดำเนินการต่อ?",
+        "content": "โปรแกรมติดตั้งจะใช้การเปลี่ยนแปลงกับดิสก์ของคุณ ",
+        "overviewLabel": "ภาพรวม..."
+      }
+    },
+    "wifi": {
+      "otherButtonLabel": "อื่น...",
+      "connectButtonLabel": "เชื่อมต่อ"
+    },
+    "encryptDisk": {
+      "passwordLabel": "รหัสผ่าน",
+      "confirmPasswordLabel": "ยืนยันรหัสผ่าน"
+    },
+    "users": {
+      "username": "ชื่อผู้ใช้",
+      "computerName": "ชื่อคอมพิวเตอร์",
+      "passwordLabel": "รหัสผ่าน",
+      "confirmPasswordLabel": "ทำซ้ำรหัสผ่าน",
+      "enablePasswordLabel": "เปิดใช้งานรหัสผ่าน",
+      "passwordDisabled": "ขอแนะนำให้เปิดใช้งานรหัสผ่านสำหรับบัญชีของคุณเพื่อรักษาข้อมูลของคุณให้ปลอดภัย"
+    },
+    "touchid": {
+      "enabled": "เปิดใช้งาน Touch ID ใน BreezeOS Native",
+      "setup": "ตั้งค่า Touch ID...",
+      "disableLabel": "ปิดการใช้งาน",
+      "skipLabel": "ข้าม"
+    },
+    "appearances": {
+      "light": "แสงสว่าง",
+      "dark": "มืด"
+    },
+    "bootscreen": {
+      "enableLabel": "เปิดใช้งาน",
+      "disableLabel": "ปิดการใช้งาน"
+    }
+  },
   "lockScreen": {
+    "touchID": "Touch ID เพื่อปลดล็อก",
     "passwordPlaceholder": "รหัสผ่าน",
     "incorrectPassword": "ความพยายามล้มเหลว ครั้ง",
     "incorrectPasswordPlural": "ความพยายามล้มเหลว ครั้ง",

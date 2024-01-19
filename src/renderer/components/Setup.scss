@@ -1,5 +1,6 @@
 $bgcolor: #202023;
 $fgcolor: #e2e2e2;
+$msDelay: 5.5s;
 
 .Setup {
   width: 100%;
@@ -9,13 +10,26 @@ $fgcolor: #e2e2e2;
   background-position: center;
   position: absolute;
 
+  .Image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    &.active {
+      animation: fade ease $msDelay;
+    }
+  }
+
   .SetupWrapper {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     color: $fgcolor;
 
     p {
@@ -32,6 +46,16 @@ $fgcolor: #e2e2e2;
     .Description {
       font-size: 14.5px;
       line-height: 1.6;
+    }
+
+    .BlinkText {
+      position: absolute;
+      text-align: center;
+      opacity: 0;
+
+      &.active {
+        animation: fade ease $msDelay;
+      }
     }
 
     .InteractionButtonWrapper {
@@ -90,6 +114,7 @@ $fgcolor: #e2e2e2;
       box-shadow: 0px 0 15px transparentize($bgcolor, 0.7);
       opacity: 0;
       scale: 0.9;
+      pointer-events: none;
       transition: all ease 0.4s;
 
       .CloseButton {
@@ -276,6 +301,7 @@ $fgcolor: #e2e2e2;
       &.active {
         opacity: 1;
         scale: 1;
+        pointer-events: auto;
       }
 
       &.minimize {
@@ -320,10 +346,36 @@ $fgcolor: #e2e2e2;
       }
     }
   }
+
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
 }
 
 .lightMode {
   .Setup .SetupWrapper {
+    color: $bgcolor;
+
+    .InteractionButtonWrapper .InteractionButton {
+      background-color: $bgcolor;
+      color: $fgcolor;
+
+      &:active {
+        background-color: lighten($bgcolor, 20%);
+      }
+    }
+
     .Dialog,
     .SubDialog {
       background-color: $fgcolor;
@@ -335,15 +387,6 @@ $fgcolor: #e2e2e2;
 
         &:active {
           background: transparentize($bgcolor, 0.78);
-        }
-      }
-
-      .InteractionButtonWrapper .InteractionButton {
-        background-color: $bgcolor;
-        color: $fgcolor;
-
-        &:active {
-          background-color: lighten($bgcolor, 20%);
         }
       }
 

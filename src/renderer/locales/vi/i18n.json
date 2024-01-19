@@ -1,5 +1,127 @@
 {
+  "setup": {
+    "title": {
+      "language": "Chọn Ngôn ngữ",
+      "country": "Chọn Quốc gia",
+      "keyboard": "Chọn Bố cục bàn phím",
+      "wifi": "Chọn Mạng Wi-Fi",
+      "disks": "Chọn đĩa",
+      "encryptDisk": "Mã hóa Đĩa",
+      "location": "Dịch vụ Định vị",
+      "users": "Tạo Người dùng mới",
+      "touchid": "Thiết lập Touch ID",
+      "appearances": "Chọn Giao diện",
+      "bootscreen": "Màn hình khởi động"
+    },
+    "description": {
+      "disks": "Việc cài đặt sẽ xóa tất cả các dữ liệu hiện tại trong đĩa được chọn. Bạn nên sao lưu tất cả dữ liệu.",
+      "encryptDisk": {
+        "leftHand": "Bạn có muốn mã hóa đĩa",
+        "rightHand": ""
+      },
+      "appearances": "Chọn giao diện mà bạn thích, nó có thể được thay đổi sau trong cài đặt hệ thống.",
+      "touchid": "Bạn có thể thiết lập Touch ID để mở khóa thay vì nhập mật khẩu. Để bắt đầu, nhấp vào \"Thiết lập Touch ID...\".",
+      "bootscreen": "Nếu bật, logo sẽ được hiển thị thay vì tin nhắn khởi động trong quá trình khởi động kể từ bây giờ."
+    },
+    "subdialog": {
+      "connectWifi": {
+        "titleLeftHand": "Nhập mật khẩu của Wi-Fi",
+        "titleRightHand": "để thiết lập kết nối.",
+        "passwordLabel": "Mật khẩu",
+        "showPasswordLabel": "Hiển thị mật khẩu",
+        "connectButtonLabel": "Kết nối"
+      },
+      "connectOtherWifi": {
+        "title": "Kết nối với các mạng ẩn",
+        "nameLabel": "Tên mạng",
+        "passwordLabel": "Mật khẩu",
+        "showPasswordLabel": "Hiển thị mật khẩu",
+        "securityLabel": "Bảo vệ",
+        "connectButtonLabel": "Kết nối"
+      },
+      "overview": {
+        "language": "Ngôn ngữ",
+        "country": "Quốc gia",
+        "keyboardLayout": "Bố cục bàn phím",
+        "disks": "Đĩa",
+        "encryptDisk": "Mã hóa đĩa",
+        "bootscreen": "Màn hình khởi động",
+        "installLabel": "Cài đặt"
+      },
+      "promptTouchID": {
+        "requirePassword": "Yêu cầu mật khẩu để bật Touch ID.",
+        "waiting": "Vui lòng đợi một lúc, một lời nhắc sẽ xuất hiện và yêu cầu đặt ngón tay của bạn lên cảm biến.",
+        "failed": {
+          "title": "Không thiết lập Touch ID",
+          "buttonLabel": "Thử lại"
+        },
+        "success": {
+          "title": "Thiết lập Touch ID thành công",
+          "description": "Từ giờ trở đi, Touch ID sẽ được sử dụng làm tùy chọn đăng nhập chính bất cứ khi nào bạn mở khóa máy tính."
+        },
+        "touchIDIssue": "Có một vấn đề với cảm biến Touch ID của bạn và không may chúng tôi không thể sửa nó cho bạn."
+      },
+      "installation": {
+        "success": {
+          "title": "Cài đặt thành công.",
+          "description": "Cảm ơn bạn đã chọn BreezeOS làm hệ điều hành chính của bạn. Bây giờ bạn có thể khởi động lại máy tính của mình.",
+          "restartButtonLabel": "Khởi động lại"
+        },
+        "waiting": "Việc này sẽ tốn một lúc."
+      }
+    },
+    "checkbox": {
+      "yes": "Có",
+      "no": "Không"
+    },
+    "backLabel": "Quay lại",
+    "nextLabel": "Tiếp",
+    "installLabel": "Cài đặt",
+    "msgbox": {
+      "yesLabel": "Có",
+      "noLabel": "Không",
+      "discard": "Huỷ tất cả các thay đổi và thoát khỏi cài đặt?",
+      "touchid": "Vô hiệu hóa Touch ID vĩnh viển?",
+      "disks": "Không thể chọn đĩa dưới 50GB, vui lòng chọn một đĩa khác.",
+      "continue": {
+        "title": "Tiếp tục?",
+        "content": "Trình cài đặt sẽ áp dụng các thay đổi vào đĩa của bạn. Bạn sẽ không thể hoàn tác những thay đổi sau đó.",
+        "overviewLabel": "Tổng quan..."
+      }
+    },
+    "wifi": {
+      "otherButtonLabel": "Khác...",
+      "connectButtonLabel": "Kết nối"
+    },
+    "encryptDisk": {
+      "passwordLabel": "Mật khẩu",
+      "confirmPasswordLabel": "Xác nhận mật khẩu"
+    },
+    "users": {
+      "username": "Tên tài khoản",
+      "computerName": "Tên máy tính",
+      "passwordLabel": "Mật khẩu",
+      "confirmPasswordLabel": "Lặp lại mật khẩu",
+      "enablePasswordLabel": "Bật mật khẩu",
+      "passwordDisabled": "Bạn nên kích hoạt mật khẩu cho tài khoản của bạn để giữ an toàn cho dữ liệu của bạn."
+    },
+    "touchid": {
+      "enabled": "Touch ID được kích hoạt trong BreezeOS Native.",
+      "setup": "Thiết lập Touch ID...",
+      "disableLabel": "Tắt",
+      "skipLabel": "Bỏ qua"
+    },
+    "appearances": {
+      "light": "Sáng",
+      "dark": "Tối"
+    },
+    "bootscreen": {
+      "enableLabel": "Bật",
+      "disableLabel": "Tắt"
+    }
+  },
   "lockScreen": {
+    "touchID": "Touch ID để mở khóa",
     "passwordPlaceholder": "Mật khẩu...",
     "incorrectPassword": "lần sai mật khẩu",
     "incorrectPasswordPlural": "lần sai mật khẩu",

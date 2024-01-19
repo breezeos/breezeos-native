@@ -1,5 +1,126 @@
 {
+  "setup": {
+    "title": {
+      "language": "言語を選択する",
+      "country": "国を選択",
+      "keyboard": "キーボードレイアウトの選択",
+      "wifi": "Wi-Fiネットワークを選択",
+      "disks": "ディスクの選択",
+      "encryptDisk": "ディスク暗号化",
+      "location": "位置情報サービス",
+      "users": "新しいユーザーの作成",
+      "touchid": "Touch IDを設定する",
+      "appearances": "外観の選択",
+      "bootscreen": "ブート画面"
+    },
+    "description": {
+      "disks": "インストールすると、ディスクが選択されている現在のデータがすべて消去されます。",
+      "encryptDisk": {
+        "leftHand": "ディスク",
+        "rightHand": "を暗号化しますか"
+      },
+      "appearances": "好みの外観を選択します。後からシステム設定で変更できます。",
+      "touchid": "パスワードを入力する代わりにTouch IDを設定してロックを解除することができます。",
+      "bootscreen": "有効にすると、今後の起動プロセス中に起動メッセージの代わりにロゴが表示されます。"
+    },
+    "subdialog": {
+      "connectWifi": {
+        "titleLeftHand": "Wi-Fiのパスワードを入力",
+        "titleRightHand": "接続を確立するために。",
+        "passwordLabel": "パスワード",
+        "showPasswordLabel": "パスワードを表示",
+        "connectButtonLabel": "接続する"
+      },
+      "connectOtherWifi": {
+        "title": "隠れたネットワークに接続する",
+        "nameLabel": "ネットワーク名",
+        "passwordLabel": "パスワード",
+        "showPasswordLabel": "パスワードを表示",
+        "securityLabel": "安全",
+        "connectButtonLabel": "接続する"
+      },
+      "overview": {
+        "language": "言語",
+        "country": "国",
+        "keyboardLayout": "キーボード・レイアウト",
+        "disks": "ディスク",
+        "encryptDisk": "ディスク暗号化",
+        "bootscreen": "ブート画面"
+      },
+      "promptTouchID": {
+        "requirePassword": "Touch IDを有効にするにはパスワードが必要です。",
+        "waiting": "しばらくお待ちください。センサーに指を置くように求めるプロンプトが表示されます。",
+        "failed": {
+          "title": "Touch IDの設定に失敗しました",
+          "buttonLabel": "リトライ"
+        },
+        "success": {
+          "title": "Touch IDのセットアップが完了しました",
+          "description": "今後、コンピューターのロックを解除するたびに、Touch IDがメインのサインイン オプションとして使用されます。"
+        },
+        "touchIDIssue": "Touch IDセンサーに問題があり、残念ながら解決できません。"
+      },
+      "installation": {
+        "success": {
+          "title": "インストールが完了",
+          "description": "BreezeOS をメイン オペレーティング システムとして選択していただきありがとうございます。",
+          "restartButtonLabel": "再起動"
+        },
+        "waiting": "これにはしばらく時間がかかります。"
+      }
+    },
+    "checkbox": {
+      "yes": "はい",
+      "no": "いいえ"
+    },
+    "backLabel": "戻る",
+    "nextLabel": "次",
+    "installLabel": "インストール",
+    "msgbox": {
+      "yesLabel": "はい",
+      "noLabel": "いいえ",
+      "discard": "すべての変更を破棄してインストールを終了しますか?",
+      "touchid": "Touch IDを永久に無効にしますか?",
+      "disks": "50GB 未満のディスクは選択できません。別のディスクを選択してください。",
+      "continue": {
+        "title": "続く？",
+        "content": "インストーラーはディスクに変更を適用します。",
+        "overviewLabel": "概要..."
+      }
+    },
+    "wifi": {
+      "otherButtonLabel": "他の...",
+      "connectButtonLabel": "接続する"
+    },
+    "encryptDisk": {
+      "passwordLabel": "パスワード",
+      "confirmPasswordLabel": "パスワードを認証する"
+    },
+    "users": {
+      "username": "ユーザー名",
+      "computerName": "コンピュータネーム",
+      "passwordLabel": "パスワード",
+      "confirmPasswordLabel": "パスワードを再度入力してください",
+      "enablePasswordLabel": "パスワードを有効にする",
+      "passwordDisabled": "データを安全に保つために、アカウントのパスワードを有効にすることをお勧めします。"
+    },
+    "touchid": {
+      "enabled": "BreezeOS Native ではTouch IDが有効になっています。",
+      "setup": "Touch IDを設定してください...",
+      "disableLabel": "無効にする",
+      "skipLabel": "スキップ"
+    },
+    "appearances": {
+      "light": "ライト",
+      "dark": "暗い"
+    },
+    "bootscreen": {
+      "enableLabel": "有効にする",
+      "disableLabel": "無効にする"
+    }
+  },
   "lockScreen": {
+    "touchID": "Touch ID してロックを解除します",
     "passwordPlaceholder": "パスワード...",
     "incorrectPassword": "回失敗しました",
     "incorrectPasswordPlural": "回失敗しました",

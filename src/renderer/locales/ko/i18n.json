@@ -1,5 +1,126 @@
 {
+  "setup": {
+    "title": {
+      "language": "언어를 선택하십시오",
+      "country": "국가를 고르시 오",
+      "keyboard": "키보드 레이아웃을 선택하십시오",
+      "wifi": "Wi-Fi 네트워크를 선택하십시오",
+      "disks": "디스크를 선택하십시오",
+      "encryptDisk": "디스크 암호화",
+      "location": "위치 서비스",
+      "users": "새 사용자를 만듭니다",
+      "touchid": "Touch ID설정",
+      "appearances": "모양을 선택하십시오",
+      "bootscreen": "부트 화면"
+    },
+    "description": {
+      "disks": "설치는 디스크가 선택된 모든 현재 데이터를 지우게됩니다.모든 데이터를 백업하는 것이 좋습니다.",
+      "encryptDisk": {
+        "leftHand": "디스크를 암호화 하시겠습니까?",
+        "rightHand": ""
+      },
+      "appearances": "선호하는 모양을 선택하면 시스템 설정에서 나중에 변경할 수 있습니다.",
+      "touchid": "암호를 입력하는 대신 잠금을 해제하려면 Touch ID를 설정할 수 있습니다.시작하려면 \"Touch ID를 설정하십시오...\"를 클릭하십시오.",
+      "bootscreen": "활성화되면 지금부터 부팅 프로세스에서 부팅 메시지 대신 로고가 표시됩니다."
+    },
+    "subdialog": {
+      "connectWifi": {
+        "titleLeftHand": "Wi-Fi의 비밀번호를 입력하십시오",
+        "titleRightHand": "연결을 설정하기 위해.",
+        "passwordLabel": "비밀번호",
+        "showPasswordLabel": "비밀번호 표시",
+        "connectButtonLabel": "연결하다"
+      },
+      "connectOtherWifi": {
+        "title": "숨겨진 네트워크에 연결하십시오",
+        "nameLabel": "네트워크 이름",
+        "passwordLabel": "비밀번호",
+        "showPasswordLabel": "비밀번호 표시",
+        "securityLabel": "보안",
+        "connectButtonLabel": "연결하다"
+      },
+      "overview": {
+        "language": "언어",
+        "country": "국가",
+        "keyboardLayout": "키보드 레이아웃",
+        "disks": "디스크",
+        "encryptDisk": "디스크 암호화",
+        "bootscreen": "부트 화면"
+      },
+      "promptTouchID": {
+        "requirePassword": "Touch ID를 활성화하려면 비밀번호가 필요합니다.",
+        "waiting": "잠시 기다려주세요. 프롬프트가 나타나고 손가락을 센서에 놓도록 요청합니다.",
+        "failed": {
+          "title": "Touch ID를 설정하지 못했습니다.",
+          "buttonLabel": "다시 해 보다"
+        },
+        "success": {
+          "title": "성공적으로 Touch ID",
+          "description": "이제부터 Touch ID는 컴퓨터 잠금을 해제 할 때마다 기본 로그인 옵션으로 사용됩니다."
+        },
+        "touchIDIssue": "Touch ID센서에는 문제가 있으며 불행히도 문제를 해결할 수 없습니다."
+      },
+      "installation": {
+        "success": {
+          "title": "설치 완료",
+          "description": "BreezeOS를 주요 운영 체제로 선택해 주셔서 감사합니다.이제 컴퓨터를 다시 시작할 수 있습니다.",
+          "restartButtonLabel": "재시작"
+        },
+        "waiting": "시간이 걸릴 것입니다."
+      }
+    },
+    "checkbox": {
+      "yes": "예",
+      "no": "아니요"
+    },
+    "backLabel": "뒤쪽에",
+    "nextLabel": "다음",
+    "installLabel": "설치하다",
+    "msgbox": {
+      "yesLabel": "예",
+      "noLabel": "아니요",
+      "discard": "모든 변경 사항을 폐기하고 설치를 종료 하시겠습니까?",
+      "touchid": "Touch ID를 영구적으로 비활성화 하시겠습니까?",
+      "disks": "50GB 미만인 디스크를 선택할 수 없습니다. 다른 것을 선택하십시오.",
+      "continue": {
+        "title": "계속하다?",
+        "content": "설치 프로그램은 디스크에 변경 사항을 적용 할 것입니다.이 후에 이러한 변경 사항을 취소 할 수 없습니다.",
+        "overviewLabel": "개요 ..."
+      }
+    },
+    "wifi": {
+      "otherButtonLabel": "다른...",
+      "connectButtonLabel": "연결하다"
+    },
+    "encryptDisk": {
+      "passwordLabel": "비밀번호",
+      "confirmPasswordLabel": "비밀번호 확인"
+    },
+    "users": {
+      "username": "사용자 이름",
+      "computerName": "컴퓨터 이름",
+      "passwordLabel": "비밀번호",
+      "confirmPasswordLabel": "비밀번호를 반복하십시오",
+      "enablePasswordLabel": "비밀번호를 활성화합니다",
+      "passwordDisabled": "데이터를 안전하게 유지하기 위해 계정의 비밀번호를 활성화하는 것이 좋습니다."
+    },
+    "touchid": {
+      "enabled": "BreezeOS Native에서 Touch ID는 활성화됩니다.",
+      "setup": "Touch ID를 설정 ...",
+      "disableLabel": "장애를 입히다",
+      "skipLabel": "건너뛰다"
+    },
+    "appearances": {
+      "light": "빛",
+      "dark": "어두운"
+    },
+    "bootscreen": {
+      "enableLabel": "할 수 있게 하다",
+      "disableLabel": "장애를 입히다"
+    }
+  },
   "lockScreen": {
+    "touchID": "잠금을 해제하려면 Touch ID",
     "passwordPlaceholder": "비밀번호...",
     "incorrectPassword": "회 시도 실패",
     "incorrectPasswordPlural": "번의 시도 실패",

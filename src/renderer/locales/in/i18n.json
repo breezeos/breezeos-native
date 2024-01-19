@@ -1,5 +1,126 @@
 {
+  "setup": {
+    "title": {
+      "language": "Pilih bahasa",
+      "country": "Pilih negara",
+      "keyboard": "Pilih Tata Letak Keyboard",
+      "wifi": "Pilih Jaringan Wi-Fi",
+      "disks": "Pilih Disk",
+      "encryptDisk": "Enkripsi Disk",
+      "location": "Layanan Lokasi",
+      "users": "Buat Pengguna Baru",
+      "touchid": "Siapkan Touch ID",
+      "appearances": "Pilih Penampilan",
+      "bootscreen": "Layar Booting"
+    },
+    "description": {
+      "disks": "Instalasi akan menghapus semua data terkini pada disk yang dipilih. ",
+      "encryptDisk": {
+        "leftHand": "Apakah Anda ingin mengenkripsi disk",
+        "rightHand": ""
+      },
+      "appearances": "Pilih tampilan yang Anda sukai, nanti dapat diubah di pengaturan sistem.",
+      "touchid": "Anda dapat mengatur Touch ID untuk membuka kunci alih-alih mengetikkan kata sandi. ",
+      "bootscreen": "Jika diaktifkan, logo akan ditampilkan sebagai pengganti pesan booting saat dalam proses booting mulai sekarang."
+    },
+    "subdialog": {
+      "connectWifi": {
+        "titleLeftHand": "Masukkan kata sandi Wi-Fi",
+        "titleRightHand": "untuk membangun koneksi.",
+        "passwordLabel": "Kata sandi",
+        "showPasswordLabel": "Tampilkan kata sandi",
+        "connectButtonLabel": "Menghubung"
+      },
+      "connectOtherWifi": {
+        "title": "Hubungkan ke Jaringan Tersembunyi",
+        "nameLabel": "Nama jaringan",
+        "passwordLabel": "Kata sandi",
+        "showPasswordLabel": "Tampilkan kata sandi",
+        "securityLabel": "Keamanan",
+        "connectButtonLabel": "Menghubung"
+      },
+      "overview": {
+        "language": "Bahasa",
+        "country": "Negara",
+        "keyboardLayout": "Tata Letak Papan Ketik",
+        "disks": "Disk",
+        "encryptDisk": "Enkripsi Disk",
+        "bootscreen": "Layar Booting"
+      },
+      "promptTouchID": {
+        "requirePassword": "Kata sandi diperlukan untuk mengaktifkan Touch ID.",
+        "waiting": "Harap tunggu sebentar, akan muncul prompt yang meminta untuk meletakkan jari Anda di atas sensor.",
+        "failed": {
+          "title": "Gagal menyiapkan Touch ID",
+          "buttonLabel": "Mencoba kembali"
+        },
+        "success": {
+          "title": "Berhasil menyiapkan Touch ID",
+          "description": "Mulai sekarang, Touch ID akan digunakan sebagai opsi masuk utama setiap kali Anda membuka kunci komputer."
+        },
+        "touchIDIssue": "Ada masalah dengan sensor Touch ID Anda, dan sayangnya kami Tidak dapat memperbaikinya untuk Anda."
+      },
+      "installation": {
+        "success": {
+          "title": "Pemasangan selesai",
+          "description": "Terima kasih telah memilih BreezeOS sebagai sistem operasi utama Anda. ",
+          "restartButtonLabel": "Mengulang kembali"
+        },
+        "waiting": "Ini akan memakan waktu cukup lama."
+      }
+    },
+    "checkbox": {
+      "yes": "Ya",
+      "no": "Tidak"
+    },
+    "backLabel": "Kembali",
+    "nextLabel": "Berikutnya",
+    "installLabel": "Install",
+    "msgbox": {
+      "yesLabel": "Ya",
+      "noLabel": "Tidak",
+      "discard": "Buang semua perubahan dan keluar dari instalasi?",
+      "touchid": "Nonaktifkan Touch ID secara permanen?",
+      "disks": "Tidak dapat memilih disk yang ukurannya di bawah 50GB, silakan pilih yang lain.",
+      "continue": {
+        "title": "Melanjutkan?",
+        "content": "Penginstal akan menerapkan perubahan pada disk Anda. ",
+        "overviewLabel": "Ringkasan..."
+      }
+    },
+    "wifi": {
+      "otherButtonLabel": "Lainnya...",
+      "connectButtonLabel": "Menghubung"
+    },
+    "encryptDisk": {
+      "passwordLabel": "Kata sandi",
+      "confirmPasswordLabel": "konfirmasi sandi"
+    },
+    "users": {
+      "username": "Nama belakang",
+      "computerName": "Nama komputer",
+      "passwordLabel": "Kata sandi",
+      "confirmPasswordLabel": "Masukkan kata kunci kembali",
+      "enablePasswordLabel": "Aktifkan kata sandi",
+      "passwordDisabled": "Disarankan untuk mengaktifkan kata sandi untuk akun Anda untuk menjaga keamanan data Anda."
+    },
+    "touchid": {
+      "enabled": "Touch ID diaktifkan di BreezeOS Native.",
+      "setup": "Siapkan Touch ID...",
+      "disableLabel": "Cacat",
+      "skipLabel": "Melewati"
+    },
+    "appearances": {
+      "light": "Lampu",
+      "dark": "Gelap"
+    },
+    "bootscreen": {
+      "enableLabel": "Memungkinkan",
+      "disableLabel": "Cacat"
+    }
+  },
   "lockScreen": {
+    "touchID": "Touch ID untuk membuka kunci",
     "passwordPlaceholder": "Kata sandi...",
     "incorrectPassword": "upaya gagal",
     "incorrectPasswordPlural": "upaya gagal",
@@ -50,7 +171,7 @@
       "turnPrivateOff": "Matikan mode pribadi",
       "turnPrivateOn": "Aktifkan mode pribadi",
       "searchPlaceholder": "Cari dengan Bing atau masukkan alamat...",
-      "internetUnabled": "Internet tidak diaktifkan.",
+      "internetUnabled": "Internet Tidak diaktifkan.",
       "internetUnabledDesc": "Anda memerlukan koneksi Internet untuk terhubung ke situs web ini.",
       "internetUnabledReload": "Muat ulang",
       "startupTitle": "Cari dengan Bing atau masukkan alamat, atau biarkan kosong untuk dialihkan ke situs web resmi BreezeOS.",

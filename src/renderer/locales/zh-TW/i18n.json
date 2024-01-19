@@ -1,5 +1,126 @@
 {
+  "setup": {
+    "title": {
+      "language": "選擇語言",
+      "country": "選擇一個國家",
+      "keyboard": "選擇鍵盤佈局",
+      "wifi": "選擇Wi-Fi網絡",
+      "disks": "選擇磁盤",
+      "encryptDisk": "磁盤加密",
+      "location": "位置服務",
+      "users": "創建新用戶",
+      "touchid": "設置 Touch ID",
+      "appearances": "選擇外觀",
+      "bootscreen": "引導屏幕"
+    },
+    "description": {
+      "disks": "安裝將刪除選擇磁盤的所有當前數據。建議您備份所有數據。",
+      "encryptDisk": {
+        "leftHand": "您想加密磁碟",
+        "rightHand": ""
+      },
+      "appearances": "選擇您喜歡的外觀，可以在系統設置中更改。",
+      "touchid": "您可以將Touch ID設置為解鎖而不是輸入密碼。要開始，請單擊 “設置 Touch ID...”。",
+      "bootscreen": "如果啟用，將在啟動過程中從現在開始時顯示徽標而不是引導消息。"
+    },
+    "subdialog": {
+      "connectWifi": {
+        "titleLeftHand": "輸入Wi-Fi的密碼",
+        "titleRightHand": "為了建立連接。",
+        "passwordLabel": "密碼",
+        "showPasswordLabel": "顯示密碼",
+        "connectButtonLabel": "連接"
+      },
+      "connectOtherWifi": {
+        "title": "連接到隱藏的網絡",
+        "nameLabel": "網絡名字",
+        "passwordLabel": "密碼",
+        "showPasswordLabel": "顯示密碼",
+        "securityLabel": "安全",
+        "connectButtonLabel": "連接"
+      },
+      "overview": {
+        "language": "語言",
+        "country": "國家",
+        "keyboardLayout": "鍵盤佈局",
+        "disks": "磁碟",
+        "encryptDisk": "磁盤加密",
+        "bootscreen": "引導屏幕"
+      },
+      "promptTouchID": {
+        "requirePassword": "需要密碼以啟用Touch ID。",
+        "waiting": "請等待片刻，會出現提示，並要求將手指放在傳感器上。",
+        "failed": {
+          "title": "無法設置Touch ID",
+          "buttonLabel": "重試"
+        },
+        "success": {
+          "title": "成功設置Touch ID",
+          "description": "從現在開始，每當您解鎖計算機時，Touch ID將被用作主要登錄選項。"
+        },
+        "touchIDIssue": "您的Touch ID傳感器存在問題，不幸的是，我們無法為您解決。"
+      },
+      "installation": {
+        "success": {
+          "title": "安裝完成",
+          "description": "感謝您選擇Breezeos作為您的主要操作系統。您現在可以重新啟動計算機。",
+          "restartButtonLabel": "重新開始"
+        },
+        "waiting": "這將需要一段時間。"
+      }
+    },
+    "checkbox": {
+      "yes": "是的",
+      "no": "不"
+    },
+    "backLabel": "後退",
+    "nextLabel": "下一個",
+    "installLabel": "安裝",
+    "msgbox": {
+      "yesLabel": "是的",
+      "noLabel": "不",
+      "discard": "丟棄所有更改並退出安裝？",
+      "touchid": "永久禁用Touch ID？",
+      "disks": "無法選擇低於50GB的磁盤，請選擇另一個磁盤。",
+      "continue": {
+        "title": "繼續？",
+        "content": "安裝程序將對磁盤應用更改。此後，您將無法撤消這些更改。",
+        "overviewLabel": "概述..."
+      }
+    },
+    "wifi": {
+      "otherButtonLabel": "其他...",
+      "connectButtonLabel": "連接"
+    },
+    "encryptDisk": {
+      "passwordLabel": "密碼",
+      "confirmPasswordLabel": "確認密碼"
+    },
+    "users": {
+      "username": "使用者名稱",
+      "computerName": "計算機名稱",
+      "passwordLabel": "密碼",
+      "confirmPasswordLabel": "重複輸入密碼",
+      "enablePasswordLabel": "啟用密碼",
+      "passwordDisabled": "建議啟用您的帳戶密碼以確保您的數據安全。"
+    },
+    "touchid": {
+      "enabled": "BreezeOS Native啟用了Touch ID。",
+      "setup": "設置Touch ID ...",
+      "disableLabel": "禁用",
+      "skipLabel": "跳過"
+    },
+    "appearances": {
+      "light": "光",
+      "dark": "黑暗的"
+    },
+    "bootscreen": {
+      "enableLabel": "使能夠",
+      "disableLabel": "禁用"
+    }
+  },
   "lockScreen": {
+    "touchID": "Touch ID以解鎖",
     "passwordPlaceholder": "密碼...",
     "incorrectPassword": "次嘗試失敗",
     "incorrectPasswordPlural": "次嘗試失敗",

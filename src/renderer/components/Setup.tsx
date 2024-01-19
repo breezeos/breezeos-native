@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import './Setup.scss';
 import { useTranslation } from 'react-i18next';
@@ -21,22 +21,50 @@ import {
   setPasswordDisk,
 } from '../store/reducers/system';
 import InstallImage from '../../../assets/images/install.png';
+import InstallMacImage from '../../../assets/images/install-mac.png';
 import useProcess from '../hooks/useProcess';
 import CryptoJS from 'crypto-js';
-import { setBlocks } from '../store/reducers/msgbox';
+import { clearBlocks, setBlocks } from '../store/reducers/msgbox';
 import TouchID from '../../../assets/images/touchid.png';
+import FrameD from '../../../assets/images/frame-d.jpg';
+import FrameL from '../../../assets/images/frame-l.jpg';
+import Frame1D from '../../../assets/images/setup/dark/frame1.jpg';
+import Frame2D from '../../../assets/images/setup/dark/frame2.jpg';
+import Frame3D from '../../../assets/images/setup/dark/frame3.jpg';
+import Frame4D from '../../../assets/images/setup/dark/frame4.jpg';
+import Frame5D from '../../../assets/images/setup/dark/frame5.jpg';
+import Frame6D from '../../../assets/images/setup/dark/frame6.jpg';
+import Frame7D from '../../../assets/images/setup/dark/frame7.jpg';
+import Frame8D from '../../../assets/images/setup/dark/frame8.jpg';
+import Frame9D from '../../../assets/images/setup/dark/frame9.jpg';
+import Frame10D from '../../../assets/images/setup/dark/frame10.jpg';
+import Frame11D from '../../../assets/images/setup/dark/frame11.jpg';
+import Frame12D from '../../../assets/images/setup/dark/frame12.jpg';
+import Frame13D from '../../../assets/images/setup/dark/frame13.jpg';
+import Frame1L from '../../../assets/images/setup/light/frame1.jpg';
+import Frame2L from '../../../assets/images/setup/light/frame2.jpg';
+import Frame3L from '../../../assets/images/setup/light/frame3.jpg';
+import Frame4L from '../../../assets/images/setup/light/frame4.jpg';
+import Frame5L from '../../../assets/images/setup/light/frame5.jpg';
+import Frame6L from '../../../assets/images/setup/light/frame6.jpg';
+import Frame7L from '../../../assets/images/setup/light/frame7.jpg';
+import Frame8L from '../../../assets/images/setup/light/frame8.jpg';
+import Frame9L from '../../../assets/images/setup/light/frame9.jpg';
+import Frame10L from '../../../assets/images/setup/light/frame10.jpg';
+import Frame11L from '../../../assets/images/setup/light/frame11.jpg';
+import Frame12L from '../../../assets/images/setup/light/frame12.jpg';
+import Frame13L from '../../../assets/images/setup/light/frame13.jpg';
 
 export default function Setup() {
   const dispatch = useAppDispatch();
-  const wallpaperImg = useAppSelector((state) => state.wallpaper.img);
   const [isInstalling, setIsInstalling] = useState<boolean>(false);
   const [installPercent, setInstallPercent] = useState<number>(0);
   const [installationStarted, setInstallationStart] = useState<boolean>(false);
   const settings = useAppSelector((state) => state.settings);
   const system = useAppSelector((state) => state.system);
-  const [subDialog, setSubDialog] = useState<React.ReactElement>();
+  const [subDialog, setSubDialog] = useState<ReactElement>();
   const { restart } = useProcess();
-  const [_t, i18n] = useTranslation();
+  const [t, i18n] = useTranslation();
 
   const lang = [
     {
@@ -97,7 +125,7 @@ export default function Setup() {
     },
   ];
   const [currentCountry, setCurrentCountry] = useState<string>('Argentina');
-  const location = [
+  const countries = [
     {
       country: 'Argentina',
       active: currentCountry === 'Argentina',
@@ -898,7 +926,7 @@ export default function Setup() {
           'language',
           'country',
           'keyboard',
-          'wifi',
+          // 'wifi',
           'disks',
           'encryptDisk',
           'location',
@@ -935,6 +963,7 @@ export default function Setup() {
     i18n.changeLanguage('English (US)');
     setCurrentCountry('Argentina');
     setKeyboardLayout('American English');
+    dispatch(clearBlocks());
   }
 
   function install() {
@@ -944,9 +973,11 @@ export default function Setup() {
 
   useEffect(() => {
     if (isInstalling) {
-      dispatch(
-        setPassword(CryptoJS.MD5(passwordValue).toString(CryptoJS.enc.Hex)),
-      );
+      if (passwordValue) {
+        dispatch(
+          setPassword(CryptoJS.MD5(passwordValue).toString(CryptoJS.enc.Hex)),
+        );
+      }
       if (installPercent === 101) return;
 
       const interval = setInterval(
@@ -956,7 +987,7 @@ export default function Setup() {
 
       return () => clearInterval(interval);
     }
-  }, [isInstalling, installPercent]);
+  }, [isInstalling, passwordValue, installPercent]);
 
   function ConnectWifi() {
     const [inputPassword, setInputPassword] = useState<string>('');
@@ -977,8 +1008,8 @@ export default function Setup() {
       <>
         <div style={{ margin: '30px 20px' }}>
           <p style={{ fontSize: '17px', fontWeight: 700 }}>
-            Enter password of Wi-Fi "{selectedNetwork}" in order to establish a
-            connection.
+            {t('setup.subdialog.connectWifi.titleLeftHand')} "{selectedNetwork}"{' '}
+            {t('setup.subdialog.connectWifi.titleRightHand')}
           </p>
           <div style={{ marginTop: '30px' }}>
             <div
@@ -989,7 +1020,7 @@ export default function Setup() {
               }}
             >
               <p style={{ fontSize: '14.7px', marginRight: '10px' }}>
-                Password
+                {t('setup.subdialog.connectWifi.passwordLabel')}
               </p>
               <input
                 type={passwordIsShow ? 'text' : 'password'}
@@ -1013,7 +1044,7 @@ export default function Setup() {
               }}
             >
               <p style={{ fontSize: '14.7px', marginRight: '10px' }}>
-                Show password
+                {t('setup.subdialog.connectWifi.showPasswordLabel')}
               </p>
               <Checkbox
                 active={passwordIsShow}
@@ -1036,7 +1067,7 @@ export default function Setup() {
             }`}
             onClick={submitPassword}
           >
-            <p>Connect</p>
+            <p>{t('setup.subdialog.connectWifi.connectButtonLabel')}</p>
           </div>
         </div>
       </>
@@ -1086,7 +1117,7 @@ export default function Setup() {
             width: '100%',
           }}
         >
-          <p className="Title">Connect to Hidden Networks</p>
+          <p className="Title">{t('setup.subdialog.connectOtherWifi.title')}</p>
           <div style={{ margin: '30px 20px 0 20px' }}>
             <div
               style={{
@@ -1102,7 +1133,7 @@ export default function Setup() {
                   width: '132px',
                 }}
               >
-                Network Name
+                {t('setup.subdialog.connectOtherWifi.nameLabel')}
               </p>
               <input
                 type="text"
@@ -1125,7 +1156,7 @@ export default function Setup() {
               }}
             >
               <p style={{ fontSize: '14.7px', marginRight: '10px' }}>
-                Password
+                {t('setup.subdialog.connectOtherWifi.passwordLabel')}
               </p>
               <input
                 type={passwordIsShow ? 'text' : 'password'}
@@ -1149,7 +1180,7 @@ export default function Setup() {
               }}
             >
               <p style={{ fontSize: '14.7px', marginRight: '10px' }}>
-                Show password
+                {t('setup.subdialog.connectOtherWifi.showPasswordLabel')}
               </p>
               <Checkbox
                 active={passwordIsShow}
@@ -1165,7 +1196,7 @@ export default function Setup() {
               }}
             >
               <p style={{ fontSize: '14.7px', marginRight: '10px' }}>
-                Security
+                {t('setup.subdialog.connectOtherWifi.securityLabel')}
               </p>
               <div
                 className={`MenuSection ${passwordIsDisabled && 'disabled'} ${
@@ -1244,7 +1275,7 @@ export default function Setup() {
             }`}
             onClick={submitPassword}
           >
-            <p>Connect</p>
+            <p>{t('setup.subdialog.connectOtherWifi.connectButtonLabel')}</p>
           </div>
         </div>
       </>
@@ -1261,7 +1292,7 @@ export default function Setup() {
           }}
         >
           <p className="Title" style={{ marginBottom: '15px' }}>
-            Language
+            {t('setup.subdialog.overview.language')}
           </p>
           <p className="Description">{i18n.language}</p>
         </div>
@@ -1272,7 +1303,7 @@ export default function Setup() {
           }}
         >
           <p className="Title" style={{ marginBottom: '15px' }}>
-            Country
+            {t('setup.subdialog.overview.country')}
           </p>
           <p className="Description">{currentCountry}</p>
         </div>
@@ -1283,7 +1314,7 @@ export default function Setup() {
           }}
         >
           <p className="Title" style={{ marginBottom: '15px' }}>
-            Keyboard Layout
+            {t('setup.subdialog.overview.keyboardLayout')}
           </p>
           <p className="Description">{keyboardLayout}</p>
         </div>
@@ -1294,7 +1325,7 @@ export default function Setup() {
           }}
         >
           <p className="Title" style={{ marginBottom: '15px' }}>
-            Disks
+            {t('setup.subdialog.overview.disks')}
           </p>
           <p className="Description">
             {selectedDisk?.model} –{' '}
@@ -1308,7 +1339,7 @@ export default function Setup() {
           }}
         >
           <p className="Title" style={{ marginBottom: '15px' }}>
-            Disk Encryption
+            {t('setup.subdialog.overview.encryptDisk')}
           </p>
           <p className="Description">
             {system.disks.isEncrypted ? 'On' : 'Off'}
@@ -1321,7 +1352,7 @@ export default function Setup() {
           }}
         >
           <p className="Title" style={{ marginBottom: '15px' }}>
-            Boot Screen
+            {t('setup.subdialog.overview.bootscreen')}
           </p>
           <p className="Description">{system.bootscreen ? 'On' : 'Off'}</p>
         </div>
@@ -1333,7 +1364,7 @@ export default function Setup() {
               setTimeout(install, 500);
             }}
           >
-            <p>Install</p>
+            <p>{t('setup.installLabel')}</p>
           </div>
         </div>
       </div>
@@ -1376,21 +1407,22 @@ export default function Setup() {
                 margin: '0 30px',
               }}
             >
-              A password is required to enable Touch ID.
+              {t('setup.subdialog.promptTouchID.requirePassword')}
             </p>
           ) : canPromptTouchID ? (
             isSucceeded === true ? (
               <>
-                <p className="Title">Successfully set up Touch ID</p>
+                <p className="Title">
+                  {t('setup.subdialog.promptTouchID.success.title')}
+                </p>
                 <p className="Description" style={{ margin: '14px 0 5px 0' }}>
-                  From now on, Touch ID will be used as the main sign-in option
-                  whenever you unlock your computer.
+                  {t('setup.subdialog.promptTouchID.success.description')}
                 </p>
               </>
             ) : isSucceeded === false ? (
               <>
                 <p className="Title" style={{ marginBottom: '20px' }}>
-                  Failed to set up Touch ID
+                  {t('setup.subdialog.promptTouchID.failed.title')}
                 </p>
                 <div style={{ width: '100%' }}>
                   <div
@@ -1398,7 +1430,7 @@ export default function Setup() {
                     style={{ width: 'fit-content', margin: '0 auto' }}
                     onClick={() => setIsSucceeded(null)}
                   >
-                    Retry
+                    {t('setup.subdialog.promptTouchID.failed.buttonLabel')}
                   </div>
                 </div>
               </>
@@ -1417,17 +1449,17 @@ export default function Setup() {
                     margin: '0 30px',
                   }}
                 >
-                  Please wait a moment, a prompt will appear and ask to place
-                  your finger on the sensor.
+                  {t('setup.subdialog.promptTouchID.waiting')}
                 </p>
               </div>
             )
           ) : (
             <>
-              <p className="Title">Failed to set up Touch ID</p>
+              <p className="Title">
+                {t('setup.subdialog.promptTouchID.failed.title')}
+              </p>
               <p className="Description" style={{ margin: '14px 0 5px 0' }}>
-                There's an issue with your Touch ID sensor, and we can't fix it
-                for you unfortunately.
+                {t('setup.subdialog.promptTouchID.touchIDIssue')}
               </p>
             </>
           )}
@@ -1448,7 +1480,7 @@ export default function Setup() {
           </div>
         ));
       case 'country':
-        return location.map((i) => (
+        return countries.map((i) => (
           <div
             className={`SelectionBlock ${i.active && 'active'}`}
             onClick={() => setCurrentCountry(i.country)}
@@ -1525,7 +1557,7 @@ export default function Setup() {
               style={{ textAlign: 'start' }}
               onClick={() => setSubDialog(<ConnectOtherWifi />)}
             >
-              <p>Other...</p>
+              <p>{t('setup.wifi.otherButtonLabel')}</p>
             </div>
           </>
         );
@@ -1581,7 +1613,9 @@ export default function Setup() {
                   margin: '0 30px',
                 }}
               >
-                <p style={{ fontSize: '14px', marginRight: '10px' }}>Yes</p>
+                <p style={{ fontSize: '14px', marginRight: '10px' }}>
+                  {t('setup.checkbox.yes')}
+                </p>
                 <Checkbox
                   size={0.94}
                   active={system.disks.isEncrypted}
@@ -1595,7 +1629,9 @@ export default function Setup() {
                   margin: '0 30px',
                 }}
               >
-                <p style={{ fontSize: '14px', marginRight: '10px' }}>No</p>
+                <p style={{ fontSize: '14px', marginRight: '10px' }}>
+                  {t('setup.checkbox.no')}
+                </p>
                 <Checkbox
                   size={0.94}
                   active={!system.disks.isEncrypted}
@@ -1617,7 +1653,7 @@ export default function Setup() {
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     dispatch(setPasswordDisk(e.target.value))
                   }
-                  placeholder="Password"
+                  placeholder={t('setup.encryptDisk.passwordLabel')}
                   className="Input"
                   style={{
                     padding: '8px 13px',
@@ -1632,7 +1668,7 @@ export default function Setup() {
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setPasswordDiskValue(e.target.value)
                   }
-                  placeholder="Confirm Password"
+                  placeholder={t('setup.encryptDisk.confirmPasswordLabel')}
                   className="Input"
                   style={{
                     padding: '8px 13px',
@@ -1659,7 +1695,9 @@ export default function Setup() {
                   margin: '0 30px',
                 }}
               >
-                <p style={{ fontSize: '14px', marginRight: '10px' }}>Yes</p>
+                <p style={{ fontSize: '14px', marginRight: '10px' }}>
+                  {t('setup.checkbox.yes')}
+                </p>
                 <Checkbox
                   size={0.94}
                   active={system.disks.isEncrypted}
@@ -1673,7 +1711,9 @@ export default function Setup() {
                   margin: '0 30px',
                 }}
               >
-                <p style={{ fontSize: '14px', marginRight: '10px' }}>No</p>
+                <p style={{ fontSize: '14px', marginRight: '10px' }}>
+                  {t('setup.checkbox.no')}
+                </p>
                 <Checkbox
                   size={0.94}
                   active={!system.disks.isEncrypted}
@@ -1744,10 +1784,12 @@ export default function Setup() {
                   dispatch(setName(e.target.value));
                   e.target.value &&
                     dispatch(
-                      setDeviceName(`${e.target.value.replace(' ', '-')}-PC`),
+                      setDeviceName(
+                        `${e.target.value.split(' ').join('-')}-PC`,
+                      ),
                     );
                 }}
-                placeholder="Username"
+                placeholder={t('setup.users.username')}
                 className="Input"
                 style={{
                   padding: '8px 13px',
@@ -1763,7 +1805,7 @@ export default function Setup() {
                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                   dispatch(setDeviceName(e.target.value))
                 }
-                placeholder="Computer Name"
+                placeholder={t('setup.users.computerName')}
                 className="Input"
                 style={{
                   padding: '8px 13px',
@@ -1785,7 +1827,7 @@ export default function Setup() {
                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                   dispatch(setPassword(e.target.value))
                 }
-                placeholder="Password"
+                placeholder={t('setup.users.passwordLabel')}
                 className="Input"
                 style={{
                   padding: '8px 13px',
@@ -1807,7 +1849,7 @@ export default function Setup() {
                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setPasswordValue(e.target.value)
                 }
-                placeholder="Repeat Password"
+                placeholder={t('setup.users.confirmPasswordLabel')}
                 className="Input"
                 style={{
                   padding: '8px 13px',
@@ -1822,7 +1864,7 @@ export default function Setup() {
                 }}
               >
                 <p style={{ fontSize: '14px', marginRight: '10px' }}>
-                  Enable password
+                  {t('setup.users.enablePasswordLabel')}
                 </p>
                 <Checkbox
                   active={!passwordDisabled}
@@ -1836,8 +1878,7 @@ export default function Setup() {
               </div>
               {passwordDisabled && (
                 <p style={{ fontSize: '11px', marginTop: '6px' }}>
-                  It is recommended to enable password for your account to keep
-                  your data safe.
+                  {t('setup.users.passwordDisabled')}
                 </p>
               )}
             </div>
@@ -1861,7 +1902,7 @@ export default function Setup() {
                     marginBottom: '10px',
                   }}
                 >
-                  Touch ID is enabled in BreezeOS Native.
+                  {t('setup.touchid.enabled')}
                 </p>
                 <div style={{ width: '100%' }}>
                   <div
@@ -1873,14 +1914,14 @@ export default function Setup() {
                           ...blocks,
                           {
                             type: 'question',
-                            content: 'Disable Touch ID temporarily?',
+                            content: t('setup.msgbox.touchid'),
                             buttons: [
                               {
-                                label: 'Yes',
+                                label: t('setup.msgbox.yesLabel'),
                                 action: () => dispatch(setTouchID(false)),
                               },
                               {
-                                label: 'No',
+                                label: t('setup.msgbox.noLabel'),
                               },
                             ],
                           },
@@ -1888,7 +1929,7 @@ export default function Setup() {
                       )
                     }
                   >
-                    Disable
+                    {t("setup.touchid.disableLabel")}
                   </div>
                 </div>
               </>
@@ -1899,7 +1940,7 @@ export default function Setup() {
                   style={{ fontSize: '14.5px', marginBottom: '20px' }}
                   onClick={() => setSubDialog(<PromptTouchId />)}
                 >
-                  Set up Touch ID...
+                  {t('setup.touchid.setup')}
                 </p>
               </>
             )}
@@ -1921,15 +1962,6 @@ export default function Setup() {
           >
             <div style={{ margin: '0 10px' }}>
               <div
-                className={`AppearanceBlock ${settings.themeLight && 'active'}`}
-                onClick={() => dispatch(toggleLightMode(true))}
-              >
-                <img src={Light} />
-              </div>
-              <p style={{ fontSize: '14px', marginTop: '10px' }}>Light</p>
-            </div>
-            <div style={{ margin: '0 10px' }}>
-              <div
                 className={`AppearanceBlock ${
                   !settings.themeLight && 'active'
                 }`}
@@ -1937,7 +1969,20 @@ export default function Setup() {
               >
                 <img src={Dark} />
               </div>
-              <p style={{ fontSize: '14px', marginTop: '10px' }}>Dark</p>
+              <p style={{ fontSize: '14px', marginTop: '10px' }}>
+                {t('setup.appearances.dark')}
+              </p>
+            </div>
+            <div style={{ margin: '0 10px' }}>
+              <div
+                className={`AppearanceBlock ${settings.themeLight && 'active'}`}
+                onClick={() => dispatch(toggleLightMode(true))}
+              >
+                <img src={Light} />
+              </div>
+              <p style={{ fontSize: '14px', marginTop: '10px' }}>
+                {t('setup.appearances.light')}
+              </p>
             </div>
           </div>
         );
@@ -1957,7 +2002,9 @@ export default function Setup() {
                 margin: '0 30px',
               }}
             >
-              <p style={{ fontSize: '14px', marginRight: '10px' }}>Enable</p>
+              <p style={{ fontSize: '14px', marginRight: '10px' }}>
+                {t('setup.bootscreen.enableLabel')}
+              </p>
               <Checkbox
                 size={0.94}
                 active={system.bootscreen}
@@ -1971,7 +2018,9 @@ export default function Setup() {
                 margin: '0 30px',
               }}
             >
-              <p style={{ fontSize: '14px', marginRight: '10px' }}>Disable</p>
+              <p style={{ fontSize: '14px', marginRight: '10px' }}>
+                {t('setup.bootscreen.disableLabel')}
+              </p>
               <Checkbox
                 size={0.94}
                 active={!system.bootscreen}
@@ -1983,10 +2032,133 @@ export default function Setup() {
     }
   }
 
+  const lightTheme = useAppSelector((state) => state.settings.themeLight);
   const blocks = useAppSelector((state) => state.msgbox.blocks);
 
+  const welcomeText = [
+    'To start setup installation, click Continue.',
+    'Um die Setup-Installation zu starten, klicken Sie auf „Weiter“.',
+    'Para iniciar la instalación, haga clic en Continuar.',
+    "Pour démarrer l'installation du programme d'installation, cliquez sur Continuer.",
+    'Untuk memulai instalasi pengaturan, klik Lanjutkan.',
+    "Per avviare l'installazione della configurazione, fare clic su Continua.",
+    'セットアップのインストールを開始するには、「続行」をクリックします。',
+    '설치 설치를 시작하려면 계속을 클릭하세요.',
+    'Чтобы начать установку программы установки, нажмите «Продолжить».',
+    'หากต้องการเริ่มการติดตั้งการตั้งค่า คลิกดำเนินการต่อ',
+    'Щоб почати інсталяцію, натисніть «Продовжити».',
+    'Để bắt đầu cài đặt thiết lập, hãy nhấp vào Tiếp tục.',
+    '要开始安装，请单击继续。',
+  ];
+  const continueText = [
+    'Continue',
+    'Weiter',
+    'Continuar',
+    'Continuer',
+    'Lanjutkan',
+    'Continua',
+    '続行',
+    '계속을',
+    'Продолжить',
+    'ดำเนินการต่อ',
+    'Продовжити',
+    'Tiếp tục',
+    '继续',
+  ];
+  const [textIndex, setTextIndex] = useState<number>(0);
+
+  useEffect(() => {
+    if (installationStarted) {
+      setTextIndex(0);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setTextIndex(textIndex === welcomeText.length - 1 ? 0 : textIndex + 1);
+    }, 5500);
+
+    return () => clearTimeout(timeout);
+  }, [textIndex, installationStarted]);
+
   return (
-    <div className="Setup" style={{ backgroundImage: `url(${wallpaperImg})` }}>
+    <div
+      className="Setup"
+      style={{ backgroundImage: `url(${lightTheme ? FrameL : FrameD})` }}
+    >
+      {!installationStarted &&
+        welcomeText.map((_text, i) =>
+          lightTheme ? (
+            <div
+              className={`Image ${textIndex === i && 'active'}`}
+              style={{
+                backgroundImage: `url(${
+                  i === 0
+                    ? Frame1L
+                    : i === 1
+                    ? Frame2L
+                    : i === 2
+                    ? Frame3L
+                    : i === 3
+                    ? Frame4L
+                    : i === 4
+                    ? Frame5L
+                    : i === 5
+                    ? Frame6L
+                    : i === 6
+                    ? Frame7L
+                    : i === 7
+                    ? Frame8L
+                    : i === 8
+                    ? Frame9L
+                    : i === 9
+                    ? Frame10L
+                    : i === 10
+                    ? Frame11L
+                    : i === 11
+                    ? Frame12L
+                    : i === 12
+                    ? Frame13L
+                    : ''
+                })`,
+              }}
+            />
+          ) : (
+            <div
+              className={`Image ${textIndex === i && 'active'}`}
+              style={{
+                backgroundImage: `url(${
+                  i === 0
+                    ? Frame1D
+                    : i === 1
+                    ? Frame2D
+                    : i === 2
+                    ? Frame3D
+                    : i === 3
+                    ? Frame4D
+                    : i === 4
+                    ? Frame5D
+                    : i === 5
+                    ? Frame6D
+                    : i === 6
+                    ? Frame7D
+                    : i === 7
+                    ? Frame8D
+                    : i === 8
+                    ? Frame9D
+                    : i === 9
+                    ? Frame10D
+                    : i === 10
+                    ? Frame11D
+                    : i === 11
+                    ? Frame12D
+                    : i === 12
+                    ? Frame13D
+                    : ''
+                })`,
+              }}
+            />
+          ),
+        )}
       <div className="SetupWrapper">
         {!installationStarted && (
           <div style={{ padding: '50px 0', height: '100%' }}>
@@ -1999,28 +2171,27 @@ export default function Setup() {
                 height: '100%',
               }}
             >
-              <div
-                style={{
-                  height: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <p
+              <div style={{ position: 'absolute', bottom: 0 }}>
+                <div
                   style={{
-                    fontWeight: 200,
-                    fontSize: '106px',
-                    letterSpacing: '-2px',
+                    position: 'relative',
+                    width: '800px',
+                    height: '23px',
+                    marginBottom: '25px',
+                    display: 'flex',
+                    justifyContent: 'center',
                   }}
                 >
-                  Welcome
-                </p>
-              </div>
-              <div style={{ position: 'absolute', bottom: 0 }}>
-                <p className="Description" style={{ marginBottom: '25px' }}>
-                  To start setup installation, click Continue.
-                </p>
+                  {welcomeText.map((text, i) => (
+                    <p
+                      className={`Description BlinkText ${
+                        textIndex === i && 'active'
+                      }`}
+                    >
+                      {text}
+                    </p>
+                  ))}
+                </div>
                 <div className="InteractionButtonWrapper">
                   <div
                     className="InteractionButton"
@@ -2028,7 +2199,25 @@ export default function Setup() {
                   >
                     <i className="fa-regular fa-arrow-right" />
                   </div>
-                  <p className="Label">Continue</p>
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '800px',
+                      height: '18px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {continueText.map((text, i) => (
+                      <p
+                        className={`Label BlinkText ${
+                          textIndex === i && 'active'
+                        }`}
+                      >
+                        {text}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -2049,13 +2238,13 @@ export default function Setup() {
                       ...blocks,
                       {
                         type: 'question',
-                        content: 'Discard all changes and quit installation?',
+                        content: t('setup.msgbox.discard'),
                         buttons: [
                           {
-                            label: 'Yes',
+                            label: t('setup.msgbox.yesLabel'),
                             action: setDefault,
                           },
-                          { label: 'No' },
+                          { label: t('setup.msgbox.noLabel') },
                         ],
                       },
                     ]),
@@ -2066,42 +2255,46 @@ export default function Setup() {
               </div>
               <p className="Title">
                 {currentSection === 'language'
-                  ? 'Select Language'
+                  ? t('setup.title.language')
                   : currentSection === 'country'
-                  ? 'Select your Country'
+                  ? t('setup.title.country')
                   : currentSection === 'keyboard'
-                  ? 'Select Keyboard Layout'
+                  ? t('setup.title.keyboard')
                   : currentSection === 'wifi'
-                  ? 'Select Wi-Fi Network'
+                  ? t('setup.title.wifi')
                   : currentSection === 'disks'
-                  ? 'Select Disk'
+                  ? t('setup.title.disks')
                   : currentSection === 'encryptDisk'
-                  ? 'Disk Encryption'
+                  ? t('setup.title.encryptDisk')
                   : currentSection === 'location'
-                  ? 'Location Services'
+                  ? t('setup.title.location')
                   : currentSection === 'users'
-                  ? 'Create New User'
+                  ? t('setup.title.users')
                   : currentSection === 'touchid'
-                  ? 'Set up Touch ID'
+                  ? t('setup.title.touchid')
                   : currentSection === 'appearances'
-                  ? 'Select Appearance'
+                  ? t('setup.title.appearances')
                   : currentSection === 'bootscreen'
-                  ? 'Boot Screen'
+                  ? t('setup.title.bootscreen')
                   : ''}
               </p>
               <p className="Description" style={{ margin: '14px 0 5px 0' }}>
                 {currentSection === 'disks'
-                  ? 'The installation will erase all the current data in which the disk is selected. It is recommended for you to backup all data.'
+                  ? t('setup.description.disks')
                   : currentSection === 'encryptDisk'
-                  ? `Do you want to encrypt disk "${selectedDisk?.model}"?`
+                  ? `${t(
+                      'setup.description.encryptDisk.leftHand',
+                    )} "${selectedDisk?.model}" ${t(
+                      'setup.description.encryptDisk.rightHand',
+                    )}?`
                   : currentSection === 'location'
                   ? 'Select an appearance that you prefer, it can be changed later in the system settings.'
                   : currentSection === 'touchid'
-                  ? 'You can set up Touch ID to unlock instead of typing password. To get started, click "Set up Touch ID...".'
+                  ? t('setup.description.touchid')
                   : currentSection === 'appearances'
-                  ? 'Select an appearance that you prefer, it can be changed later in the system settings.'
+                  ? t('setup.description.appearances')
                   : currentSection === 'bootscreen'
-                  ? 'If enabled, the logo will be displayed instead of boot messages while in the boot process from now on.'
+                  ? t('setup.description.bootscreen')
                   : ''}
               </p>
               <div
@@ -2145,7 +2338,7 @@ export default function Setup() {
                   >
                     <i className="fa-regular fa-arrow-left" />
                   </div>
-                  <p className="Label">Back</p>
+                  <p className="Label">{t('setup.backLabel')}</p>
                 </div>
                 {currentSection === 'wifi' &&
                 selectedNetwork !== settings.connectedWifi?.ssid ? (
@@ -2153,7 +2346,7 @@ export default function Setup() {
                     className="Button"
                     onClick={() => setSubDialog(<ConnectWifi />)}
                   >
-                    <p>Connect</p>
+                    <p>{t('setup.wifi.connectButtonLabel')}</p>
                   </div>
                 ) : currentSection === 'disks' ? (
                   <div
@@ -2172,8 +2365,7 @@ export default function Setup() {
                                 ...blocks,
                                 {
                                   type: 'critical',
-                                  content:
-                                    'Cannot select disk that is under 50GB, please select another one.',
+                                  content: t('setup.msgbox.disks'),
                                   buttons: [{ label: 'OK' }],
                                 },
                               ]),
@@ -2183,7 +2375,7 @@ export default function Setup() {
                     >
                       <i className="fa-regular fa-arrow-right" />
                     </div>
-                    <p className="Label">Next</p>
+                    <p className="Label">{t('setup.nextLabel')}</p>
                   </div>
                 ) : currentSection === 'encryptDisk' ? (
                   <div
@@ -2209,7 +2401,7 @@ export default function Setup() {
                     >
                       <i className="fa-regular fa-arrow-right" />
                     </div>
-                    <p className="Label">Next</p>
+                    <p className="Label">{t('setup.nextLabel')}</p>
                   </div>
                 ) : currentSection === 'users' ? (
                   <div
@@ -2237,7 +2429,7 @@ export default function Setup() {
                     >
                       <i className="fa-regular fa-arrow-right" />
                     </div>
-                    <p className="Label">Next</p>
+                    <p className="Label">{t('setup.nextLabel')}</p>
                   </div>
                 ) : currentSection === 'touchid' ? (
                   settings.user.touchid ? (
@@ -2248,14 +2440,14 @@ export default function Setup() {
                       >
                         <i className="fa-regular fa-arrow-right" />
                       </div>
-                      <p className="Label">Next</p>
+                      <p className="Label">{t('setup.nextLabel')}</p>
                     </div>
                   ) : (
                     <div
                       className="Button"
                       onClick={() => setCurrentIndex(currentIndex + 1)}
                     >
-                      <p>Skip</p>
+                      <p>{t('setup.touchid.skipLabel')}</p>
                     </div>
                   )
                 ) : currentSection === section[section.length - 1] ? (
@@ -2267,26 +2459,25 @@ export default function Setup() {
                           ...blocks,
                           {
                             type: 'question',
-                            title: 'Continue?',
-                            content:
-                              'The installer is going to apply changes to your disk. You will not be able to undo these changes after this.',
+                            title: t('setup.msgbox.continue.title'),
+                            content: t('setup.msgbox.continue.content'),
                             buttons: [
                               {
-                                label: 'Overview...',
+                                label: t('setup.msgbox.continue.overviewLabel'),
                                 action: () => setSubDialog(<Overview />),
                               },
                               {
-                                label: 'Yes',
+                                label: t('setup.msgbox.yesLabel'),
                                 action: install,
                               },
-                              { label: 'No' },
+                              { label: t('setup.msgbox.noLabel') },
                             ],
                           },
                         ]),
                       )
                     }
                   >
-                    <p>Install</p>
+                    <p>{t('setup.installLabel')}</p>
                   </div>
                 ) : (
                   <div className="InteractionButtonWrapper">
@@ -2296,7 +2487,7 @@ export default function Setup() {
                     >
                       <i className="fa-regular fa-arrow-right" />
                     </div>
-                    <p className="Label">Next</p>
+                    <p className="Label">{t('setup.nextLabel')}</p>
                   </div>
                 )}
               </div>
@@ -2339,11 +2530,10 @@ export default function Setup() {
             <>
               <div style={{ margin: '0 40px' }}>
                 <p className="Title" style={{ marginBottom: '20px' }}>
-                  Installation Complete
+                  {t('setup.subdialog.installation.success.title')}
                 </p>
                 <p className="Description">
-                  Thank you for choosing BreezeOS as your main operating system.
-                  You can now restart your computer.
+                  {t('setup.subdialog.installation.success.description')}
                 </p>
               </div>
               <div
@@ -2356,7 +2546,9 @@ export default function Setup() {
                   );
                 }}
               >
-                <p>Restart</p>
+                <p>
+                  {t('setup.subdialog.installation.success.restartButtonLabel')}
+                </p>
               </div>
             </>
           ) : (
@@ -2370,7 +2562,11 @@ export default function Setup() {
                 }}
               >
                 <img
-                  src={InstallImage}
+                  src={
+                    system.platform === 'darwin'
+                      ? InstallMacImage
+                      : InstallImage
+                  }
                   style={{ width: 'auto', height: '220px' }}
                 />
               </div>
@@ -2382,7 +2578,7 @@ export default function Setup() {
                   />
                 </div>
                 <p className="Description" style={{ marginTop: '18px' }}>
-                  This will take a while.
+                  {t('setup.subdialog.installation.waiting')}
                 </p>
               </div>
             </>

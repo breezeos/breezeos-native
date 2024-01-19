@@ -7,7 +7,7 @@ interface StateType {
   hostname: string;
   kernel: string;
   version: string;
-  platform: string;
+  platform: 'linux' | 'darwin' | 'Windows';
   memory: {
     total: string;
     used: string;
@@ -34,7 +34,7 @@ const initialState: StateType = {
   hostname: 'BreezeOS',
   kernel: '',
   version: '',
-  platform: 'BreezeOS',
+  platform: 'linux',
   memory: {
     total: '',
     used: '',

@@ -1,5 +1,126 @@
 {
+  "setup": {
+    "title": {
+      "language": "Оберіть мову",
+      "country": "Виберіть країну",
+      "keyboard": "Виберіть Розкладка клавіатури",
+      "wifi": "Виберіть Мережа Wi-Fi",
+      "disks": "Виберіть Диск",
+      "encryptDisk": "Шифрування диска",
+      "location": "Служби визначення місцезнаходження",
+      "users": "Створити нового користувача",
+      "touchid": "Налаштувати Touch ID",
+      "appearances": "Виберіть Зовнішній вигляд",
+      "bootscreen": "Екран завантаження"
+    },
+    "description": {
+      "disks": "Встановлення видалить усі поточні дані, на яких вибрано диск. ",
+      "encryptDisk": {
+        "leftHand": "Ви хочете зашифрувати диск",
+        "rightHand": ""
+      },
+      "appearances": "Виберіть зовнішній вигляд, який вам більше подобається, його можна змінити пізніше в налаштуваннях системи.",
+      "touchid": "Ви можете налаштувати Touch ID для розблокування замість введення пароля. ",
+      "bootscreen": "Якщо ввімкнено, відтепер замість повідомлень про завантаження під час процесу завантаження відображатиметься логотип."
+    },
+    "subdialog": {
+      "connectWifi": {
+        "titleLeftHand": "Введіть пароль Wi-Fi",
+        "titleRightHand": "щоб встановити з'єднання.",
+        "passwordLabel": "Пароль",
+        "showPasswordLabel": "Показати пароль",
+        "connectButtonLabel": "Підключитися"
+      },
+      "connectOtherWifi": {
+        "title": "Підключення до прихованих мереж",
+        "nameLabel": "Назва мережі",
+        "passwordLabel": "Пароль",
+        "showPasswordLabel": "Показати пароль",
+        "securityLabel": "Безпека",
+        "connectButtonLabel": "Підключитися"
+      },
+      "overview": {
+        "language": "Мова",
+        "country": "Країна",
+        "keyboardLayout": "Розкладка клавіатури",
+        "disks": "диски",
+        "encryptDisk": "Шифрування диска",
+        "bootscreen": "Екран завантаження"
+      },
+      "promptTouchID": {
+        "requirePassword": "Щоб увімкнути Touch ID, потрібен пароль.",
+        "waiting": "Будь ласка, зачекайте трохи, з’явиться підказка з проханням прикласти палець до датчика.",
+        "failed": {
+          "title": "Не вдалося налаштувати Touch ID",
+          "buttonLabel": "Повторіть спробу"
+        },
+        "success": {
+          "title": "Успішно налаштовано Touch ID",
+          "description": "Відтепер Touch ID використовуватиметься як основний параметр входу кожного разу, коли ви розблокуєте комп’ютер."
+        },
+        "touchIDIssue": "Виникла проблема з датчиком Touch ID, і, на жаль, ми не можемо її вирішити."
+      },
+      "installation": {
+        "success": {
+          "title": "Встановлення завершено",
+          "description": "Дякуємо за вибір BreezeOS як основної операційної системи. ",
+          "restartButtonLabel": "Перезапустіть"
+        },
+        "waiting": "Це займе деякий час."
+      }
+    },
+    "checkbox": {
+      "yes": "Так",
+      "no": "Немає"
+    },
+    "backLabel": "Назад",
+    "nextLabel": "Далі",
+    "installLabel": "встановити",
+    "msgbox": {
+      "yesLabel": "Так",
+      "noLabel": "Немає",
+      "discard": "Скасувати всі зміни та припинити встановлення?",
+      "touchid": "Вимкнути Touch ID назавжди?",
+      "disks": "Неможливо вибрати диск менше 50 ГБ, виберіть інший.",
+      "continue": {
+        "title": "Продовжити?",
+        "content": "Програма встановлення застосує зміни до вашого диска. ",
+        "overviewLabel": "Огляд..."
+      }
+    },
+    "wifi": {
+      "otherButtonLabel": "Інший...",
+      "connectButtonLabel": "Підключитися"
+    },
+    "encryptDisk": {
+      "passwordLabel": "Пароль",
+      "confirmPasswordLabel": "Підтвердьте пароль"
+    },
+    "users": {
+      "username": "Ім'я користувача",
+      "computerName": "Ім'я комп'ютера",
+      "passwordLabel": "Пароль",
+      "confirmPasswordLabel": "Повторіть пароль",
+      "enablePasswordLabel": "Увімкнути пароль",
+      "passwordDisabled": "Рекомендується ввімкнути пароль для свого облікового запису, щоб захистити ваші дані."
+    },
+    "touchid": {
+      "enabled": "Touch ID увімкнено в BreezeOS Native.",
+      "setup": "Налаштувати Touch ID...",
+      "disableLabel": "Вимкнути",
+      "skipLabel": "Пропустити"
+    },
+    "appearances": {
+      "light": "світло",
+      "dark": "Темний"
+    },
+    "bootscreen": {
+      "enableLabel": "Увімкнути",
+      "disableLabel": "Вимкнути"
+    }
+  },
   "lockScreen": {
+    "touchID": "Touch ID щоб розблокувати",
     "passwordPlaceholder": "Пароль...",
     "incorrectPassword": "невдала спроба",
     "incorrectPasswordPlural": "невдалі спроби",

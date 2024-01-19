@@ -273,7 +273,7 @@ export default function SplashScreen() {
                       <>
                         {requireTouchID ? (
                           <p style={{ fontWeight: 'bold', fontSize: '13px' }}>
-                            Touch ID to unlock
+                            {t("lockScreen.touchID")}
                           </p>
                         ) : invalidCount === invalidLimit ? (
                           <p>

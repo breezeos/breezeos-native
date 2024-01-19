@@ -1,5 +1,126 @@
 {
+  "setup": {
+    "title": {
+      "language": "Sprache auswählen",
+      "country": "Wähle ein Land",
+      "keyboard": "Wählen Sie Tastaturlayout",
+      "wifi": "Wählen Sie Wi-Fi-Netzwerk",
+      "disks": "Wählen Sie die Festplatte",
+      "encryptDisk": "Scheibenverschlüsselung",
+      "location": "Standortdienste",
+      "users": "Neuen Benutzer erstellen",
+      "touchid": "Touch ID einrichten",
+      "appearances": "Wählen Sie das Aussehen",
+      "bootscreen": "Startbildschirm"
+    },
+    "description": {
+      "disks": "Die Installation löscht alle aktuellen Daten, in denen die Festplatte ausgewählt wird.Es wird Ihnen empfohlen, alle Daten zu sichern.",
+      "encryptDisk": {
+        "leftHand": "Möchten Sie die Festplatte",
+        "rightHand": "verschlüsseln"
+      },
+      "appearances": "Wählen Sie ein Erscheinungsbild aus, das Sie bevorzugen. Es kann später in den Systemeinstellungen geändert werden.",
+      "touchid": "Sie können Touch ID so einrichten, dass sie freigeschaltet werden, anstatt Passwort zu tippen.Wenn Sie loslegen, klicken Sie auf \"Touch ID einrichten...\".",
+      "bootscreen": "Wenn es aktiviert ist, wird das Logo von nun an anstelle von Startnachrichten im Startvorgang angezeigt."
+    },
+    "subdialog": {
+      "connectWifi": {
+        "titleLeftHand": "Geben Sie das Passwort von Wi-Fi ein",
+        "titleRightHand": "um die Verbindung herzustellen.",
+        "passwordLabel": "Passwort",
+        "showPasswordLabel": "Passwort anzeigen",
+        "connectButtonLabel": "Verbinden"
+      },
+      "connectOtherWifi": {
+        "title": "Verbindung zu versteckten Netzwerken herstellen",
+        "nameLabel": "Netzwerkname",
+        "passwordLabel": "Passwort",
+        "showPasswordLabel": "Passwort anzeigen",
+        "securityLabel": "Sicherheit",
+        "connectButtonLabel": "Verbinden"
+      },
+      "overview": {
+        "language": "Sprache",
+        "country": "Land",
+        "keyboardLayout": "Tastaturbelegung",
+        "disks": "Scheiben",
+        "encryptDisk": "Scheibenverschlüsselung",
+        "bootscreen": "Startbildschirm"
+      },
+      "promptTouchID": {
+        "requirePassword": "Es ist ein Passwort erforderlich, um Touch ID zu aktivieren.",
+        "waiting": "Bitte warten Sie einen Moment, eine Aufforderung wird angezeigt und bitten Sie, Ihren Finger auf den Sensor zu legen.",
+        "failed": {
+          "title": "Die Touch ID nicht einrichten",
+          "buttonLabel": "Wiederholen"
+        },
+        "success": {
+          "title": "Erfolgreich Touch ID einrichten",
+          "description": "Von nun an wird die Touch ID als Hauptanmeldoption verwendet, wenn Sie Ihren Computer entsperren."
+        },
+        "touchIDIssue": "Es gibt ein Problem mit Ihrem Touch ID Sensor, und wir können es leider nicht für Sie beheben."
+      },
+      "installation": {
+        "success": {
+          "title": "Die Installierung ist abgeschlossen",
+          "description": "Vielen Dank, dass Sie BreezeOS als Hauptbetriebssystem ausgewählt haben.Sie können jetzt Ihren Computer neu starten.",
+          "restartButtonLabel": "Neu starten"
+        },
+        "waiting": "Dies wird eine Weile dauern."
+      }
+    },
+    "checkbox": {
+      "yes": "Ja",
+      "no": "Nein"
+    },
+    "backLabel": "Zurück",
+    "nextLabel": "Nächste",
+    "installLabel": "Installieren",
+    "msgbox": {
+      "yesLabel": "Ja",
+      "noLabel": "Nein",
+      "discard": "Alle Änderungen verwerfen und die Installation beenden?",
+      "touchid": "Touch ID dauerhaft deaktivieren?",
+      "disks": "Kann nicht unter 50 GB feststellen, bitte wählen Sie eine andere aus.",
+      "continue": {
+        "title": "Weitermachen?",
+        "content": "Der Installateur wird Änderungen an Ihrer Festplatte anwenden. Sie werden diese Änderungen danach nicht rückgängig machen.",
+        "overviewLabel": "Überblick..."
+      }
+    },
+    "wifi": {
+      "otherButtonLabel": "Andere...",
+      "connectButtonLabel": "Verbinden"
+    },
+    "encryptDisk": {
+      "passwordLabel": "Passwort",
+      "confirmPasswordLabel": "Bestätige das Passwort"
+    },
+    "users": {
+      "username": "Nutzername",
+      "computerName": "Computername",
+      "passwordLabel": "Passwort",
+      "confirmPasswordLabel": "Passwort wiederholen",
+      "enablePasswordLabel": "Passwort aktivieren",
+      "passwordDisabled": "Es wird empfohlen, das Kennwort für Ihr Konto zu aktivieren, um Ihre Daten sicher zu halten."
+    },
+    "touchid": {
+      "enabled": "Die Touch ID ist in BreezeOS Native aktiviert.",
+      "setup": "Touch ID einrichten...",
+      "disableLabel": "Deaktivieren",
+      "skipLabel": "Überspringen"
+    },
+    "appearances": {
+      "light": "Licht",
+      "dark": "Dunkel"
+    },
+    "bootscreen": {
+      "enableLabel": "Aktivieren",
+      "disableLabel": "Deaktivieren"
+    }
+  },
   "lockScreen": {
+    "touchID": "Touch ID zum Freischalten",
     "passwordPlaceholder": "Passwort...",
     "incorrectPassword": "Fehlversuch",
     "incorrectPasswordPlural": "Fehlversuch",
