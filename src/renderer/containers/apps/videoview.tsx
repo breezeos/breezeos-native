@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { setLocation } from '../../store/reducers/videoview';
 import Draggable from 'react-draggable';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { ipcRenderer } from 'electron';
 
 export default function VideoView() {
   const dispatch = useAppDispatch();
@@ -17,7 +18,7 @@ export default function VideoView() {
   const [src, setSrc] = useState<string>('');
 
   async function getFileContent() {
-    const content = await window.electron.ipcRenderer.invoke(
+    const content = await ipcRenderer.invoke(
       'getFileContent',
       location,
       'base64'

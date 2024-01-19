@@ -40,6 +40,7 @@ import { initializeData } from './store/reducers/weather';
 import Setup from './components/Setup';
 import si from 'systeminformation';
 import MsgBoxContainer from './components/utils/msgbox/container';
+import { ipcRenderer } from 'electron';
 
 export default function Desktop() {
   const dispatch = useAppDispatch();
@@ -202,7 +203,7 @@ export default function Desktop() {
     // }
   }, [batteryState, batteryLevel]);
 
-  window.electron.ipcRenderer.once('err-no-exception', (arg) => {
+  ipcRenderer.once('err-no-exception', (arg) => {
     console.log(arg);
   });
 

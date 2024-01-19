@@ -7,6 +7,7 @@ import ActMenu, {
 } from '../../../components/utils/menu';
 import usePathInteraction from '../../../hooks/usePathInteraction';
 import { setBlocks } from '../../../store/reducers/msgbox';
+import { ipcRenderer } from 'electron';
 
 interface FilesItemProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -125,7 +126,7 @@ export default function FilesItem({
   const [isDir, setIsDir] = useState<boolean>(false);
 
   async function checkDir() {
-    const isDir = await window.electron.ipcRenderer.invoke(
+    const isDir = await ipcRenderer.invoke(
       'pathIsDir',
       location,
     );
@@ -136,7 +137,7 @@ export default function FilesItem({
   const [trashLength, setTrashLength] = useState<number>();
 
   async function getTrashLength() {
-    const content = await window.electron.ipcRenderer.invoke(
+    const content = await ipcRenderer.invoke(
       'getDirContent',
       '/.Bin',
     );
@@ -145,7 +146,7 @@ export default function FilesItem({
   }
 
   async function moveToTrash() {
-    await window.electron.ipcRenderer.invoke(
+    await ipcRenderer.invoke(
       'renamePath',
       location,
       `/.Bin/${name}`,
@@ -164,7 +165,7 @@ export default function FilesItem({
             {
               label: 'Yes',
               action: async () =>
-                await window.electron.ipcRenderer.invoke(
+                await ipcRenderer.invoke(
                   'removePath',
                   location,
                 ),

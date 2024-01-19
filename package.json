@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/breezeos/breezeos-native.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "BreezeOS Community",
+    "email": "cyplucastero@gmail.com",
+    "url": "https://breezeos.github.io"
   },
   "contributors": [
     {
@@ -240,18 +240,27 @@
       "gatekeeperAssess": false
     },
     "dmg": {
+      "background": "assets/images/dmg.jpg",
+      "icon": "assets/icon.icns",
+      "iconSize": 184,
+      "iconTextSize": 14,
+      "title": "BreezeOS Native",
       "contents": [
         {
-          "x": 130,
-          "y": 220
+          "x": 287,
+          "y": 367
         },
         {
-          "x": 410,
-          "y": 220,
+          "x": 745,
+          "y": 367,
           "type": "link",
           "path": "/Applications"
         }
-      ]
+      ],
+      "window": {
+        "width": 1029,
+        "height": 650
+      }
     },
     "win": {
       "target": [

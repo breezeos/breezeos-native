@@ -4,6 +4,7 @@ import ActMenu, { ActMenuSelector, ActMenuSeparator } from './utils/menu';
 import { setLocation } from '../store/reducers/apps/texteditor';
 import { useEffect, useRef, useState } from 'react';
 import usePathInteraction from '../hooks/usePathInteraction';
+import { ipcRenderer } from 'electron';
 
 interface DesktopIconProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -119,7 +120,7 @@ export default function DesktopIcon({
   const [isDir, setIsDir] = useState<boolean>(false);
 
   async function checkDir() {
-    const isDir = await window.electron.ipcRenderer.invoke(
+    const isDir = await ipcRenderer.invoke(
       'pathIsDir',
       `/home/Desktop/${name}`,
     );
@@ -128,7 +129,7 @@ export default function DesktopIcon({
   }
 
   async function moveToTrash() {
-    await window.electron.ipcRenderer.invoke(
+    await ipcRenderer.invoke(
       'renamePath',
       `/home/Desktop/${name}`,
       `/.Bin/${name}`,

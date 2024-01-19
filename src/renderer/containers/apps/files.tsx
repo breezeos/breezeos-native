@@ -20,6 +20,7 @@ import { setStartMenuActive } from '../../store/reducers/startmenu';
 import Draggable from 'react-draggable';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import FilesItem from './assets/FilesItem';
+import { ipcRenderer } from 'electron';
 
 export const FilesApp = () => {
   const { t } = useTranslation();
@@ -226,7 +227,7 @@ export default function Files() {
   const [tree, setTree] = useState<string[]>(['']);
 
   async function getDirContent() {
-    const content = await window.electron.ipcRenderer.invoke(
+    const content = await ipcRenderer.invoke(
       'getDirContent',
       directory === 'Recent'
         ? ''

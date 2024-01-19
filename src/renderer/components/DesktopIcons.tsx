@@ -3,6 +3,7 @@ import './DesktopIcons.scss';
 import DesktopIcon from './DesktopIcon';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setBlocks } from '../store/reducers/msgbox';
+import { ipcRenderer } from 'electron';
 
 export default function DesktopIcons() {
   const dispatch = useAppDispatch();
@@ -10,7 +11,7 @@ export default function DesktopIcons() {
   const [tree, setTree] = useState<string[]>([]);
 
   async function getDirContent() {
-    const content = await window.electron.ipcRenderer.invoke(
+    const content = await ipcRenderer.invoke(
       'getDirContent',
       '/home/Desktop',
     );

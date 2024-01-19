@@ -220,12 +220,12 @@
 // window.electron = electronHandler;
 
 // export type ElectronHandler = typeof electronHandler;
-import { ipcRenderer } from "electron";
+import { ipcRenderer } from 'electron';
 
 const electronHandler = {
   ipcRenderer: ipcRenderer,
 };
 
-window.electron = electronHandler;
+window.electron = electronHandler
 
 export type ElectronHandler = typeof electronHandler;

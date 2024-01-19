@@ -23,6 +23,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import SplashScreenItem from './SplashScreenItem';
 import useProcess from '../../hooks/useProcess';
 import CryptoJS from 'crypto-js';
+import { ipcRenderer } from 'electron';
 
 export default function SplashScreen() {
   const dispatch = useAppDispatch();
@@ -142,7 +143,7 @@ export default function SplashScreen() {
       !isSleeping &&
       requireTouchID
     ) {
-      window.electron.ipcRenderer
+      ipcRenderer
         .invoke('promptTouchID', 'unlock your computer with Touch ID')
         .then(login)
         .catch(() => {

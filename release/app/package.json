@@ -4,9 +4,9 @@
   "description": "A foundation for scalable desktop apps",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "BreezeOS Community",
+    "email": "cyplucastero@gmail.com",
+    "url": "https://breezeos.github.io"
   },
   "main": "./dist/main/main.js",
   "scripts": {

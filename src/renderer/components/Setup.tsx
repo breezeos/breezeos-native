@@ -54,6 +54,7 @@ import Frame10L from '../../../assets/images/setup/light/frame10.jpg';
 import Frame11L from '../../../assets/images/setup/light/frame11.jpg';
 import Frame12L from '../../../assets/images/setup/light/frame12.jpg';
 import Frame13L from '../../../assets/images/setup/light/frame13.jpg';
+import { ipcRenderer } from 'electron';
 
 export default function Setup() {
   const dispatch = useAppDispatch();
@@ -968,7 +969,7 @@ export default function Setup() {
 
   function install() {
     setIsInstalling(true);
-    window.electron.ipcRenderer.invoke('installFs');
+    ipcRenderer.invoke('installFs');
   }
 
   useEffect(() => {
@@ -978,11 +979,12 @@ export default function Setup() {
           setPassword(CryptoJS.MD5(passwordValue).toString(CryptoJS.enc.Hex)),
         );
       }
+      const installMs = process.env.NODE_ENV === 'development' ? 50 : 8000;
       if (installPercent === 101) return;
 
       const interval = setInterval(
         () => setInstallPercent(installPercent + 1),
-        50,
+        installMs,
       );
 
       return () => clearInterval(interval);
@@ -1376,13 +1378,12 @@ export default function Setup() {
     const [canPromptTouchID, setCanPromptTouchID] = useState<boolean>(false);
 
     async function setUpTouchID() {
-      const canPromptTouchID =
-        await window.electron.ipcRenderer.invoke('canPromptTouchID');
+      const canPromptTouchID = await ipcRenderer.invoke('canPromptTouchID');
 
       setCanPromptTouchID(canPromptTouchID);
 
       if (canPromptTouchID && settings.user.password && isSucceeded === null) {
-        window.electron.ipcRenderer
+        ipcRenderer
           .invoke('promptTouchID', 'add a fingerprint')
           .then(() => {
             setIsSucceeded(true);
@@ -1929,7 +1930,7 @@ export default function Setup() {
                       )
                     }
                   >
-                    {t("setup.touchid.disableLabel")}
+                    {t('setup.touchid.disableLabel')}
                   </div>
                 </div>
               </>

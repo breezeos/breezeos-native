@@ -18,6 +18,7 @@ import { setStartMenuActive } from '../../store/reducers/startmenu';
 import Draggable from 'react-draggable';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setBlocks } from '../../store/reducers/msgbox';
+import { ipcRenderer } from 'electron';
 
 export const TextEditorApp = () => {
   const { t } = useTranslation();
@@ -110,7 +111,7 @@ export default function TextEditor() {
   const locationLine = location.split('/');
 
   async function getFileContent() {
-    const content = await window.electron.ipcRenderer.invoke(
+    const content = await ipcRenderer.invoke(
       'getFileContent',
       location,
       'utf-8'
@@ -119,7 +120,7 @@ export default function TextEditor() {
   }
 
   async function writeFileContent() {
-    await window.electron.ipcRenderer.invoke(
+    await ipcRenderer.invoke(
       'writeFileContent',
       location,
       content,

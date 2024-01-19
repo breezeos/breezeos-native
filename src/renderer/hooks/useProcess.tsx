@@ -16,6 +16,7 @@ import { setTerminalWindowActive } from '../store/reducers/terminalwindow';
 import { clearItem, pushItem } from '../store/reducers/shutdown';
 import LogoD from '../../../assets/images/logo-d.svg';
 import { setWallpaperActive } from '../store/reducers/wallpaper';
+import { ipcRenderer } from 'electron';
 
 export default function useProcess() {
   const dispatch = useDispatch();
@@ -96,7 +97,7 @@ export default function useProcess() {
   function shutdown() {
     hibernate();
     setTimeout(() => {
-      window.electron.ipcRenderer.invoke('quitWindow');
+      ipcRenderer.invoke('quitWindow');
     }, 13200);
   }
 
