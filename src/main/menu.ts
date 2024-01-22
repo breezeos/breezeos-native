@@ -96,7 +96,9 @@ export default class MenuBuilder {
         {
           label: 'Quit',
           accelerator: 'Command+Q',
-          selector: "performQuit:"
+          click: () => {
+            app.quit();
+          },
         },
       ],
     };

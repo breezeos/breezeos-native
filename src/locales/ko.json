@@ -142,6 +142,10 @@
       }
     }
   },
+  "modal": {
+    "beforeQuitDarwin": "시뮬레이터를 종료하려면 ⌘Q를 두 번 누르세요.",
+    "beforeQuit": "시뮬레이터를 종료하려면 Alt+F4를 두 번 누르세요."
+  },
   "notifications": {
     "off": "끄다",
     "on": "켜다"

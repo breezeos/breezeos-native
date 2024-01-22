@@ -9,7 +9,15 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, dialog, nativeImage, systemPreferences } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  dialog,
+  systemPreferences,
+  globalShortcut,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -64,7 +72,7 @@ ipcMain.handle('writeFileContent', (_event, arg1, arg2, arg3, arg4, arg5) => {
     signal,
     encoding: arg3,
     flag: arg4,
-    mode: arg5
+    mode: arg5,
   });
   controller.abort();
   return promise;
@@ -106,15 +114,6 @@ ipcMain.handle('promptTouchID', (_event, arg) => {
   const callback = systemPreferences.promptTouchID(arg);
   return callback;
 });
-
-// ipcMain.handle('installFs', async (_event, arg1) => {
-//   const callback = fs.access(
-//     `${userData}/FileSystem${arg1}`,
-//     constants.F_OK,
-//     arg2,
-//   );
-//   return callback;
-// });
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -165,6 +164,9 @@ const createWindow = async () => {
       nodeIntegration: true,
       contextIsolation: false,
       webviewTag: true,
+      preload: app.isPackaged
+        ? path.join(__dirname, 'preload.js')
+        : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
 
@@ -187,10 +189,34 @@ const createWindow = async () => {
 
   mainWindow.on('unresponsive', () => {
     dialog.showMessageBox(mainWindow!, {
-      message: "BreezeOS Native is currently unresponding due to unexpected issues occured while it was running. You can choose to wait until the simulator become responsive or re-start the simulator.",
-      type: "error",
-      buttons: ["Close BreezeOS Native", "Wait until it responds"],
-    })
+      message:
+        'BreezeOS Native is currently unresponding due to unexpected issues occured while it was running. You can choose to wait until the simulator become responsive or re-start the simulator.',
+      type: 'error',
+      buttons: ['Close BreezeOS Native', 'Wait until it responds'],
+    });
+  });
+
+  let isQuit: boolean = false;
+
+  app.on('before-quit', (e) => {
+    e.preventDefault();
+    isQuit = true;
+
+    const shortcut: string =
+      process.platform === 'darwin' ? 'Command+Q' : 'Alt+F4';
+
+    if (isQuit) {
+      globalShortcut.register(shortcut, () => {
+        mainWindow?.destroy();
+        app.quit();
+      });
+      setTimeout(() => {
+        isQuit = false;
+        globalShortcut.unregister(shortcut);
+      }, 3600);
+    }
+
+    mainWindow?.webContents.send('willQuit', true);
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);

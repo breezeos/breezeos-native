@@ -1,15 +1,15 @@
-import { setBrightness, setVolume } from "../../store/reducers/settings";
-import "./Panel.scss";
-import VolumeAdjustSound from "../../../../assets/sounds/Oxygen-Sys-Special.mp3";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import PanelType from "./PanelType";
-import { useTranslation } from "react-i18next";
-import PanelRangeContainer from "./PanelRangeContainer";
-import RangeSlider from "../utils/range";
-import PanelContainer from "./PanelItemContainer";
-import PanelItem from "./PanelItem";
-import { setPanelType } from "../../store/reducers/panel";
-import PanelItemLarge from "./PanelItemLarge";
+import { setBrightness, setVolume } from '../../store/reducers/settings';
+import './Panel.scss';
+import VolumeAdjustSound from '../../../../assets/sounds/Oxygen-Sys-Special.mp3';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import PanelType from './PanelType';
+import { useTranslation } from 'react-i18next';
+import PanelRangeContainer from './PanelRangeContainer';
+import RangeSlider from '../utils/range';
+import PanelContainer from './PanelItemContainer';
+import PanelItem from './PanelItem';
+import { setPanelType } from '../../store/reducers/panel';
+import PanelItemLarge from './PanelItemLarge';
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -19,44 +19,42 @@ const Panel = ({ ...props }: PanelProps) => {
   const type = useAppSelector((state) => state.panel.type);
   const settings = useAppSelector((state) => state.settings);
   const shellTheme = useAppSelector((state) => state.shell.theme);
-  const brightnessElem = document.getElementById(
-    "brightness"
-  ) as HTMLDivElement;
+  const desktop = document.getElementById('Desktop') as HTMLDivElement;
   const batteryPercent = useAppSelector((state) => state.system.battery.level);
   const batteryIsCharging = useAppSelector(
-    (state) => state.system.battery.charging
+    (state) => state.system.battery.charging,
   );
 
   function setBrightnessLevel(e: any) {
     dispatch(setBrightness(e));
-    brightnessElem.style.opacity = `${(100 - e) / 100}`;
+    desktop.style.filter = `brightness(${e}%)`;
   }
 
   return (
     <>
       <div
-        className={`Panel ${type === "default" && "active"} ${
-          shellTheme === "WhiteSur" ? "whitesur" : ""
+        className={`Panel ${type === 'default' && 'active'} ${
+          shellTheme === 'WhiteSur' ? 'whitesur' : ''
         }`}
         {...props}
       >
         <div className="PanelTypeContainer">
           <div className="defaultPanel">
             <div className="PanelTop">
-              <PanelItem onClick={() => dispatch(setPanelType("battery"))}>
+              <PanelItem onClick={() => dispatch(setPanelType('battery'))}>
                 {batteryIsCharging ? (
                   <i className="fa-regular fa-battery-bolt" />
                 ) : (
                   <i className="fa-regular fa-battery-full" />
                 )}
                 <p className="PanelBatteryLevel">
-                  {batteryPercent ? `${batteryPercent}%` : "-"}
+                  {batteryPercent ? `${batteryPercent}%` : '-'}
                 </p>
               </PanelItem>
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
               >
                 <PanelItem type="clipboard" />
@@ -65,7 +63,7 @@ const Panel = ({ ...props }: PanelProps) => {
               </div>
             </div>
             <div className="PanelBottom">
-              <PanelRangeContainer title={t("panel.volume")}>
+              <PanelRangeContainer title={t('panel.volume')}>
                 <RangeSlider
                   value={settings.volume}
                   min="0"
@@ -76,7 +74,7 @@ const Panel = ({ ...props }: PanelProps) => {
                   }
                 />
               </PanelRangeContainer>
-              <PanelRangeContainer title={t("panel.brightness")}>
+              <PanelRangeContainer title={t('panel.brightness')}>
                 <RangeSlider
                   value={settings.brightness}
                   min="15"
@@ -102,16 +100,16 @@ const Panel = ({ ...props }: PanelProps) => {
           </div>
         </div>
       </div>
-      <PanelType type="wifi" onActive={type === "wifi"} canSwitchBack />
-      <PanelType type="battery" onActive={type === "battery"} canSwitchBack />
+      <PanelType type="wifi" onActive={type === 'wifi'} canSwitchBack />
+      <PanelType type="battery" onActive={type === 'battery'} canSwitchBack />
       <PanelType
         type="bluetooth"
-        onActive={type === "bluetooth"}
+        onActive={type === 'bluetooth'}
         canSwitchBack
       />
       <PanelType
         type="clipboard"
-        onActive={type === "clipboard"}
+        onActive={type === 'clipboard'}
         canSwitchBack
       />
     </>

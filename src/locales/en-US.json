@@ -151,6 +151,10 @@
       }
     }
   },
+  "modal": {
+    "beforeQuitDarwin": "Double press ⌘Q to quit simulator.",
+    "beforeQuit": "Double press Alt+F4 to quit simulator."
+  },
   "notifications": {
     "off": "Off",
     "on": "On"

@@ -142,6 +142,10 @@
       }
     }
   },
+  "modal": {
+    "beforeQuitDarwin": "⌘Q を 2 回押してシミュレータを終了します。",
+    "beforeQuit": "Alt+F4 を 2 回押してシミュレータを終了します。"
+  },
   "notifications": {
     "off": "消す",
     "on": "オンにする"

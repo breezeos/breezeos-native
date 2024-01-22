@@ -142,6 +142,10 @@
       }
     }
   },
+  "modal": {
+    "beforeQuitDarwin": "雙擊 ⌘Q 退出模擬器。",
+    "beforeQuit": "按兩次 Alt+F4 退出模擬器。"
+  },
   "notifications": {
     "off": "關",
     "on": "打開"

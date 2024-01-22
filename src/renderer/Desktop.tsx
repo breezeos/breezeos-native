@@ -41,6 +41,8 @@ import Setup from './components/Setup';
 import si from 'systeminformation';
 import MsgBoxContainer from './components/utils/msgbox/container';
 import { ipcRenderer } from 'electron';
+import { setModalContent } from './store/reducers/modal';
+import { useTranslation } from 'react-i18next';
 
 export default function Desktop() {
   const dispatch = useAppDispatch();
@@ -58,8 +60,11 @@ export default function Desktop() {
   const transparencyReduced = useAppSelector(
     (state) => state.settings.transparencyReduced,
   );
+  const system = useAppSelector((state) => state.system);
+  const brightness = useAppSelector((state) => state.settings.brightness);
   const batteryState = useBattery();
   const batteryLevel = batteryState.level * 100;
+  const { t } = useTranslation();
 
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.keyCode === 76) {
@@ -181,6 +186,18 @@ export default function Desktop() {
       dispatch(setBatteryCharging(false));
     }
 
+    ipcRenderer.on('willQuit', (_event, willQuit) => {
+      if (willQuit) {
+        dispatch(
+          setModalContent(
+            system.platform === 'darwin'
+              ? t('modal.beforeQuitDarwin')
+              : t('modal.beforeQuit'),
+          ),
+        );
+      }
+    });
+
     // if (!batteryLevel) {
     //   dispatch(
     //     setBlocks([
@@ -203,12 +220,7 @@ export default function Desktop() {
     // }
   }, [batteryState, batteryLevel]);
 
-  ipcRenderer.once('err-no-exception', (arg) => {
-    console.log(arg);
-  });
-
   return (
-    <>
     <div
       className={`Desktop ${fontFamily} ${boldText && 'isBold'} ${
         themeLight && 'lightMode'
@@ -216,12 +228,11 @@ export default function Desktop() {
         blackScr && 'blackscr'
       } ${animationsReduced && 'animdisabled'} ${
         colorInverted && 'inverted'
-      } ${poweroff && 'poweroff'} ${
-        transparencyReduced && 'transdisabled'
-      }`}
+      } ${poweroff && 'poweroff'} ${transparencyReduced && 'transdisabled'}`}
       onContextMenu={(e) => e.preventDefault()}
       id="Desktop"
     >
+      <Modal />
       <TerminalWindow />
       <MsgBoxContainer />
       {!localStorage.getItem('setupDisabled') ? (
@@ -231,7 +242,6 @@ export default function Desktop() {
           <Snapshot />
           <LockScreen />
           <StartMenu />
-          <Modal />
           <Header />
           <Wallpaper />
           <DesktopBody />
@@ -239,7 +249,5 @@ export default function Desktop() {
         </>
       )}
     </div>
-    <div id="brightness"></div>
-    </>
   );
 }

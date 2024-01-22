@@ -152,6 +152,10 @@
       }
     }
   },
+  "modal": {
+    "beforeQuitDarwin": "Nhấn đúp ⌘Q để thoát khỏi trình mô phỏng.",
+    "beforeQuit": "Nhấn đúp Alt+F4 để thoát khỏi trình mô phỏng."
+  },
   "notifications": {
     "off": "Tắt",
     "on": "Bật"

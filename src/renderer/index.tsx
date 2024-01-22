@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import Desktop from './Desktop';
 import { Provider } from 'react-redux';
-import i18n from './translation/i18n';
+import i18n from '../translation/i18n';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import store from './store';
 import {
@@ -42,13 +42,13 @@ function Body() {
   const lockScreen = useAppSelector((state) => state.lock);
   const lockScreenIsEditable = useAppSelector((state) => state.lock.isEditable);
 
-  const brightnessElem = document.getElementById(
-    'brightness',
+  const desktop = document.getElementById(
+    'Desktop',
   ) as HTMLDivElement;
 
   function setBrightnessLevel(e: any) {
     dispatch(setBrightness(e));
-    brightnessElem.style.opacity = `${(100 - e) / 100}`;
+    desktop.style.filter = `brightness(${e}%)`;
   }
 
   function connectWifi(e: string) {

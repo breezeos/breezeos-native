@@ -142,6 +142,10 @@
       }
     }
   },
+  "modal": {
+    "beforeQuitDarwin": "Premi due volte ⌘Q per uscire dal simulatore.",
+    "beforeQuit": "Premi due volte Alt+F4 per uscire dal simulatore."
+  },
   "notifications": {
     "off": "Spegnere",
     "on": "Accendere"

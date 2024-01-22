@@ -142,6 +142,10 @@
       }
     }
   },
+  "modal": {
+    "beforeQuitDarwin": "Tekan dua kali ⌘Q untuk keluar dari simulator.",
+    "beforeQuit": "Tekan dua kali Alt+F4 untuk keluar dari simulator."
+  },
   "notifications": {
     "off": "Matikan",
     "on": "Menyalakan"

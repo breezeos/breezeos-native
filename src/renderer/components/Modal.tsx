@@ -15,7 +15,7 @@ export default function Modal() {
       setIsActive(true);
       setTimeout(() => {
         setIsActive(false);
-        setTimeout(() => dispatch(setModalContent("")), 3000);
+        setTimeout(() => dispatch(setModalContent("")), 300);
       }, 3000);
     }
   }, [content]);
