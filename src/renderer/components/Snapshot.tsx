@@ -90,7 +90,7 @@ export default function Snapshot() {
 
   return (
     <div className={`Snapshot ${isCaptured && "captured"}`}>
-      <Draggable handle=".TopBar">
+      <Draggable handle="#TopBar">
         <div
           className={`Window ${introductionShown && "active"}`}
           style={{

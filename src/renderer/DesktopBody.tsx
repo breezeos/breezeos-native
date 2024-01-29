@@ -1,15 +1,16 @@
-import './Desktop.scss';
-import Window from './components/utils/window/Window';
-import Widget from './components/Widget';
-import { useAppSelector } from './store/hooks';
-import { useAppDispatch } from './store/hooks';
+import "./Desktop.scss";
+import Window from "./components/utils/window/Window";
+import Widget from "./components/Widget";
+import { useAppSelector } from "./store/hooks";
+import { useAppDispatch } from "./store/hooks";
 import ActMenu, {
   ActMenuSelector,
   ActMenuSeparator,
-} from './components/utils/menu';
-import { useEffect, useRef, useState } from 'react';
-import { setActive, setSettings } from './store/reducers/apps/settings';
-import DesktopIcons from './components/DesktopIcons';
+} from "./components/utils/menu";
+import { useEffect, useRef, useState } from "react";
+import { setSettings } from "./store/reducers/settings";
+import DesktopIcons from "./components/DesktopIcons";
+import { openApp } from "./store/reducers/apps";
 
 const DesktopBody = () => {
   const isActive = useAppSelector((state) => state.desktopbody.active);
@@ -34,10 +35,10 @@ const DesktopBody = () => {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -54,24 +55,24 @@ const DesktopBody = () => {
   }
 
   return (
-    <div className={`DesktopBody ${isActive && 'active'} ${isHide && 'hide'}`}>
+    <div className={`DesktopBody ${isActive && "active"} ${isHide && "hide"}`}>
       <div
         style={{
-          width: '100vw',
-          height: 'calc(100vh - 105px)',
+          width: "100vw",
+          height: "calc(100vh - 105px)",
         }}
         onContextMenu={displayContextMenu}
       >
         <ActMenu
           style={{
-            position: 'absolute',
-            zIndex: '1',
-            width: '200px',
+            position: "absolute",
+            zIndex: "1",
+            width: "200px",
             top: contextMenuPos.y,
             left: contextMenuPos.x,
-            transition: 'opacity ease .1s',
+            transition: "opacity ease .1s",
           }}
-          className={`ContextMenu ${contextMenuDisplayed ? 'active' : ''}`}
+          className={`ContextMenu ${contextMenuDisplayed ? "active" : ""}`}
           ref={contextMenuRef}
         >
           <ActMenuSelector
@@ -89,14 +90,14 @@ const DesktopBody = () => {
             title="Change wallpaper"
             onClose={() => setContextMenuDisplayed(false)}
             onClick={() => {
-              dispatch(setActive(true));
-              dispatch(setSettings('Appearance'));
+              dispatch(openApp("settings"));
+              dispatch(setSettings("Appearance"));
             }}
           />
           <ActMenuSelector
             title="Settings..."
             onClose={() => setContextMenuDisplayed(false)}
-            onClick={() => dispatch(setActive(true))}
+            onClick={() => dispatch(openApp("settings"))}
           />
         </ActMenu>
       </div>

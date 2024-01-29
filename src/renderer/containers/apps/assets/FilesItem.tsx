@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { setDirectory } from '../../../store/reducers/apps/files';
+import { useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { setDirectory } from "../../../store/reducers/files";
 import ActMenu, {
   ActMenuSelector,
   ActMenuSeparator,
-} from '../../../components/utils/menu';
-import usePathInteraction from '../../../hooks/usePathInteraction';
-import { setBlocks } from '../../../store/reducers/msgbox';
-import { ipcRenderer } from 'electron';
+} from "../../../components/utils/menu";
+import usePathInteraction from "../../../hooks/usePathInteraction";
+import { setBlocks } from "../../../store/reducers/msgbox";
+import { ipcRenderer } from "electron";
 
 interface FilesItemProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -19,18 +19,17 @@ interface FilesItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default function FilesItem({
   name,
-  location = '',
+  location = "",
   thumbnail,
   content,
   isPermissionDenied,
   ...props
 }: FilesItemProps) {
   const dispatch = useAppDispatch();
-  const iconSize = useAppSelector((state) => state.appsFiles.iconSize);
-  const icon = useAppSelector((state) => state.appearance.iconTheme);
-  const nameLine = name.split('.');
+  const iconSize = useAppSelector((state) => state.files.iconSize);
+  const nameLine = name.split(".");
   const [isActive, setIsActive] = useState<boolean>(false);
-  const [isRename, setIsRename] = useState<boolean>(false);
+  // const [isRename, setIsRename] = useState<boolean>(false);
   const [contextMenuDisplayed, setContextMenuDisplayed] =
     useState<boolean>(false);
 
@@ -42,10 +41,10 @@ export default function FilesItem({
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -61,10 +60,10 @@ export default function FilesItem({
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -74,62 +73,37 @@ export default function FilesItem({
 
   function switchIcon() {
     switch (nameLine[nameLine.length - 1]) {
-      case 'txt':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/application-text-template.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg';
-      case 'gitignore':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/application-text-template.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg';
-      case 'conf':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/application-text-template.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg';
-      case 'png':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/image-x-generic.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg';
-      case 'jpg':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/image-x-generic.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg';
-      case 'ico':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/image-x-generic.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg';
-      case 'pptx':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/x-office-presentation.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/x-office-presentation.svg';
-      case 'mp4':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/video-x-generic.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/video-x-generic.svg';
-      case 'cpp':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/text-x-cpp.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-cpp.svg';
-      case 'html':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/text-html.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-html.svg';
+      case "txt":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg";
+      case "gitignore":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg";
+      case "conf":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg";
+      case "png":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg";
+      case "jpg":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg";
+      case "ico":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg";
+      case "pptx":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/x-office-presentation.svg";
+      case "mp4":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/video-x-generic.svg";
+      case "cpp":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-cpp.svg";
+      case "html":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-html.svg";
       default:
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/text-x-preview.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-preview.svg';
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-preview.svg";
     }
   }
 
-  const locationLine = location.split('/');
+  const locationLine = location.split("/");
 
   const [isDir, setIsDir] = useState<boolean>(false);
 
   async function checkDir() {
-    const isDir = await ipcRenderer.invoke(
-      'pathIsDir',
-      location,
-    );
+    const isDir = await ipcRenderer.invoke("pathIsDir", location);
 
     setIsDir(isDir);
   }
@@ -137,20 +111,13 @@ export default function FilesItem({
   const [trashLength, setTrashLength] = useState<number>();
 
   async function getTrashLength() {
-    const content = await ipcRenderer.invoke(
-      'getDirContent',
-      '/.Bin',
-    );
+    const content = await ipcRenderer.invoke("getDirContent", "/.Bin");
 
     setTrashLength(content.length);
   }
 
   async function moveToTrash() {
-    await ipcRenderer.invoke(
-      'renamePath',
-      location,
-      `/.Bin/${name}`,
-    );
+    await ipcRenderer.invoke("renamePath", location, `/.Bin/${name}`);
   }
 
   function removeFile() {
@@ -158,23 +125,20 @@ export default function FilesItem({
       setBlocks([
         ...blocks,
         {
-          type: 'question',
-          title: 'Delete this file?',
-          content: 'This action is irreversible!',
+          type: "question",
+          title: "Delete this file?",
+          content: "This action is irreversible!",
           buttons: [
             {
-              label: 'Yes',
+              label: "Yes",
               action: async () =>
-                await ipcRenderer.invoke(
-                  'removePath',
-                  location,
-                ),
+                await ipcRenderer.invoke("removePath", location),
             },
             {
-              label: 'No',
+              label: "No",
             },
           ],
-          width: '450px',
+          width: "450px",
         },
       ]),
     );
@@ -191,18 +155,18 @@ export default function FilesItem({
 
   function runAction() {
     if (!isDir) {
-      if (locationLine[1] !== '.Bin') {
+      if (locationLine[1] !== ".Bin") {
         executeCommandWithPath(nameLine[nameLine.length - 1], location!);
       } else {
         dispatch(
           setBlocks([
             ...blocks,
             {
-              type: 'exclamation',
+              type: "exclamation",
               content:
-                'Cannot run actions of this file as it is in the Trash folder. Move this file out of Trash and re-run it.',
-              buttons: [{ label: 'OK' }],
-              width: '450px',
+                "Cannot run actions of this file as it is in the Trash folder. Move this file out of Trash and re-run it.",
+              buttons: [{ label: "OK" }],
+              width: "450px",
             },
           ]),
         );
@@ -214,7 +178,7 @@ export default function FilesItem({
 
   return (
     <div
-      className={`FilesItem ${isActive && 'active'}`}
+      className={`FilesItem ${isActive && "active"}`}
       onMouseDown={() => setIsActive(true)}
       onDoubleClick={runAction}
       onContextMenu={() => setContextMenuDisplayed(true)}
@@ -223,39 +187,37 @@ export default function FilesItem({
     >
       <ActMenu
         style={{
-          position: 'absolute',
-          zIndex: '1',
-          width: '200px',
+          position: "absolute",
+          zIndex: "1",
+          width: "200px",
         }}
-        className={contextMenuDisplayed ? 'active' : ''}
+        className={contextMenuDisplayed ? "active" : ""}
         ref={contextMenuRef}
       >
         <div
           style={{
-            margin: '10px 0 16px 0',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            margin: "10px 0 16px 0",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <img
             className="FilesIcon"
-            style={{ marginBottom: '10px' }}
+            style={{ marginBottom: "10px" }}
             src={
               isDir
-                ? icon === 'WhiteSur-icon-theme'
-                  ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/places/scalable/folder.svg'
-                  : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/places/default-folder.svg'
+                ? "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/places/default-folder.svg"
                 : switchIcon()
             }
             width={iconSize + 30}
             height={iconSize + 30}
           />
-          <p style={{ fontSize: '16px', margin: 0, textAlign: 'center' }}>
+          <p style={{ fontSize: "16px", margin: 0, textAlign: "center" }}>
             {name}
           </p>
         </div>
-        {locationLine[1] !== '.Bin' ? (
+        {locationLine[1] !== ".Bin" ? (
           <>
             <ActMenuSelector
               title="Open"
@@ -289,7 +251,7 @@ export default function FilesItem({
           title="Get Info"
           onClose={() => setContextMenuDisplayed(false)}
         />
-        {locationLine[1] !== '.Bin' && (
+        {locationLine[1] !== ".Bin" && (
           <>
             <ActMenuSelector
               title="Copy"
@@ -310,7 +272,7 @@ export default function FilesItem({
           title="Rename"
           onClose={() => setContextMenuDisplayed(false)}
         />
-        {locationLine[1] === '.Bin' ? (
+        {locationLine[1] === ".Bin" ? (
           <>
             <ActMenuSelector
               title="Delete"
@@ -324,21 +286,21 @@ export default function FilesItem({
                   setBlocks([
                     ...blocks,
                     {
-                      type: 'question',
+                      type: "question",
                       title: `Delete ${trashLength} ${
-                        trashLength === 1 ? 'file' : 'files'
+                        trashLength === 1 ? "file" : "files"
                       } in Trash?`,
-                      content: 'This action is irreversible!',
+                      content: "This action is irreversible!",
                       buttons: [
                         {
-                          label: 'Yes',
-                          action: () => dispatch(setDirectory('/home')),
+                          label: "Yes",
+                          action: () => dispatch(setDirectory("/home")),
                         },
                         {
-                          label: 'No',
+                          label: "No",
                         },
                       ],
-                      width: '450px',
+                      width: "450px",
                     },
                   ]),
                 )
@@ -359,9 +321,7 @@ export default function FilesItem({
           className="FilesIcon"
           src={
             isDir
-              ? icon === 'WhiteSur-icon-theme'
-                ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/places/scalable/folder.svg'
-                : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/places/default-folder.svg'
+              ? "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/places/default-folder.svg"
               : switchIcon()
           }
           width={iconSize}

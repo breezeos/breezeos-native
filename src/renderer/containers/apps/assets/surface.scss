@@ -2,162 +2,172 @@ $bgcolor: #202023e5;
 $fgcolor: #e2e2e2;
 
 .SurfaceWindow {
-  .Window .TopBar {
-    padding: 4px 8px;
+  .Window {
+    .TopBar {
+      padding: 4px 8px;
 
-    .TopBarInteractionContainer {
-      display: flex;
-      width: 100vw;
-      justify-content: space-between;
-      align-items: center;
-
-      .TabBar {
+      .TopBarInteractionContainer {
         display: flex;
+        width: 100vw;
+        justify-content: space-between;
+        align-items: center;
 
-        .TabBarItem {
-          padding: 4px 9px;
-          color: #fff;
+        .TabBar {
           display: flex;
-          align-items: center;
-          font-size: 11px;
-          margin-right: 5px;
 
-          * {
-            margin: 0;
-          }
-
-          .TabBarInteraction {
+          .TabBarItem {
+            padding: 4px 9px;
+            color: #fff;
             display: flex;
+            align-items: center;
+            font-size: 11px;
+            margin-right: 5px;
 
-            i {
-              font-size: 12px;
+            * {
+              margin: 0;
+            }
+
+            .TabBarInteraction {
               display: flex;
-              justify-content: center;
-              align-items: center;
-              border-radius: 999px;
-              height: 20px;
-              width: 20px;
+
+              i {
+                font-size: 12px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 999px;
+                height: 20px;
+                width: 20px;
+
+                &:hover {
+                  background: #ffffff1e;
+                }
+              }
+            }
+
+            &.TabSearchItem {
+              position: relative;
+              overflow: hidden;
+              width: 150px;
+              border-radius: 5px;
+              background: #ffffff0a;
+
+              &.loading::after {
+                content: "";
+                display: block;
+                position: absolute;
+                bottom: 0;
+                height: 1.5px;
+                width: 100%;
+                background-color: $fgcolor;
+                animation: loading 2s infinite;
+
+                @keyframes loading {
+                  0% {
+                    left: -90%;
+                  }
+                  25% {
+                    left: 0%;
+                  }
+                  50% {
+                    left: 90%;
+                  }
+                  75% {
+                    left: 0%;
+                  }
+                  100% {
+                    left: -90%;
+                  }
+                }
+              }
+
+              .TabBarInteraction {
+                margin-right: 5px;
+
+                i {
+                  margin-right: 3px;
+                }
+              }
+
+              .CloseButton {
+                width: 18px;
+                height: 18px;
+                border-radius: 999px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                i {
+                  display: none;
+                  font-size: 10px;
+                }
+              }
 
               &:hover {
-                background: #ffffff1e;
+                .CloseButton {
+                  i {
+                    display: block;
+                  }
+
+                  &:hover {
+                    background: #ffffff10;
+                  }
+                }
               }
-            }
-          }
 
-          &.TabSearchItem {
-            position: relative;
-            overflow: hidden;
-            width: 150px;
-            border-radius: 5px;
-            background: #ffffff0a;
+              .TabSearch {
+                appearance: none;
+                -webkit-appearance: none;
+                border: none;
+                outline: none;
+                background: transparent;
+                color: #fff;
+                width: 100%;
+                font-size: 12px;
 
-            &.loading::after {
-              content: '';
-              display: block;
-              position: absolute;
-              bottom: 0;
-              height: 1.5px;
-              width: 100%;
-              background-color: $fgcolor;
-              animation: loading 2s infinite;
+                &::placeholder {
+                  color: #ffffff36;
+                }
 
-              @keyframes loading {
-                0% {
-                  left: -90%;
-                }
-                25% {
-                  left: 0%;
-                }
-                50% {
-                  left: 90%;
-                }
-                75% {
-                  left: 0%;
-                }
-                100% {
-                  left: -90%;
+                &.disabled {
+                  opacity: 0.3;
+                  pointer-events: none;
                 }
               }
             }
 
-            .TabBarInteraction {
-              margin-right: 5px;
+            &.TabSettingsItem {
+              margin: 0;
 
-              i {
-                margin-right: 3px;
-              }
-            }
-
-            .CloseButton {
-              width: 18px;
-              height: 18px;
-              border-radius: 999px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              i {
-                display: none;
-                font-size: 10px;
-              }
-            }
-
-            &:hover {
-              .CloseButton {
+              .TabBarInteraction {
+                margin-right: 5px;
                 i {
-                  display: block;
-                }
+                  transition: none;
 
-                &:hover {
-                  background: #ffffff10;
-                }
-              }
-            }
+                  &:hover {
+                    background: transparent;
+                  }
 
-            .TabSearch {
-              appearance: none;
-              -webkit-appearance: none;
-              border: none;
-              outline: none;
-              background: transparent;
-              color: #fff;
-              width: 100%;
-              font-size: 12px;
-
-              &::placeholder {
-                color: #ffffff36;
-              }
-
-              &.disabled {
-                opacity: 0.3;
-                pointer-events: none;
-              }
-            }
-          }
-
-          &.TabSettingsItem {
-            margin: 0;
-
-            .TabBarInteraction {
-              margin-right: 5px;
-              i {
-                transition: none;
-
-                &:hover {
-                  background: transparent;
-                }
-
-                &.active {
-                  background: #ffffff1e;
+                  &.active {
+                    background: #ffffff1e;
+                  }
                 }
               }
             }
           }
         }
       }
+      .TopBarTitle {
+        width: auto;
+      }
     }
-    .TopBarTitle {
-      width: auto;
+
+    &.fullscreen .Surface {
+      padding: 0;
+
+      .SurfaceContentContainer {
+        border-radius: 0;
+      }
     }
   }
 
@@ -166,7 +176,7 @@ $fgcolor: #e2e2e2;
     height: 100%;
 
     .TabBarWrapper {
-      margin: 0 10px;
+      margin: 0 4px;
     }
 
     &.minimize {

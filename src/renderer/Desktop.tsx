@@ -1,14 +1,14 @@
-import Wallpaper from './components/Wallpaper';
-import './Desktop.scss';
-import TerminalWindow from './components/utils/window/TerminalDesktop';
-import LockScreen from './components/lockScreen/LockScreen';
-import StartMenu from './components/startMenu/StartMenu';
-import Header from './components/Header';
-import Dock from './components/dock/Dock';
-import DesktopBody from './DesktopBody';
-import { useAppDispatch, useAppSelector } from './store/hooks';
-import Snapshot from './components/Snapshot';
-import Modal from './components/Modal';
+import Wallpaper from "./components/Wallpaper";
+import "./Desktop.scss";
+import TerminalWindow from "./components/utils/window/TerminalDesktop";
+import LockScreen from "./components/lockScreen/LockScreen";
+import StartMenu from "./components/startMenu/StartMenu";
+import Header from "./components/Header";
+import Dock from "./components/dock/Dock";
+import DesktopBody from "./DesktopBody";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import Snapshot from "./components/Snapshot";
+import Modal from "./components/Modal";
 import {
   setBatteryCharging,
   setBatteryLevel,
@@ -25,29 +25,33 @@ import {
   setUsedDisk,
   setUsedMemory,
   setVersion,
-} from './store/reducers/system';
-import { useBattery } from 'react-use';
-import { useEffect } from 'react';
-import { setTouchbarActive } from './store/reducers/touchbar';
+} from "./store/reducers/system";
+import { useBattery } from "react-use";
+import { useEffect } from "react";
+import { setTouchbarActive } from "./store/reducers/touchbar";
 import {
   setBluetoothList,
   setConnectedWifi,
   setLocked,
   setWifiList,
-} from './store/reducers/settings';
-import axios from 'axios';
-import { initializeData } from './store/reducers/weather';
-import Setup from './components/Setup';
-import si from 'systeminformation';
-import MsgBoxContainer from './components/utils/msgbox/container';
-import { ipcRenderer } from 'electron';
-import { setModalContent } from './store/reducers/modal';
-import { useTranslation } from 'react-i18next';
+} from "./store/reducers/settings";
+import axios from "axios";
+import { initializeData } from "./store/reducers/weather";
+import Setup from "./components/Setup";
+import si from "systeminformation";
+import MsgBoxContainer from "./components/utils/msgbox/container";
+import { ipcRenderer } from "electron";
+import { setModalContent } from "./store/reducers/modal";
+import { useTranslation } from "react-i18next";
+import { openApp, setApps, setMenu } from "./store/reducers/apps";
+import { setDirectory } from "./store/reducers/files";
+import { appsTemplate, favoriteAppsTemplate } from "./components/utils/apps";
+import { setDockFavorites } from "./store/reducers/dock";
 
 export default function Desktop() {
   const dispatch = useAppDispatch();
   const fontFamily = useAppSelector((state) => state.settings.fontFamily);
-  const themeLight = useAppSelector((state) => state.settings.themeLight);
+  const themeLight = useAppSelector((state) => state.appearance.themeLight);
   const boldText = useAppSelector((state) => state.settings.boldText);
   const animationsReduced = useAppSelector(
     (state) => state.settings.animationsReduced,
@@ -61,12 +65,11 @@ export default function Desktop() {
     (state) => state.settings.transparencyReduced,
   );
   const system = useAppSelector((state) => state.system);
-  const brightness = useAppSelector((state) => state.settings.brightness);
   const batteryState = useBattery();
   const batteryLevel = batteryState.level * 100;
   const { t } = useTranslation();
 
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener("keydown", (e) => {
     if (e.ctrlKey && e.keyCode === 76) {
       e.preventDefault();
       dispatch(setLocked(true));
@@ -162,6 +165,10 @@ export default function Desktop() {
     });
   }
 
+  const recentResult = useAppSelector((state) => state.calculator.recentResult);
+  const menu = useAppSelector((state) => state.apps.menu);
+  const fullscreen = useAppSelector((state) => state.apps.fullscreen);
+
   useEffect(() => {
     getHostname();
     getKernel();
@@ -177,7 +184,63 @@ export default function Desktop() {
     getWeatherData();
 
     dispatch(
-      setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : '-'),
+      setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : "-"),
+    );
+
+    dispatch(
+      setMenu({
+        ...menu,
+        files: [
+          {
+            label: "Recent",
+            action: () => dispatch(setDirectory("Recent")),
+          },
+          {
+            label: "Favorites",
+            action: () => dispatch(setDirectory("Favorites")),
+          },
+          {
+            label: "Home",
+            action: () => dispatch(setDirectory("/home")),
+          },
+          {
+            label: "Desktop",
+            action: () => dispatch(setDirectory("/home/Desktop")),
+          },
+          {
+            label: "Documents",
+            action: () => dispatch(setDirectory("/home/Documents")),
+          },
+          {
+            label: "Downloads",
+            action: () => dispatch(setDirectory("/home/Downloads")),
+          },
+          {
+            label: "Music",
+            action: () => dispatch(setDirectory("/home/Music")),
+          },
+          {
+            label: "Pictures",
+            action: () => dispatch(setDirectory("/home/Pictures")),
+          },
+          {
+            label: "Videos",
+            action: () => dispatch(setDirectory("/home/Videos")),
+          },
+          {
+            label: "Trash",
+            action: () => dispatch(setDirectory("/.Bin")),
+          },
+        ],
+        calculator: [
+          {
+            label: t("apps.calculator.recentResult"),
+            description: recentResult!,
+            disabled: !recentResult,
+            action: () => navigator.clipboard.writeText(`${recentResult}`),
+          },
+        ],
+      }),
     );
 
     if (batteryState.charging) {
@@ -186,13 +249,36 @@ export default function Desktop() {
       dispatch(setBatteryCharging(false));
     }
 
-    ipcRenderer.on('willQuit', (_event, willQuit) => {
+    const appsArray = appsTemplate.map((i) => ({
+      icon: !i.overrideIcon
+        ? `https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/${i.icon}.svg`
+        : i.icon,
+      id: i.id,
+      action: () =>
+        !i.externalLink
+          ? dispatch(openApp(i.id))
+          : window.open(i.externalLink, "_blank"),
+    }));
+
+    dispatch(setApps(appsArray));
+
+    const favoritesArray = favoriteAppsTemplate.map((i) => ({
+      icon: !i.overrideIcon
+        ? `https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/${i.icon}.svg`
+        : i.icon,
+      id: i.id,
+      externalLink: i.externalLink,
+    }));
+
+    dispatch(setDockFavorites(favoritesArray));
+
+    ipcRenderer.on("willQuit", (_event, willQuit) => {
       if (willQuit) {
         dispatch(
           setModalContent(
-            system.platform === 'darwin'
-              ? t('modal.beforeQuitDarwin')
-              : t('modal.beforeQuit'),
+            system.platform === "darwin"
+              ? t("modal.beforeQuitDarwin")
+              : t("modal.beforeQuit"),
           ),
         );
       }
@@ -222,20 +308,22 @@ export default function Desktop() {
 
   return (
     <div
-      className={`Desktop ${fontFamily} ${boldText && 'isBold'} ${
-        themeLight && 'lightMode'
-      } ${nightShift && 'nightShift'} ${hideCursor && 'hideCursor'} ${
-        blackScr && 'blackscr'
-      } ${animationsReduced && 'animdisabled'} ${
-        colorInverted && 'inverted'
-      } ${poweroff && 'poweroff'} ${transparencyReduced && 'transdisabled'}`}
+      className={`Desktop ${fontFamily} ${boldText && "isBold"} ${
+        themeLight && "lightMode"
+      } ${nightShift && "nightShift"} ${hideCursor && "hideCursor"} ${
+        blackScr && "blackscr"
+      } ${animationsReduced && "animdisabled"} ${colorInverted && "inverted"} ${
+        poweroff && "poweroff"
+      } ${transparencyReduced && "transdisabled"} ${
+        fullscreen && "fullscreen"
+      }`}
       onContextMenu={(e) => e.preventDefault()}
       id="Desktop"
     >
       <Modal />
       <TerminalWindow />
       <MsgBoxContainer />
-      {!localStorage.getItem('setupDisabled') ? (
+      {!localStorage.getItem("setupDisabled") ? (
         <Setup />
       ) : (
         <>

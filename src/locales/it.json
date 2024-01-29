@@ -206,10 +206,10 @@
     "terminal": {
       "name": "Terminale"
     },
-    "textEditor": {
+    "texteditor": {
       "name": "Editor di Testo"
     },
-    "softwareStore": {
+    "softwarestore": {
       "name": "Negozio di Software"
     },
     "imgview": {

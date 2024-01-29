@@ -1,15 +1,15 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface StateType {
   widgets: string[];
 }
 
 const initialState: StateType = {
-  widgets: ['clock'],
+  widgets: ["clock"],
 };
 
 const widgetSlice = createSlice({
-  name: 'widget',
+  name: "widget",
   initialState,
   reducers: {
     setWidgets: (state, action: PayloadAction<string[]>) => {

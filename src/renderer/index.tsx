@@ -1,9 +1,9 @@
-import { createRoot } from 'react-dom/client';
-import Desktop from './Desktop';
-import { Provider } from 'react-redux';
-import i18n from '../translation/i18n';
-import { I18nextProvider, useTranslation } from 'react-i18next';
-import store from './store';
+import { createRoot } from "react-dom/client";
+import Desktop from "./Desktop";
+import { Provider } from "react-redux";
+import i18n from "../translation/i18n";
+import { I18nextProvider, useTranslation } from "react-i18next";
+import store from "./store";
 import {
   Button,
   Group,
@@ -14,24 +14,25 @@ import {
   Slider,
   Spacer,
   TouchBar,
-} from '../touchbar';
+} from "../touchbar";
 import {
   setBatterySaver,
   setBrightness,
   setVolume,
   toggleBluetooth,
   toggleWifi,
-} from './store/reducers/settings';
-import { setActive, setSettings } from './store/reducers/apps/settings';
-import { useAppDispatch, useAppSelector } from './store/hooks';
+} from "./store/reducers/settings";
+import { setSettings } from "./store/reducers/settings";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
   setFontWeight,
   setForegroundColor,
   setFontFamily,
   setFontSize,
-} from './store/reducers/lock';
-import { useEffect, useState } from 'react';
-import { insertPasswordFor } from './store/reducers/wifipassword';
+} from "./store/reducers/lock";
+import { useEffect, useState } from "react";
+import { insertPasswordFor } from "./store/reducers/wifipassword";
+import { openApp } from "./store/reducers/apps";
 
 function Body() {
   const { t } = useTranslation();
@@ -41,10 +42,7 @@ function Body() {
   const isActive = useAppSelector((state) => state.touchbar.active);
   const lockScreen = useAppSelector((state) => state.lock);
   const lockScreenIsEditable = useAppSelector((state) => state.lock.isEditable);
-
-  const desktop = document.getElementById(
-    'Desktop',
-  ) as HTMLDivElement;
+  const desktop = document.getElementById("Desktop") as HTMLDivElement;
 
   function setBrightnessLevel(e: any) {
     dispatch(setBrightness(e));
@@ -52,31 +50,31 @@ function Body() {
   }
 
   function connectWifi(e: string) {
-    dispatch(setActive(true));
+    dispatch(openApp("settings"));
     dispatch(insertPasswordFor(e));
   }
 
   function SplashScreenWidget({ type }: { type: string }) {
     const [curDate, setCurDate] = useState(
-      new Date().toLocaleString('en-US', {
-        dateStyle: 'medium',
+      new Date().toLocaleString("en-US", {
+        dateStyle: "medium",
       }),
     );
 
     useEffect(() => {
       setInterval(() => {
         setCurDate(
-          new Date().toLocaleString('en-US', {
-            dateStyle: 'medium',
+          new Date().toLocaleString("en-US", {
+            dateStyle: "medium",
           }),
         );
       }, 1000);
     }, []);
 
     switch (type) {
-      case 'date':
+      case "date":
         return <Button label={curDate} />;
-      case 'battery':
+      case "battery":
         return (
           <Button
             icon={`../../assets/images/battery/${system.battery.level}.png`}
@@ -113,12 +111,12 @@ function Body() {
               <Spacer size="flexible" />
               <Group>
                 <Button
-                  label={t('lockScreen.editMenu.fontSize.medium')}
-                  onClick={() => dispatch(setFontSize('medium'))}
+                  label={t("lockScreen.editMenu.fontSize.medium")}
+                  onClick={() => dispatch(setFontSize("medium"))}
                 />
                 <Button
-                  label={t('lockScreen.editMenu.fontSize.large')}
-                  onClick={() => dispatch(setFontSize('large'))}
+                  label={t("lockScreen.editMenu.fontSize.large")}
+                  onClick={() => dispatch(setFontSize("large"))}
                 />
               </Group>
               <Spacer size="flexible" />
@@ -133,8 +131,8 @@ function Body() {
                         icon="../../assets/images/12-light.png"
                         backgroundColor={
                           lockScreen.fontWeight === i.weight.light
-                            ? '#a0a0a0'
-                            : ''
+                            ? "#a0a0a0"
+                            : ""
                         }
                         onClick={() => dispatch(setFontWeight(i.weight.light!))}
                       />
@@ -144,8 +142,8 @@ function Body() {
                         icon="../../assets/images/12-medium.png"
                         backgroundColor={
                           lockScreen.fontWeight === i.weight.medium
-                            ? '#a0a0a0'
-                            : ''
+                            ? "#a0a0a0"
+                            : ""
                         }
                         onClick={() =>
                           dispatch(setFontWeight(i.weight.medium!))
@@ -157,8 +155,8 @@ function Body() {
                         icon="../../assets/images/12-bold.png"
                         backgroundColor={
                           lockScreen.fontWeight === i.weight.bold
-                            ? '#a0a0a0'
-                            : ''
+                            ? "#a0a0a0"
+                            : ""
                         }
                         onClick={() => dispatch(setFontWeight(i.weight.bold!))}
                       />
@@ -180,23 +178,23 @@ function Body() {
             <Spacer size="small" />
             <Popover
               icon={`../../assets/images/color/${lockScreen.foregroundColor.replace(
-                '#',
-                '',
+                "#",
+                "",
               )}.png`}
               label={
-                lockScreen.foregroundColor === '#7dd3fc'
-                  ? t('lockScreen.editMenu.foregroundColor.blue')
-                  : lockScreen.foregroundColor === '#65ea95'
-                  ? t('lockScreen.editMenu.foregroundColor.green')
-                  : lockScreen.foregroundColor === '#e2e2e2'
-                  ? t('lockScreen.editMenu.foregroundColor.white')
-                  : lockScreen.foregroundColor === '#f0abfc'
-                  ? t('lockScreen.editMenu.foregroundColor.purple')
-                  : lockScreen.foregroundColor === '#f87171'
-                  ? t('lockScreen.editMenu.foregroundColor.red')
-                  : lockScreen.foregroundColor === '#fef08a'
-                  ? t('lockScreen.editMenu.foregroundColor.yellow')
-                  : ''
+                lockScreen.foregroundColor === "#7dd3fc"
+                  ? t("lockScreen.editMenu.foregroundColor.blue")
+                  : lockScreen.foregroundColor === "#65ea95"
+                  ? t("lockScreen.editMenu.foregroundColor.green")
+                  : lockScreen.foregroundColor === "#e2e2e2"
+                  ? t("lockScreen.editMenu.foregroundColor.white")
+                  : lockScreen.foregroundColor === "#f0abfc"
+                  ? t("lockScreen.editMenu.foregroundColor.purple")
+                  : lockScreen.foregroundColor === "#f87171"
+                  ? t("lockScreen.editMenu.foregroundColor.red")
+                  : lockScreen.foregroundColor === "#fef08a"
+                  ? t("lockScreen.editMenu.foregroundColor.yellow")
+                  : ""
               }
               showCloseButton
             >
@@ -204,56 +202,56 @@ function Body() {
               <Button
                 backgroundColor="#e2e2e2"
                 icon={
-                  lockScreen.foregroundColor === '#e2e2e2'
-                    ? '../../assets/images/checkmark-d.png'
-                    : ''
+                  lockScreen.foregroundColor === "#e2e2e2"
+                    ? "../../assets/images/checkmark-d.png"
+                    : ""
                 }
-                onClick={() => dispatch(setForegroundColor('#e2e2e2'))}
+                onClick={() => dispatch(setForegroundColor("#e2e2e2"))}
               />
               <Button
                 backgroundColor="#fef08a"
                 icon={
-                  lockScreen.foregroundColor === '#fef08a'
-                    ? '../../assets/images/checkmark-d.png'
-                    : ''
+                  lockScreen.foregroundColor === "#fef08a"
+                    ? "../../assets/images/checkmark-d.png"
+                    : ""
                 }
-                onClick={() => dispatch(setForegroundColor('#fef08a'))}
+                onClick={() => dispatch(setForegroundColor("#fef08a"))}
               />
               <Button
                 backgroundColor="#7dd3fc"
                 icon={
-                  lockScreen.foregroundColor === '#7dd3fc'
-                    ? '../../assets/images/checkmark-d.png'
-                    : ''
+                  lockScreen.foregroundColor === "#7dd3fc"
+                    ? "../../assets/images/checkmark-d.png"
+                    : ""
                 }
-                onClick={() => dispatch(setForegroundColor('#7dd3fc'))}
+                onClick={() => dispatch(setForegroundColor("#7dd3fc"))}
               />
               <Button
                 backgroundColor="#f0abfc"
                 icon={
-                  lockScreen.foregroundColor === '#f0abfc'
-                    ? '../../assets/images/checkmark-d.png'
-                    : ''
+                  lockScreen.foregroundColor === "#f0abfc"
+                    ? "../../assets/images/checkmark-d.png"
+                    : ""
                 }
-                onClick={() => dispatch(setForegroundColor('#f0abfc'))}
+                onClick={() => dispatch(setForegroundColor("#f0abfc"))}
               />
               <Button
                 backgroundColor="#65ea95"
                 icon={
-                  lockScreen.foregroundColor === '#65ea95'
-                    ? '../../assets/images/checkmark-d.png'
-                    : ''
+                  lockScreen.foregroundColor === "#65ea95"
+                    ? "../../assets/images/checkmark-d.png"
+                    : ""
                 }
-                onClick={() => dispatch(setForegroundColor('#65ea95'))}
+                onClick={() => dispatch(setForegroundColor("#65ea95"))}
               />
               <Button
                 backgroundColor="#f87171"
                 icon={
-                  lockScreen.foregroundColor === '#f87171'
-                    ? '../../assets/images/checkmark-d.png'
-                    : ''
+                  lockScreen.foregroundColor === "#f87171"
+                    ? "../../assets/images/checkmark-d.png"
+                    : ""
                 }
-                onClick={() => dispatch(setForegroundColor('#f87171'))}
+                onClick={() => dispatch(setForegroundColor("#f87171"))}
               />
               <Spacer size="flexible" />
             </Popover>
@@ -263,17 +261,17 @@ function Body() {
             <Spacer size="flexible" />
             <Popover
               icon={`../../assets/images/bluetooth${
-                !settings.bluetooth ? '-disabled' : ''
+                !settings.bluetooth ? "-disabled" : ""
               }.png`}
               showCloseButton={true}
             >
               <SegmentedControl
                 segments={[
                   {
-                    icon: '../../assets/images/o-switch.png',
+                    icon: "../../assets/images/o-switch.png",
                   },
                   {
-                    icon: '../../assets/images/i-switch.png',
+                    icon: "../../assets/images/i-switch.png",
                   },
                 ]}
                 selectedIndex={settings.bluetooth ? 1 : 0}
@@ -294,8 +292,8 @@ function Body() {
               <Button
                 icon="../../assets/images/dots-horizontal.png"
                 onClick={() => {
-                  dispatch(setActive(true));
-                  dispatch(setSettings('Bluetooth'));
+                  dispatch(openApp("settings"));
+                  dispatch(setSettings("Bluetooth"));
                 }}
                 enabled={!settings.isLocked}
               />
@@ -327,15 +325,15 @@ function Body() {
               <Label
                 label={`${
                   system.battery.charging
-                    ? t('battery.charging')
-                    : t('battery.default')
+                    ? t("battery.charging")
+                    : t("battery.default")
                 }`}
                 textColor="#f2f2f2"
               />
               <Spacer size="flexible" />
               <Label
                 label={`${system.battery.level}%`}
-                textColor={system.battery.level <= "10" ? '#e46a6a' : '#6ae4a9'}
+                textColor={system.battery.level <= "10" ? "#e46a6a" : "#6ae4a9"}
               />
               <Spacer size="large" />
               <Spacer size="large" />
@@ -344,17 +342,17 @@ function Body() {
             </Popover>
             <Popover
               icon={`../../assets/images/wifi${
-                !settings.wifi ? '-disabled' : ''
+                !settings.wifi ? "-disabled" : ""
               }.png`}
               showCloseButton={true}
             >
               <SegmentedControl
                 segments={[
                   {
-                    icon: '../../assets/images/o-switch.png',
+                    icon: "../../assets/images/o-switch.png",
                   },
                   {
-                    icon: '../../assets/images/i-switch.png',
+                    icon: "../../assets/images/i-switch.png",
                   },
                 ]}
                 selectedIndex={settings.wifi ? 1 : 0}
@@ -366,12 +364,12 @@ function Body() {
               {settings.wifi && (
                 <Scrubber
                   items={settings.wifiList.map((i) => ({
-                    label: i.name,
+                    label: i.ssid,
                   }))}
                   selectedStyle="background"
                   onClick={(index) =>
-                    !settings.wifiList[index].connected &&
-                    connectWifi(settings.wifiList[index].name)
+                    !settings.connectedWifi?.ssid &&
+                    connectWifi(settings.wifiList[index].ssid)
                   }
                 />
               )}
@@ -379,8 +377,8 @@ function Body() {
               <Button
                 icon="../../assets/images/dots-horizontal.png"
                 onClick={() => {
-                  dispatch(setActive(true));
-                  dispatch(setSettings('Wi-Fi'));
+                  dispatch(openApp("settings"));
+                  dispatch(setSettings("Wi-Fi"));
                 }}
                 enabled={!settings.isLocked}
               />
@@ -434,7 +432,7 @@ function Body() {
   );
 }
 
-const container = document.getElementById('root') as HTMLElement;
+const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
 root.render(
   <I18nextProvider i18n={i18n}>

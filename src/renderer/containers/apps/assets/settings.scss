@@ -1138,17 +1138,7 @@ $actcolor: #60a5fa;
                   width: auto;
                   height: 200px;
                 }
-              }
-
-              &[data-value='1'] {
-                .ImageContainer.dark {
-                  transition: border ease 0.3s;
-                  border: 3px solid #60a5fa;
-                }
-              }
-
-              &[data-value='2'] {
-                .ImageContainer.light {
+                &.active {
                   transition: border ease 0.3s;
                   border: 3px solid #60a5fa;
                 }

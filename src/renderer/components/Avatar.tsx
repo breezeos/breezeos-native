@@ -1,7 +1,7 @@
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import './Avatar.scss';
-import { setUserImage } from '../store/reducers/settings';
-import { Theme } from '../types';
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import "./Avatar.scss";
+import { setUserImage } from "../store/reducers/settings";
+import { Theme } from "../types";
 
 interface AvatarProps {
   size?: number;
@@ -9,9 +9,13 @@ interface AvatarProps {
   theme?: Theme;
 }
 
-export default function Avatar({ size = 1, editable, theme = "system" }: AvatarProps) {
+export default function Avatar({
+  size = 1,
+  editable,
+  theme = "system",
+}: AvatarProps) {
   const dispatch = useAppDispatch();
-  const lightMode = useAppSelector((state) => state.settings.themeLight);
+  const lightMode = useAppSelector((state) => state.appearance.themeLight);
   const image = useAppSelector((state) => state.settings.user.image);
 
   function addImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -22,16 +26,16 @@ export default function Avatar({ size = 1, editable, theme = "system" }: AvatarP
 
   return (
     <div
-      className={`SignInImage ${!image && 'undefined'} ${
-        theme === 'dark'
-          ? 'darkTheme'
-          : theme === 'system' && lightMode
-          ? 'darkTheme'
-          : ''
+      className={`SignInImage ${!image && "undefined"} ${
+        theme === "dark"
+          ? "darkTheme"
+          : theme === "system" && lightMode
+          ? "darkTheme"
+          : ""
       }`}
       style={{
         transform: `scale(${size})`,
-        backgroundImage: image ? `url(${image})` : 'none',
+        backgroundImage: image ? `url(${image})` : "none",
       }}
     >
       {!image && <i className="fa-solid fa-user" />}

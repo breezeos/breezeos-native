@@ -1,10 +1,11 @@
-import { setActive, setDirectory } from '../store/reducers/apps/files';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import ActMenu, { ActMenuSelector, ActMenuSeparator } from './utils/menu';
-import { setLocation } from '../store/reducers/apps/texteditor';
-import { useEffect, useRef, useState } from 'react';
-import usePathInteraction from '../hooks/usePathInteraction';
-import { ipcRenderer } from 'electron';
+import { setDirectory } from "../store/reducers/files";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import ActMenu, { ActMenuSelector, ActMenuSeparator } from "./utils/menu";
+import { useEffect, useRef, useState } from "react";
+import usePathInteraction from "../hooks/usePathInteraction";
+import { ipcRenderer } from "electron";
+
+import { openApp } from "../store/reducers/apps";
 
 interface DesktopIconProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -21,8 +22,7 @@ export default function DesktopIcon({
   ...props
 }: DesktopIconProps) {
   const dispatch = useAppDispatch();
-  const icon = useAppSelector((state) => state.appearance.iconTheme);
-  const nameLine = name.split('.');
+  const nameLine = name.split(".");
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isRename, setIsRename] = useState<boolean>(false);
   const [contextMenuDisplayed, setContextMenuDisplayed] =
@@ -36,10 +36,10 @@ export default function DesktopIcon({
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -55,10 +55,10 @@ export default function DesktopIcon({
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -68,50 +68,28 @@ export default function DesktopIcon({
 
   function switchIcon() {
     switch (nameLine[nameLine.length - 1]) {
-      case 'txt':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/application-text-template.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg';
-      case 'gitignore':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/application-text-template.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg';
-      case 'conf':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/application-text-template.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg';
-      case 'png':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/image-x-generic.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg';
-      case 'jpg':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/image-x-generic.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg';
-      case 'ico':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/image-x-generic.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg';
-      case 'pptx':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/x-office-presentation.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/x-office-presentation.svg';
-      case 'mp4':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/video-x-generic.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/video-x-generic.svg';
-      case 'cpp':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/text-x-cpp.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-cpp.svg';
-      case 'html':
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/text-html.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-html.svg';
+      case "txt":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg";
+      case "gitignore":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg";
+      case "conf":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-generic.svg";
+      case "png":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg";
+      case "jpg":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg";
+      case "ico":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/image-x-generic.svg";
+      case "pptx":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/x-office-presentation.svg";
+      case "mp4":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/video-x-generic.svg";
+      case "cpp":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-cpp.svg";
+      case "html":
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-html.svg";
       default:
-        return icon === 'WhiteSur-icon-theme'
-          ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/mimes/scalable/text-x-preview.svg'
-          : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-preview.svg';
+        return "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/mimetypes/text-x-preview.svg";
     }
   }
 
@@ -121,7 +99,7 @@ export default function DesktopIcon({
 
   async function checkDir() {
     const isDir = await ipcRenderer.invoke(
-      'pathIsDir',
+      "pathIsDir",
       `/home/Desktop/${name}`,
     );
 
@@ -130,7 +108,7 @@ export default function DesktopIcon({
 
   async function moveToTrash() {
     await ipcRenderer.invoke(
-      'renamePath',
+      "renamePath",
       `/home/Desktop/${name}`,
       `/.Bin/${name}`,
     );
@@ -142,16 +120,19 @@ export default function DesktopIcon({
 
   function runAction() {
     if (!isDir) {
-      executeCommandWithPath(nameLine[nameLine.length - 1], `/home/Desktop/${name}`)
+      executeCommandWithPath(
+        nameLine[nameLine.length - 1],
+        `/home/Desktop/${name}`,
+      );
     } else {
-      dispatch(setActive(true));
+      dispatch(openApp("files"));
       dispatch(setDirectory(`/home/Desktop/${name}`));
     }
   }
 
   return (
     <div
-      className={`DesktopIconWrapper ${isActive && 'active'}`}
+      className={`DesktopIconWrapper ${isActive && "active"}`}
       onMouseDown={() => setIsActive(true)}
       onDoubleClick={runAction}
       onContextMenu={() => setContextMenuDisplayed(true)}
@@ -160,12 +141,12 @@ export default function DesktopIcon({
     >
       <ActMenu
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: "95px",
-          zIndex: '1',
-          width: '200px',
+          zIndex: "1",
+          width: "200px",
         }}
-        className={contextMenuDisplayed ? 'active' : ''}
+        className={contextMenuDisplayed ? "active" : ""}
         ref={contextMenuRef}
       >
         <ActMenuSelector
@@ -212,9 +193,7 @@ export default function DesktopIcon({
         <img
           src={
             isDir
-              ? icon === 'WhiteSur-icon-theme'
-                ? 'https://raw.githubusercontent.com/vinceliuice/WhiteSur-icon-theme/54ffa0a42474d3f0f866a581e061a27e65c6b7d7/src/places/scalable/folder.svg'
-                : 'https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/places/default-folder.svg'
+              ? "https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/places/default-folder.svg"
               : switchIcon()
           }
           width={60}
@@ -226,4 +205,4 @@ export default function DesktopIcon({
       </div>
     </div>
   );
-};
+}

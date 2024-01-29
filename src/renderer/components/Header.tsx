@@ -1,15 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
-import { activePanel, inactivePanel } from '../store/reducers/panel';
-import { setHeaderType, setWidth } from '../store/reducers/header';
-import Task from './header/Task';
-import Home from './header/Home';
-import Panel from './panel/Panel';
-import { setActive, setSettings } from '../store/reducers/apps/settings';
-import AppMenu from './header/AppMenu';
-import PanelType from './panel/PanelType';
-import useTime from '../hooks/useTime';
-import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { useEffect, useState, useRef } from "react";
+import { activePanel, inactivePanel } from "../store/reducers/panel";
+import { setHeaderType, setWidth } from "../store/reducers/header";
+import Task from "./header/Task";
+import Home from "./header/Home";
+import Panel from "./panel/Panel";
+import { setSettings } from "../store/reducers/settings";
+import AppMenu from "./header/AppMenu";
+import PanelType from "./panel/PanelType";
+import useTime from "../hooks/useTime";
+import { useTranslation } from "react-i18next";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { openApp } from "../store/reducers/apps";
 
 export default function Header() {
   const dispatch = useAppDispatch();
@@ -32,8 +33,8 @@ export default function Header() {
     useState<boolean>(false);
   const [volumePanelActive, setVolumePanelActive] = useState<boolean>(false);
   const [curDate, setCurDate] = useState(
-    new Date().toLocaleString('en-US', {
-      dateStyle: 'medium',
+    new Date().toLocaleString("en-US", {
+      dateStyle: "medium",
     }),
   );
   const { timeFormat } = useTime();
@@ -42,12 +43,13 @@ export default function Header() {
   const batteryIsCharging = useAppSelector(
     (state) => state.system.battery.charging,
   );
+  const fullscreen = useAppSelector((state) => state.apps.fullscreen);
 
   useEffect(() => {
     setInterval(() => {
       setCurDate(
-        new Date().toLocaleString('en-US', {
-          dateStyle: 'medium',
+        new Date().toLocaleString("en-US", {
+          dateStyle: "medium",
         }),
       );
     }, 1000);
@@ -64,9 +66,9 @@ export default function Header() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -85,9 +87,9 @@ export default function Header() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -106,9 +108,9 @@ export default function Header() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -127,9 +129,9 @@ export default function Header() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -148,9 +150,9 @@ export default function Header() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -169,9 +171,9 @@ export default function Header() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -182,32 +184,32 @@ export default function Header() {
   useEffect(() => {
     if (headerProMode === true) {
       if (batteryChargingStatus) {
-        dispatch(setHeaderType(''));
+        dispatch(setHeaderType(""));
         dispatch(setWidth(580));
         setTimeout(() => {
-          dispatch(setHeaderType('charging'));
+          dispatch(setHeaderType("charging"));
         }, 200);
         setTimeout(() => {
-          dispatch(setHeaderType(''));
+          dispatch(setHeaderType(""));
           dispatch(setWidth(900));
         }, 2350);
         setTimeout(() => {
-          dispatch(setHeaderType('default'));
+          dispatch(setHeaderType("default"));
         }, 2500);
       }
 
-      if (batteryPercent === '10' && !batteryChargingStatus) {
-        dispatch(setHeaderType(''));
+      if (batteryPercent === "10" && !batteryChargingStatus) {
+        dispatch(setHeaderType(""));
         dispatch(setWidth(580));
         setTimeout(() => {
-          dispatch(setHeaderType('lowbattery'));
+          dispatch(setHeaderType("lowbattery"));
         }, 200);
         setTimeout(() => {
-          dispatch(setHeaderType(''));
+          dispatch(setHeaderType(""));
           dispatch(setWidth(900));
         }, 2350);
         setTimeout(() => {
-          dispatch(setHeaderType('default'));
+          dispatch(setHeaderType("default"));
         }, 2500);
       }
     }
@@ -215,14 +217,14 @@ export default function Header() {
 
   return (
     <div
-      className={`Header ${shellTheme === 'WhiteSur' ? 'whitesur' : ''} ${
-        headerActive ? 'active' : ''
-      } ${headerHide ? 'hide' : ''}`}
+      className={`Header ${shellTheme === "WhiteSur" ? "whitesur" : ""} ${
+        headerActive && !fullscreen && "active"
+      } ${headerHide && "hide"}`}
       style={{ width: `${headerWidth}px` }}
     >
       <div
         className={`notifications ${
-          headerType === 'notifications' ? 'active' : ''
+          headerType === "notifications" ? "active" : ""
         }`}
       >
         <div className="Icon">
@@ -235,91 +237,91 @@ export default function Header() {
         <div className="Text">
           <p className="font-bold">
             {settingsReducer.notifications
-              ? t('notifications.off')
-              : t('notifications.on')}
+              ? t("notifications.off")
+              : t("notifications.on")}
           </p>
         </div>
       </div>
       <div
-        className={`lowbattery ${headerType === 'lowbattery' ? 'active' : ''}`}
+        className={`lowbattery ${headerType === "lowbattery" ? "active" : ""}`}
       >
         <div className="LowBatteryText">
-          <p className="font-bold">{t('battery.lowBattery')}</p>
+          <p className="font-bold">{t("battery.lowBattery")}</p>
         </div>
         <div className="BatteryLevel">
           <p className="BatteryLevelText font-bold">
-            {batteryPercent ? `${batteryPercent}%` : '-'}
+            {batteryPercent ? `${batteryPercent}%` : "-"}
           </p>
         </div>
       </div>
-      <div className={`charging ${headerType === 'charging' ? 'active' : ''}`}>
+      <div className={`charging ${headerType === "charging" ? "active" : ""}`}>
         <div className="ChargingText">
           <p className="font-bold">
-            {batteryPercent === '100'
-              ? t('battery.fullyCharged')
-              : t('battery.charging')}
+            {batteryPercent === "100"
+              ? t("battery.fullyCharged")
+              : t("battery.charging")}
           </p>
         </div>
         <div className="BatteryLevel">
           <p className="BatteryLevelText font-bold">
-            {batteryPercent ? `${batteryPercent}%` : '-'}
+            {batteryPercent ? `${batteryPercent}%` : "-"}
           </p>
         </div>
       </div>
-      <div className={`default ${headerType === 'default' ? 'active' : ''}`}>
+      <div className={`default ${headerType === "default" ? "active" : ""}`}>
         <div className="Header-left">
           <Home />
-          {shellTheme !== 'WhiteSur' ? (
+          {shellTheme !== "WhiteSur" ? (
             <div
               className="Time Header-item"
               onClick={() => {
-                dispatch(setActive(true));
-                dispatch(setSettings('Date & Time'));
+                dispatch(openApp("settings"));
+                dispatch(setSettings("Date & Time"));
               }}
             >
               <p>{timeFormat}</p>
             </div>
           ) : (
-            ''
+            ""
           )}
-          {shellTheme === 'WhiteSur' ? <AppMenu /> : ''}
+          {shellTheme === "WhiteSur" ? <AppMenu /> : ""}
         </div>
         <div className="Header-right">
-          {shellTheme !== 'WhiteSur' ? (
+          {shellTheme !== "WhiteSur" ? (
             <Task>
               <div
                 className={`BatteryStatus ${
-                  batteryPercent <= '10' ? 'low-battery' : ''
+                  batteryPercent <= "10" ? "low-battery" : ""
                 }`}
               >
                 <p
                   className={`BatteryStatusLevel font-bold ${
-                    batteryIsCharging ? 'in-charge' : ''
+                    batteryIsCharging ? "in-charge" : ""
                   }`}
                 >
-                  {batteryPercent ? `${batteryPercent}%` : '-'}
+                  {batteryPercent ? `${batteryPercent}%` : "-"}
                 </p>
               </div>
               {settingsReducer.airplaneMode ? (
                 <i key={Math.random()} className="fa-solid fa-plane" />
               ) : (
-                ''
+                ""
               )}
               {settingsReducer.wifi ? (
                 <i key={Math.random()} className="fa-solid fa-wifi" />
               ) : (
-                ''
+                ""
               )}
               <i key={Math.random()} className="fa-solid fa-volume" />
             </Task>
           ) : (
-            ''
+            ""
           )}
-          {shellTheme === 'WhiteSur' ? (
+          {shellTheme === "WhiteSur" ? (
             <>
               <div
-                className={`Header-item ${panelActive ? 'active' : ''}`}
-                onMouseDown={() => (panelActive ? '' : dispatch(activePanel()))}
+                className={`Header-item ${panelActive ? "active" : ""}`}
+                onMouseDown={() => (panelActive ? "" : dispatch(activePanel()))}
                 ref={panelRef}
               >
                 <i className="fa-regular fa-chevron-down" />
@@ -327,10 +329,10 @@ export default function Header() {
               </div>
               <div
                 className={`Header-item ${
-                  settingsReducer.bluetooth ? '' : 'disabled'
-                } ${bluetoothPanelActive ? 'active' : ''}`}
+                  settingsReducer.bluetooth ? "" : "disabled"
+                } ${bluetoothPanelActive ? "active" : ""}`}
                 onMouseDown={() =>
-                  bluetoothPanelActive ? '' : setBluetoothPanelActive(true)
+                  bluetoothPanelActive ? "" : setBluetoothPanelActive(true)
                 }
                 ref={bluetoothPanelRef}
               >
@@ -338,22 +340,22 @@ export default function Header() {
                 <PanelType
                   type="bluetooth"
                   onActive={bluetoothPanelActive ? true : false}
-                  style={{ height: '545px', right: '300px' }}
+                  style={{ height: "545px", right: "300px" }}
                 />
               </div>
               <div
-                className={`Header-item ${batteryPanelActive ? 'active' : ''}`}
+                className={`Header-item ${batteryPanelActive ? "active" : ""}`}
                 onMouseDown={() =>
-                  batteryPanelActive ? '' : setBatteryPanelActive(true)
+                  batteryPanelActive ? "" : setBatteryPanelActive(true)
                 }
                 ref={batteryPanelRef}
               >
                 {batteryChargingStatus ? (
                   <i className="fa-regular fa-battery-bolt" />
-                ) : batteryPercent <= '10' ? (
+                ) : batteryPercent <= "10" ? (
                   <i
                     className="fa-regular fa-battery-exclamation"
-                    style={{ color: '#bd3a35' }}
+                    style={{ color: "#bd3a35" }}
                   />
                 ) : (
                   <i className="fa-regular fa-battery-full" />
@@ -361,15 +363,15 @@ export default function Header() {
                 <PanelType
                   type="battery"
                   onActive={batteryPanelActive ? true : false}
-                  style={{ height: '80px', right: '268px' }}
+                  style={{ height: "80px", right: "268px" }}
                 />
               </div>
               <div
                 className={`Header-item ${
-                  settingsReducer.wifi ? '' : 'disabled'
-                } ${wifiPanelActive ? 'active' : ''}`}
+                  settingsReducer.wifi ? "" : "disabled"
+                } ${wifiPanelActive ? "active" : ""}`}
                 onMouseDown={() =>
-                  wifiPanelActive ? '' : setWifiPanelActive(true)
+                  wifiPanelActive ? "" : setWifiPanelActive(true)
                 }
                 ref={wifiPanelRef}
               >
@@ -381,15 +383,15 @@ export default function Header() {
                 <PanelType
                   type="wifi"
                   onActive={wifiPanelActive ? true : false}
-                  style={{ height: '585px', right: '232px' }}
+                  style={{ height: "585px", right: "232px" }}
                 />
               </div>
               <div
                 className={`Header-item ${
-                  brightnessPanelActive ? 'active' : ''
+                  brightnessPanelActive ? "active" : ""
                 }`}
                 onMouseDown={() =>
-                  brightnessPanelActive ? '' : setBrightnessPanelActive(true)
+                  brightnessPanelActive ? "" : setBrightnessPanelActive(true)
                 }
                 ref={brightnessPanelRef}
               >
@@ -397,13 +399,13 @@ export default function Header() {
                 <PanelType
                   type="brightness"
                   onActive={brightnessPanelActive ? true : false}
-                  style={{ height: '90px', right: '198px' }}
+                  style={{ height: "90px", right: "198px" }}
                 />
               </div>
               <div
-                className={`Header-item ${volumePanelActive ? 'active' : ''}`}
+                className={`Header-item ${volumePanelActive ? "active" : ""}`}
                 onMouseDown={() =>
-                  volumePanelActive ? '' : setVolumePanelActive(true)
+                  volumePanelActive ? "" : setVolumePanelActive(true)
                 }
                 ref={volumePanelRef}
               >
@@ -411,19 +413,19 @@ export default function Header() {
                 <PanelType
                   type="volume"
                   onActive={volumePanelActive ? true : false}
-                  style={{ height: '90px', right: '163px' }}
+                  style={{ height: "90px", right: "163px" }}
                 />
               </div>
               <div
                 className="Header-item DateNTime"
-                onClick={() => dispatch(setActive(true))}
+                onClick={() => dispatch(openApp("settings"))}
               >
-                <span style={{ marginRight: '10px' }}>{curDate}</span>
+                <span style={{ marginRight: "10px" }}>{curDate}</span>
                 <span>{timeFormat}</span>
               </div>
             </>
           ) : (
-            ''
+            ""
           )}
         </div>
       </div>

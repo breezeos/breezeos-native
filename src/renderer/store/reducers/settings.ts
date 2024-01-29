@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import si from 'systeminformation';
 
 interface StateType {
+  settings: string;
   user: {
     name: string;
     role?: 'user' | 'superuser';
@@ -21,7 +22,6 @@ interface StateType {
   volume: any;
   brightness: any;
   notifications: boolean;
-  themeLight: boolean;
   boldText: boolean;
   batterySaver: boolean;
   animationsReduced: boolean;
@@ -31,6 +31,7 @@ interface StateType {
 }
 
 const initialState: StateType = {
+  settings: "Wi-Fi",
   user: {
     name: '',
     role: undefined,
@@ -50,7 +51,6 @@ const initialState: StateType = {
   volume: 100,
   brightness: 100,
   notifications: true,
-  themeLight: false,
   boldText: false,
   batterySaver: false,
   animationsReduced: false,
@@ -63,6 +63,9 @@ export const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
+    setSettings: (state, action: PayloadAction<string>) => {
+      state.settings = action.payload;
+    },
     setName: (state, action: PayloadAction<string>) => {
       state.user.name = action.payload;
     },
@@ -125,9 +128,6 @@ export const settingsSlice = createSlice({
     setBluetoothList: (state, action) => {
       state.bluetoothList = action.payload;
     },
-    toggleLightMode: (state, action: PayloadAction<boolean>) => {
-      state.themeLight = action.payload;
-    },
     setBoldText: (state, action: PayloadAction<boolean>) => {
       state.boldText = action.payload;
     },
@@ -150,6 +150,7 @@ export const settingsSlice = createSlice({
 });
 
 export const {
+  setSettings,
   setName,
   setUserImage,
   setPassword,
@@ -166,7 +167,6 @@ export const {
   setWifiList,
   setConnectedWifi,
   setBluetoothList,
-  toggleLightMode,
   setBoldText,
   setBatterySaver,
   setAnimationsReduced,

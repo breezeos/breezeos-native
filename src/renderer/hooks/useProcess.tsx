@@ -1,4 +1,3 @@
-import { useDispatch } from 'react-redux';
 import {
   setOptionsMenuShown,
   setSplashScreenWrapperHideInfo,
@@ -17,9 +16,12 @@ import { clearItem, pushItem } from '../store/reducers/shutdown';
 import LogoD from '../../../assets/images/logo-d.svg';
 import { setWallpaperActive } from '../store/reducers/wallpaper';
 import { ipcRenderer } from 'electron';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { quitApp } from '../store/reducers/apps';
 
 export default function useProcess() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const appIsActive = useAppSelector(state => state.apps.appIsActive);
 
   function sleep() {
     setTimeout(() => dispatch(setSplashScreenWrapperHideInfo(true)), 50);
@@ -43,6 +45,9 @@ export default function useProcess() {
       dispatch(setHeaderActive(false));
       dispatch(setDockActive(false));
       dispatch(setDesktopBodyActive(false));
+      for (const id in appIsActive) {
+        dispatch(quitApp(id));
+      }
     }, 50);
 
     setTimeout(() => {

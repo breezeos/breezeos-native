@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react';
-import '../../components/utils/window/Window.scss';
-import TopBar from '../../components/utils/window/TopBar';
-import WindowBody from '../../components/utils/window/WindowBody';
-import './assets/videoview.scss';
-import TopBarInteraction from '../../components/utils/window/TopBarInteraction';
-import { useTranslation } from 'react-i18next';
-import { setLocation } from '../../store/reducers/videoview';
-import Draggable from 'react-draggable';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { ipcRenderer } from 'electron';
+import { useEffect, useState } from "react";
+import "../../components/utils/window/Window.scss";
+import TopBar from "../../components/utils/window/TopBar";
+import WindowBody from "../../components/utils/window/WindowBody";
+import "./assets/videoview.scss";
+import TopBarInteraction from "../../components/utils/window/TopBarInteraction";
+import { useTranslation } from "react-i18next";
+import Draggable from "react-draggable";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { ipcRenderer } from "electron";
+import { closeApp } from "../../store/reducers/apps";
 
-export default function VideoView() {
+export default function VideoView({ id }: { id: string }) {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const [isActive, setIsActive] = useState<boolean>(false);
+  const appIsActive = useAppSelector((state) => state.apps.appIsActive);
+  const isActive = appIsActive[id].status === "active";
   const location = useAppSelector((state) => state.videoview.location);
-  const [src, setSrc] = useState<string>('');
+  const [src, setSrc] = useState<string>("");
 
   async function getFileContent() {
     const content = await ipcRenderer.invoke(
-      'getFileContent',
+      "getFileContent",
       location,
-      'base64'
+      "base64",
     );
 
     setSrc(content);
@@ -30,23 +31,21 @@ export default function VideoView() {
   useEffect(() => {
     if (location) {
       getFileContent();
-      setTimeout(() => setIsActive(true), 100);
     } else {
-      setIsActive(false);
-      setSrc('');
+      setSrc("");
     }
   }, [location]);
 
   return (
     <div className="VideoViewWindow">
-      <Draggable handle=".TopBar">
-        <div className={`Window videoview ${isActive && 'active'}`}>
+      <Draggable handle="#TopBar">
+        <div className={`Window videoview ${isActive && "active"}`}>
           <TopBar
-            title={`${t('apps.videoview.name')}${location && ` – ${location}`}`}
+            title={`${t(`apps.${id}.name`)}${location && ` – ${location}`}`}
           >
             <TopBarInteraction
               action="close"
-              onClose={() => dispatch(setLocation(''))}
+              onClose={() => dispatch(closeApp(id))}
             />
           </TopBar>
           <WindowBody>

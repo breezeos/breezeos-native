@@ -196,22 +196,22 @@ const createWindow = async () => {
     });
   });
 
-  let isQuit: boolean = false;
+  let forceQuit: boolean = false;
 
   app.on('before-quit', (e) => {
     e.preventDefault();
-    isQuit = true;
+    forceQuit = true;
 
     const shortcut: string =
       process.platform === 'darwin' ? 'Command+Q' : 'Alt+F4';
 
-    if (isQuit) {
+    if (forceQuit) {
       globalShortcut.register(shortcut, () => {
         mainWindow?.destroy();
         app.quit();
       });
       setTimeout(() => {
-        isQuit = false;
+        forceQuit = false;
         globalShortcut.unregister(shortcut);
       }, 3600);
     }

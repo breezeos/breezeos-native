@@ -1,5 +1,5 @@
 import ActMenu, { ActMenuSelector } from '../utils/menu/index';
-import { setActive, setSettings } from '../../store/reducers/apps/settings';
+import { setSettings } from '../../store/reducers/settings';
 import { insertPasswordFor } from '../../store/reducers/wifipassword';
 import {
   setVolume,
@@ -15,6 +15,7 @@ import './Panel.scss';
 import Toggle from '../utils/toggle';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { inactivePanel, setPanelType } from '../../store/reducers/panel';
+import { openApp } from '../../store/reducers/apps';
 
 interface PanelTypeProps extends React.HTMLAttributes<HTMLDivElement> {
   type: string;
@@ -39,12 +40,12 @@ export default function PanelType({
   );
 
   function connectWifi(e: string) {
-    dispatch(setActive(true));
+    dispatch(openApp("settings"));
     dispatch(insertPasswordFor(e));
   }
 
   function openSettings(action: any) {
-    dispatch(setActive(true));
+    dispatch(openApp("settings"));
     dispatch(action);
   }
 

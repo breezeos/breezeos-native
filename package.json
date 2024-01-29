@@ -50,7 +50,6 @@
   },
   "browserslist": [],
   "prettier": {
-    "singleQuote": true,
     "overrides": [
       {
         "files": [
