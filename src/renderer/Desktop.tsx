@@ -43,7 +43,7 @@ import MsgBoxContainer from "./components/utils/msgbox/container";
 import { ipcRenderer } from "electron";
 import { setModalContent } from "./store/reducers/modal";
 import { useTranslation } from "react-i18next";
-import { openApp, setApps, setMenu } from "./store/reducers/apps";
+import { setApps, setMenu } from "./store/reducers/apps";
 import { setDirectory } from "./store/reducers/files";
 import { appsTemplate, favoriteAppsTemplate } from "./components/utils/apps";
 import { setDockFavorites } from "./store/reducers/dock";
@@ -254,10 +254,7 @@ export default function Desktop() {
         ? `https://raw.githubusercontent.com/yeyushengfan258/Citrus-icon-theme/7fac80833a94baf4d4a9132ea9475c2b819b5827/src/scalable/${i.icon}.svg`
         : i.icon,
       id: i.id,
-      action: () =>
-        !i.externalLink
-          ? dispatch(openApp(i.id))
-          : window.open(i.externalLink, "_blank"),
+      externalLink: i.externalLink,
     }));
 
     dispatch(setApps(appsArray));
