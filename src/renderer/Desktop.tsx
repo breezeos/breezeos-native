@@ -27,7 +27,7 @@ import {
   setVersion,
 } from "./store/reducers/system";
 import { useBattery } from "react-use";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setTouchbarActive } from "./store/reducers/touchbar";
 import {
   setBluetoothList,
@@ -47,6 +47,7 @@ import { setApps, setMenu } from "./store/reducers/apps";
 import { setDirectory } from "./store/reducers/files";
 import { appsTemplate, favoriteAppsTemplate } from "./components/utils/apps";
 import { setDockFavorites } from "./store/reducers/dock";
+import { setFullscreen, setSize } from "./store/reducers/window";
 
 export default function Desktop() {
   const dispatch = useAppDispatch();
@@ -165,9 +166,23 @@ export default function Desktop() {
     });
   }
 
+  async function getFullscreenStatus() {
+    const isFullScreen = await ipcRenderer.invoke("isFullScreen");
+    dispatch(setFullscreen(isFullScreen));
+  }
+
+  const [isMaximized, setIsMaximized] = useState<boolean>(false);
+
+  async function getSizeStatus() {
+    const windowSize = await ipcRenderer.invoke("getWindowSize");
+    dispatch(setSize(windowSize));
+  }
+
   const recentResult = useAppSelector((state) => state.calculator.recentResult);
   const menu = useAppSelector((state) => state.apps.menu);
   const fullscreen = useAppSelector((state) => state.apps.fullscreen);
+  const isFullscreen = useAppSelector((state) => state.window.fullscreen);
+  const size = useAppSelector((state) => state.window.size);
 
   useEffect(() => {
     getHostname();
@@ -182,10 +197,18 @@ export default function Desktop() {
     getWifiList();
     dispatch(setTouchbarActive(true));
     getWeatherData();
+    getFullscreenStatus();
+    getSizeStatus();
 
     dispatch(
       setBatteryLevel(batteryLevel ? batteryLevel.toLocaleString() : "-"),
     );
+
+    if (isMaximized) {
+      ipcRenderer.invoke("unmaximize");
+    } else {
+      ipcRenderer.invoke("maximize");
+    }
 
     dispatch(
       setMenu({
@@ -301,38 +324,55 @@ export default function Desktop() {
     //     ]),
     //   );
     // }
-  }, [batteryState, batteryLevel]);
+  }, [batteryState, batteryLevel, isMaximized]);
 
   return (
-    <div
-      className={`Desktop ${fontFamily} ${boldText && "isBold"} ${
-        themeLight && "lightMode"
-      } ${nightShift && "nightShift"} ${hideCursor && "hideCursor"} ${
-        blackScr && "blackscr"
-      } ${animationsReduced && "animdisabled"} ${colorInverted && "inverted"} ${
-        poweroff && "poweroff"
-      } ${transparencyReduced && "transdisabled"} ${
-        fullscreen && "fullscreen"
-      }`}
-      onContextMenu={(e) => e.preventDefault()}
-      id="Desktop"
-    >
-      <Modal />
-      <TerminalWindow />
-      <MsgBoxContainer />
-      {!localStorage.getItem("setupDisabled") ? (
-        <Setup />
-      ) : (
-        <>
-          <Snapshot />
-          <LockScreen />
-          <StartMenu />
-          <Header />
-          <Wallpaper />
-          <DesktopBody />
-          <Dock />
-        </>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      {!isFullscreen && (
+        <div
+          className={`TitleBar ${fontFamily} ${themeLight && "lightMode"}`}
+          onDoubleClick={() =>
+            isMaximized ? setIsMaximized(false) : setIsMaximized(true)
+          }
+        >
+          <div className="TrafficLightContainer">
+            <div className="TrafficLight" />
+            <div className="TrafficLight" />
+            <div className="TrafficLight" />
+          </div>
+          <p>BreezeOS Native – {size.join(" × ")}</p>
+        </div>
       )}
+      <div
+        className={`Desktop ${fontFamily} ${boldText && "isBold"} ${
+          themeLight && "lightMode"
+        } ${nightShift && "nightShift"} ${hideCursor && "hideCursor"} ${
+          blackScr && "blackscr"
+        } ${animationsReduced && "animdisabled"} ${
+          colorInverted && "inverted"
+        } ${poweroff && "poweroff"} ${transparencyReduced && "transdisabled"} ${
+          fullscreen && "fullscreen"
+        }`}
+        onContextMenu={(e) => e.preventDefault()}
+        id="Desktop"
+      >
+        <Modal />
+        <TerminalWindow />
+        <MsgBoxContainer />
+        {!localStorage.getItem("setupDisabled") ? (
+          <Setup />
+        ) : (
+          <>
+            <Snapshot />
+            <LockScreen />
+            <StartMenu />
+            <Header />
+            <Wallpaper />
+            <DesktopBody />
+            <Dock />
+          </>
+        )}
+      </div>
     </div>
   );
 }

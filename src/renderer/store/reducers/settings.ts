@@ -44,7 +44,7 @@ const initialState: StateType = {
   wifi: true,
   wifiList: [],
   connectedWifi: undefined,
-  bluetooth: false,
+  bluetooth: true,
   bluetoothList: [],
   isLocked: true,
   isSleeping: false,

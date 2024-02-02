@@ -31,6 +31,7 @@ import terminalWindowReducer from "./reducers/terminalwindow";
 import textEditorReducer from "./reducers/texteditor";
 import vscodeReducer from "./reducers/vscode";
 import lockReducer from "./reducers/lock";
+import windowReducer from "./reducers/window";
 
 const reducers = {
   apps: appsReducer,
@@ -64,6 +65,7 @@ const reducers = {
   texteditor: textEditorReducer,
   vscode: vscodeReducer,
   lock: lockReducer,
+  window: windowReducer,
 };
 
 const store = configureStore({

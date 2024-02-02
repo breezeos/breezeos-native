@@ -9,6 +9,7 @@ export default function Window() {
     const windowsId: string[] = [];
     for (const id in appIsActive) {
       windowsId.push(...windowsId, id);
+      console.log(windowsId);
     }
     return windowsId.map((i) => <WindowType type={i} />);
   }

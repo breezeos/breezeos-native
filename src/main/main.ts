@@ -8,7 +8,7 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import path from 'path';
+import path from "path";
 import {
   app,
   BrowserWindow,
@@ -17,18 +17,18 @@ import {
   dialog,
   systemPreferences,
   globalShortcut,
-} from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
-import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
-import { decorateWindow } from '../touchbar/decorate-window';
-import fs, { constants } from 'fs';
-import { execSync } from 'child_process';
+} from "electron";
+import { autoUpdater } from "electron-updater";
+import log from "electron-log";
+import MenuBuilder from "./menu";
+import { resolveHtmlPath } from "./util";
+import { decorateWindow } from "../touchbar/decorate-window";
+import fs, { constants } from "fs";
+import { execSync } from "child_process";
 
 class AppUpdater {
   constructor() {
-    log.transports.file.level = 'info';
+    log.transports.file.level = "info";
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
@@ -36,35 +36,35 @@ class AppUpdater {
 
 let mainWindow: Electron.BrowserWindow | null = null;
 
-const userData = app.getPath('userData');
+const userData = app.getPath("userData");
 
-ipcMain.handle('quitWindow', () => {
+ipcMain.handle("quitWindow", () => {
   mainWindow?.close();
 });
 
-ipcMain.handle('installFs', () => {
-  const userDataPath = userData.split(' ').join('\\ ');
+ipcMain.handle("installFs", () => {
+  const userDataPath = userData.split(" ").join("\\ ");
   execSync(
     `if [ -d "${userDataPath}/FileSystem" ]; then rm -rf ${userDataPath}/FileSystem; fi; curl -L "https://drive.google.com/uc?export=download&id=1SaIC7tyhBec7_k9Q89UUcNx8HjJqC-Mp" -o ${userDataPath}/FileSystem.tar.xz && tar -xvf ${userDataPath}/FileSystem.tar.xz -C ${userDataPath} && rm -rf ${userDataPath}/FileSystem.tar.xz`,
   );
 });
 
-ipcMain.handle('getDirContent', (_event, arg1, arg2) => {
+ipcMain.handle("getDirContent", (_event, arg1, arg2) => {
   const content = fs.readdirSync(`${userData}/FileSystem${arg1}`, arg2);
   return content;
 });
 
-ipcMain.handle('getFileContent', (_event, arg1, arg2) => {
+ipcMain.handle("getFileContent", (_event, arg1, arg2) => {
   const content = fs.readFileSync(`${userData}/FileSystem${arg1}`, arg2);
   return content;
 });
 
-ipcMain.handle('writeDirContent', (_event, arg1, arg2) => {
+ipcMain.handle("writeDirContent", (_event, arg1, arg2) => {
   const content = fs.mkdirSync(`${userData}/FileSystem${arg1}`, arg2);
   return content;
 });
 
-ipcMain.handle('writeFileContent', (_event, arg1, arg2, arg3, arg4, arg5) => {
+ipcMain.handle("writeFileContent", (_event, arg1, arg2, arg3, arg4, arg5) => {
   const controller = new AbortController();
   const { signal } = controller;
   const content = new Uint8Array(Buffer.from(arg2));
@@ -78,12 +78,12 @@ ipcMain.handle('writeFileContent', (_event, arg1, arg2, arg3, arg4, arg5) => {
   return promise;
 });
 
-ipcMain.handle('removePath', (_event, arg1) => {
+ipcMain.handle("removePath", (_event, arg1) => {
   const promise = fs.rmSync(`${userData}/FileSystem${arg1}`, { force: true });
   return promise;
 });
 
-ipcMain.handle('renamePath', (_event, arg1, arg2) => {
+ipcMain.handle("renamePath", (_event, arg1, arg2) => {
   const callback = fs.renameSync(
     `${userData}/FileSystem${arg1}`,
     `${userData}/FileSystem${arg2}`,
@@ -91,7 +91,7 @@ ipcMain.handle('renamePath', (_event, arg1, arg2) => {
   return callback;
 });
 
-ipcMain.handle('fileExists', (_event, arg1, arg2) => {
+ipcMain.handle("fileExists", (_event, arg1, arg2) => {
   const callback = fs.access(
     `${userData}/FileSystem${arg1}`,
     constants.F_OK,
@@ -100,37 +100,59 @@ ipcMain.handle('fileExists', (_event, arg1, arg2) => {
   return callback;
 });
 
-ipcMain.handle('pathIsDir', (_event, arg) => {
+ipcMain.handle("pathIsDir", (_event, arg) => {
   const callback = fs.lstatSync(`${userData}/FileSystem${arg}`).isDirectory();
   return callback;
 });
 
-ipcMain.handle('canPromptTouchID', () => {
+ipcMain.handle("canPromptTouchID", () => {
   const canPromptTouchID = systemPreferences.canPromptTouchID();
   return canPromptTouchID;
 });
 
-ipcMain.handle('promptTouchID', (_event, arg) => {
+ipcMain.handle("promptTouchID", (_event, arg) => {
   const callback = systemPreferences.promptTouchID(arg);
   return callback;
 });
 
-if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
+ipcMain.handle("openDevTools", () => {
+  mainWindow?.webContents.openDevTools();
+});
+
+ipcMain.handle("isFullScreen", () => {
+  const boolean = mainWindow?.isFullScreen();
+  return boolean;
+});
+
+ipcMain.handle("maximize", () => {
+  mainWindow?.maximize();
+});
+
+ipcMain.handle("unmaximize", () => {
+  mainWindow?.unmaximize();
+});
+
+ipcMain.handle("getWindowSize", () => {
+  const size = mainWindow?.getContentSize();
+  return size;
+});
+
+if (process.env.NODE_ENV === "production") {
+  const sourceMapSupport = require("source-map-support");
   sourceMapSupport.install();
 }
 
 const isDebug =
-  process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+  process.env.NODE_ENV === "development" || process.env.DEBUG_PROD === "true";
 
 if (isDebug) {
-  require('electron-debug')();
+  require("electron-debug")();
 }
 
 const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
+  const installer = require("electron-devtools-installer");
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+  const extensions = ["REACT_DEVELOPER_TOOLS"];
 
   return installer
     .default(
@@ -147,8 +169,8 @@ const createWindow = async () => {
   }
 
   const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
+    ? path.join(process.resourcesPath, "assets")
+    : path.join(__dirname, "../../assets");
 
   const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
@@ -158,21 +180,24 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
-    fullscreen: true,
-    icon: getAssetPath('icon.png'),
+    icon: getAssetPath("icon.png"),
+    titleBarStyle: "hidden",
+    trafficLightPosition: { x: 9, y: 8 },
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
       webviewTag: true,
       preload: app.isPackaged
-        ? path.join(__dirname, 'preload.js')
-        : path.join(__dirname, '../../.erb/dll/preload.js'),
+        ? path.join(__dirname, "preload.js")
+        : path.join(__dirname, "../../.erb/dll/preload.js"),
     },
   });
 
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  mainWindow.setWindowButtonVisibility(true)
 
-  mainWindow.on('ready-to-show', () => {
+  mainWindow.loadURL(resolveHtmlPath("index.html"));
+
+  mainWindow.on("ready-to-show", () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
@@ -183,27 +208,27 @@ const createWindow = async () => {
     }
   });
 
-  mainWindow.on('closed', () => {
+  mainWindow.on("closed", () => {
     mainWindow = null;
   });
 
-  mainWindow.on('unresponsive', () => {
+  mainWindow.on("unresponsive", () => {
     dialog.showMessageBox(mainWindow!, {
       message:
-        'BreezeOS Native is currently unresponding due to unexpected issues occured while it was running. You can choose to wait until the simulator become responsive or re-start the simulator.',
-      type: 'error',
-      buttons: ['Close BreezeOS Native', 'Wait until it responds'],
+        "BreezeOS Native is currently unresponding due to unexpected issues occured while it was running. You can choose to wait until the simulator become responsive or re-start the simulator.",
+      type: "error",
+      buttons: ["Close BreezeOS Native", "Wait until it responds"],
     });
   });
 
   let forceQuit: boolean = false;
 
-  app.on('before-quit', (e) => {
+  app.on("before-quit", (e) => {
     e.preventDefault();
     forceQuit = true;
 
     const shortcut: string =
-      process.platform === 'darwin' ? 'Command+Q' : 'Alt+F4';
+      process.platform === "darwin" ? "Command+Q" : "Alt+F4";
 
     if (forceQuit) {
       globalShortcut.register(shortcut, () => {
@@ -216,7 +241,7 @@ const createWindow = async () => {
       }, 3600);
     }
 
-    mainWindow?.webContents.send('willQuit', true);
+    mainWindow?.webContents.send("willQuit", true);
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
@@ -225,7 +250,7 @@ const createWindow = async () => {
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
     shell.openExternal(edata.url);
-    return { action: 'deny' };
+    return { action: "deny" };
   });
 
   decorateWindow(mainWindow);
@@ -239,10 +264,10 @@ const createWindow = async () => {
  * Add event listeners...
  */
 
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
-  if (process.platform !== 'darwin') {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
@@ -251,7 +276,7 @@ app
   .whenReady()
   .then(() => {
     createWindow();
-    app.on('activate', () => {
+    app.on("activate", () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();

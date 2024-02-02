@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { setSettings } from "./store/reducers/settings";
 import DesktopIcons from "./components/DesktopIcons";
 import { openApp } from "./store/reducers/apps";
+import { ipcRenderer } from "electron";
 
 const DesktopBody = () => {
   const isActive = useAppSelector((state) => state.desktopbody.active);
@@ -99,6 +100,16 @@ const DesktopBody = () => {
             onClose={() => setContextMenuDisplayed(false)}
             onClick={() => dispatch(openApp("settings"))}
           />
+          {process.env.NODE_ENV === "development" && (
+            <>
+              <ActMenuSeparator />
+              <ActMenuSelector
+                title="Open DevTools..."
+                onClose={() => setContextMenuDisplayed(false)}
+                onClick={() => ipcRenderer.invoke("openDevTools")}
+              />
+            </>
+          )}
         </ActMenu>
       </div>
       <Widget />

@@ -1,3 +1,4 @@
+$bgcolor: #161617;
 $fgcolor: #e2e2e2;
 @import url(./fa.scss);
 
@@ -313,11 +314,50 @@ img {
   font-weight: 800 !important;
 }
 
+.TitleBar {
+  position: relative;
+  height: 33px;
+  background-color: $bgcolor;
+  color: $fgcolor;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+
+  p {
+    position: absolute;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .TrafficLightContainer {
+    display: flex;
+    padding: 4px 6px;
+
+    .TrafficLight {
+      width: 12px;
+      height: 12px;
+      margin: 0 4px;
+      border-radius: 999px;
+    }
+  }
+
+  &.lightMode {
+    background-color: $fgcolor;
+    color: $bgcolor;
+
+    .TrafficLightContainer .TrafficLight {
+      box-shadow: 0px 0 10px 0 transparentize($bgcolor, 0.75);
+    }
+  }
+}
+
 .Desktop {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 
   &.hideCursor * {
     cursor: none !important;
@@ -384,7 +424,7 @@ img {
 
   &::before {
     content: "";
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     opacity: 0;

@@ -284,10 +284,17 @@ export default function Files({ id }: { id: string }) {
                 : dispatch(minimizeApp(id))
             }
           >
-            <div className="TabBarWrapper" style={{ width: "100%" }}>
+            <div
+              className="TabBarWrapper"
+              style={{ width: "100%", pointerEvents: "none" }}
+            >
               <div
                 className="TabBar"
-                style={{ display: "flex", justifyContent: "space-between" }}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  pointerEvents: "none",
+                }}
               >
                 <div className="TabBarItem" style={{ paddingLeft: 0 }}>
                   <div className="TabBarInteraction">
@@ -340,7 +347,10 @@ export default function Files({ id }: { id: string }) {
                     </div>
                   </div>
                 </div>
-                <div className="TabBarItem" style={{ margin: "0" }}>
+                <div
+                  className="TabBarItem"
+                  style={{ margin: "0", pointerEvents: "none" }}
+                >
                   <div
                     className="TabBarInteraction"
                     style={{ marginRight: "20px" }}
