@@ -343,6 +343,25 @@ img {
     }
   }
 
+  &.setup {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    background-color: transparent !important;
+
+    p {
+      display: none;
+    }
+
+    .TrafficLightContainer .TrafficLight {
+      box-shadow: 0px 0 10px 0 transparentize($fgcolor, 0.6);
+    }
+
+    &.lightMode .TrafficLightContainer .TrafficLight {
+      box-shadow: 0px 0 10px 0 transparentize($bgcolor, 0.75);
+    }
+  }
+
   &.lightMode {
     background-color: $fgcolor;
     color: $bgcolor;

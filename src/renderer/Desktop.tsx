@@ -330,7 +330,9 @@ export default function Desktop() {
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       {!isFullscreen && (
         <div
-          className={`TitleBar ${fontFamily} ${themeLight && "lightMode"}`}
+          className={`TitleBar ${fontFamily} ${
+            !localStorage.getItem("setupDisabled") && "setup"
+          } ${themeLight && "lightMode"}`}
           onDoubleClick={() =>
             isMaximized ? setIsMaximized(false) : setIsMaximized(true)
           }

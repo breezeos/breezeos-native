@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './LockScreen.scss';
-import { setLocked } from '../../store/reducers/settings';
+import React, { useEffect, useRef, useState } from "react";
+import "./LockScreen.scss";
+import { setLocked } from "../../store/reducers/settings";
 import {
   setEditable,
   setFontFamily,
@@ -10,20 +10,20 @@ import {
   setLockScreenType,
   setOptionsMenuShown,
   setWidgets,
-} from '../../store/reducers/lock';
-import Avatar from '../Avatar';
-import useCountdown from '../../hooks/useCountdown';
-import { setHeaderHide } from '../../store/reducers/header';
-import { setDockHide } from '../../store/reducers/dock';
-import ActMenu, { ActMenuSelector } from '../utils/menu/index';
-import { setAllowSwitchWorkspace } from '../../store/reducers/wallpaper';
-import useTime from '../../hooks/useTime';
-import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import SplashScreenItem from './SplashScreenItem';
-import useProcess from '../../hooks/useProcess';
-import CryptoJS from 'crypto-js';
-import { ipcRenderer } from 'electron';
+} from "../../store/reducers/lock";
+import Avatar from "../Avatar";
+import useCountdown from "../../hooks/useCountdown";
+import { setHeaderHide } from "../../store/reducers/header";
+import { setDockHide } from "../../store/reducers/dock";
+import ActMenu, { ActMenuSelector } from "../utils/menu/index";
+import { setAllowSwitchWorkspace } from "../../store/reducers/wallpaper";
+import useTime from "../../hooks/useTime";
+import { useTranslation } from "react-i18next";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import SplashScreenItem from "./SplashScreenItem";
+import useProcess from "../../hooks/useProcess";
+import CryptoJS from "crypto-js";
+import { ipcRenderer } from "electron";
 
 export default function SplashScreen() {
   const dispatch = useAppDispatch();
@@ -48,7 +48,7 @@ export default function SplashScreen() {
   const isEditable = useAppSelector((state) => state.lock.isEditable);
   const { secondsLeft, start } = useCountdown();
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-  const [passwordValue, setPasswordValue] = useState<string>('');
+  const [passwordValue, setPasswordValue] = useState<string>("");
   const [invalidCount, setInvalidCount] = useState<number>(0);
   const invalidLimit = 8;
   const [fontFamilyMenu, showFontFamilyMenu] = useState<boolean>(false);
@@ -76,10 +76,10 @@ export default function SplashScreen() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -98,10 +98,10 @@ export default function SplashScreen() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -120,10 +120,10 @@ export default function SplashScreen() {
         }
       }
 
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
 
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -131,7 +131,7 @@ export default function SplashScreen() {
   const typeMenuRef = useRef(null);
   useOutsideTypeMenu(typeMenuRef);
 
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener("keydown", (e) => {
     if (e.keyCode === 27) dispatch(setOptionsMenuShown(false));
   });
 
@@ -144,7 +144,7 @@ export default function SplashScreen() {
       requireTouchID
     ) {
       ipcRenderer
-        .invoke('promptTouchID', 'unlock your computer with Touch ID')
+        .invoke("promptTouchID", "unlock your computer with Touch ID")
         .then(login)
         .catch(() => {
           setRequireTouchID(false);
@@ -170,9 +170,9 @@ export default function SplashScreen() {
 
   function login() {
     dispatch(setLocked(false));
-    if (settings.user.password !== '') {
+    if (settings.user.password !== "") {
       setInvalidCount(0);
-      setPasswordValue('');
+      setPasswordValue("");
       inputFieldRef.current?.blur();
       setRequireTouchID(isTouchIDEnabled);
     }
@@ -185,11 +185,11 @@ export default function SplashScreen() {
 
   function wrongPassword() {
     setInvalidCount((prev) => prev + 1);
-    setPasswordValue('');
+    setPasswordValue("");
   }
 
   function action(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       if (
         CryptoJS.MD5(passwordValue).toString(CryptoJS.enc.Hex) !==
         settings.user.password
@@ -216,22 +216,22 @@ export default function SplashScreen() {
     <>
       <div
         style={{
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          height: '100%',
-          padding: '30px 60px 40px 60px',
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          height: "100%",
+          padding: "30px 60px 40px 60px",
         }}
       >
         <div
-          className={`SplashScreenWrapper ${wrapperActive && 'active'} ${
-            wrapperHideInfo && 'hideInfo'
+          className={`SplashScreenWrapper ${wrapperActive && "active"} ${
+            wrapperHideInfo && "hideInfo"
           }`}
         >
           <div className="SplashScreen">
             <div
-              className={`SplashScreenInfo ${isEditable && 'editable'}`}
+              className={`SplashScreenInfo ${isEditable && "editable"}`}
               style={{
                 color: lock.foregroundColor,
               }}
@@ -242,7 +242,7 @@ export default function SplashScreen() {
                   className="SplashScreenTime"
                   style={{
                     fontWeight: lock.fontWeight,
-                    fontSize: lock.fontSize === 'large' ? '106px' : '96px',
+                    fontSize: lock.fontSize === "large" ? "102px" : "92px",
                   }}
                 >
                   {timeFormat}
@@ -255,43 +255,43 @@ export default function SplashScreen() {
               </div>
             </div>
             <div className="SignInWrapper">
-              <div style={{ marginBottom: '30px' }}>
-                <div className={`SignInInfo ${optionsMenuShown && 'expand'}`}>
+              <div style={{ marginBottom: "30px" }}>
+                <div className={`SignInInfo ${optionsMenuShown && "expand"}`}>
                   <Avatar theme="light" />
                   <p className="SignInName">{settings.user.name}</p>
                 </div>
               </div>
               <div
                 style={{
-                  position: 'relative',
-                  height: '72.5px',
-                  width: '550px',
+                  position: "relative",
+                  height: "72.5px",
+                  width: "550px",
                 }}
               >
-                <div className={`SignInItem ${optionsMenuShown && 'disabled'}`}>
+                <div className={`SignInItem ${optionsMenuShown && "disabled"}`}>
                   <div className="SignIn">
                     {settings.user.password ? (
                       <>
                         {requireTouchID ? (
-                          <p style={{ fontWeight: 'bold', fontSize: '13px' }}>
+                          <p style={{ fontWeight: "bold", fontSize: "13px" }}>
                             {t("lockScreen.touchID")}
                           </p>
                         ) : invalidCount === invalidLimit ? (
                           <p>
-                            {invalidLimit} {t('lockScreen.locked')}{' '}
-                            {secondsLeft}{' '}
+                            {invalidLimit} {t("lockScreen.locked")}{" "}
+                            {secondsLeft}{" "}
                             {secondsLeft === 1
-                              ? t('lockScreen.lockedSecond')
-                              : t('lockScreen.lockedSeconds')}
+                              ? t("lockScreen.lockedSecond")
+                              : t("lockScreen.lockedSeconds")}
                           </p>
                         ) : (
                           <>
                             <div className="SignInPassword">
                               <input
-                                type={passwordShown ? 'text' : 'password'}
+                                type={passwordShown ? "text" : "password"}
                                 value={passwordValue}
                                 placeholder={t(
-                                  'lockScreen.passwordPlaceholder',
+                                  "lockScreen.passwordPlaceholder",
                                 )}
                                 onInput={(
                                   e: React.ChangeEvent<HTMLInputElement>,
@@ -310,7 +310,7 @@ export default function SplashScreen() {
                                 >
                                   <i
                                     className={`fa-regular ${
-                                      passwordShown ? 'fa-eye-slash' : 'fa-eye'
+                                      passwordShown ? "fa-eye-slash" : "fa-eye"
                                     }`}
                                   />
                                 </div>
@@ -341,7 +341,7 @@ export default function SplashScreen() {
                             ) : (
                               <div
                                 className={`LoginButton ${
-                                  passwordValue.length === 0 && 'disabled'
+                                  passwordValue.length === 0 && "disabled"
                                 }`}
                                 onClick={
                                   CryptoJS.MD5(passwordValue).toString(
@@ -366,20 +366,20 @@ export default function SplashScreen() {
                   {invalidCount !== invalidLimit && (
                     <p
                       className="SignInFailedAttempts"
-                      style={{ opacity: invalidCount ? '1' : '0' }}
+                      style={{ opacity: invalidCount ? "1" : "0" }}
                     >
-                      {invalidCount}{' '}
+                      {invalidCount}{" "}
                       {invalidCount > 1
-                        ? t('lockScreen.incorrectPasswordPlural')
-                        : t('lockScreen.incorrectPassword')}
+                        ? t("lockScreen.incorrectPasswordPlural")
+                        : t("lockScreen.incorrectPassword")}
                     </p>
                   )}
                 </div>
                 <div
-                  className={`SignInItem ${!optionsMenuShown && 'disabled'}`}
+                  className={`SignInItem ${!optionsMenuShown && "disabled"}`}
                 >
                   <div className="PowerMenu">
-                    <div style={{ display: 'flex' }}>
+                    <div style={{ display: "flex" }}>
                       <div
                         className="PowerMenuInteractionWrapper"
                         onClick={sleep}
@@ -388,7 +388,7 @@ export default function SplashScreen() {
                           <i className="fa-light fa-moon" />
                         </div>
                         <p className="PowerMenuName">
-                          {t('lockScreen.interactions.sleep')}
+                          {t("lockScreen.interactions.sleep")}
                         </p>
                       </div>
                       <div
@@ -399,7 +399,7 @@ export default function SplashScreen() {
                           <i className="fa-light fa-lock" />
                         </div>
                         <p className="PowerMenuName">
-                          {t('lockScreen.interactions.lock')}
+                          {t("lockScreen.interactions.lock")}
                         </p>
                       </div>
                       <div
@@ -410,7 +410,7 @@ export default function SplashScreen() {
                           <i className="fa-light fa-power-off" />
                         </div>
                         <p className="PowerMenuName">
-                          {t('lockScreen.interactions.shutdown')}
+                          {t("lockScreen.interactions.shutdown")}
                         </p>
                       </div>
                       <div
@@ -421,7 +421,7 @@ export default function SplashScreen() {
                           <i className="fa-light fa-rotate-left" />
                         </div>
                         <p className="PowerMenuName">
-                          {t('lockScreen.interactions.restart')}
+                          {t("lockScreen.interactions.restart")}
                         </p>
                       </div>
                     </div>
@@ -432,7 +432,7 @@ export default function SplashScreen() {
           </div>
           {!isEditable && (
             <div
-              className={`OptionsButton ${optionsMenuShown && 'active'}`}
+              className={`OptionsButton ${optionsMenuShown && "active"}`}
               onClick={() => dispatch(setOptionsMenuShown(!optionsMenuShown))}
             >
               <i className="fa-regular fa-ellipsis" />
@@ -440,20 +440,20 @@ export default function SplashScreen() {
           )}
         </div>
       </div>
-      <div className={`EditMenuWrapper ${isEditable && 'active'}`}>
+      <div className={`EditMenuWrapper ${isEditable && "active"}`}>
         <div
           style={{
-            position: 'relative',
-            borderRadius: '18px',
-            overflow: 'hidden',
+            position: "relative",
+            borderRadius: "18px",
+            overflow: "hidden",
           }}
         >
-          <div className={`WidgetsWrapper ${widgetsMenuShown && 'active'}`}>
+          <div className={`WidgetsWrapper ${widgetsMenuShown && "active"}`}>
             <div
               style={{
-                marginBottom: '15px',
-                display: 'flex',
-                justifyContent: 'space-between',
+                marginBottom: "15px",
+                display: "flex",
+                justifyContent: "space-between",
               }}
             >
               <div
@@ -469,23 +469,23 @@ export default function SplashScreen() {
                 <i
                   className="fa-regular fa-plus"
                   style={{
-                    transition: 'all ease 0.2s',
-                    rotate: addWidgetMenu ? '45deg' : 'none',
+                    transition: "all ease 0.2s",
+                    rotate: addWidgetMenu ? "45deg" : "none",
                   }}
                 />
               </div>
             </div>
             <div className="WidgetsContainer">
-              <div className={`AddWidget ${addWidgetMenu && 'active'}`}>
+              <div className={`AddWidget ${addWidgetMenu && "active"}`}>
                 <p className="Text">Add Widget</p>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: "flex" }}>
                   <div
                     className="Button"
                     style={{
-                      display: widgets.includes('battery') ? 'none' : 'block',
+                      display: widgets.includes("battery") ? "none" : "block",
                     }}
                     onClick={() =>
-                      dispatch(setWidgets([...widgets, 'battery']))
+                      dispatch(setWidgets([...widgets, "battery"]))
                     }
                   >
                     <SplashScreenItem type="battery" />
@@ -493,17 +493,17 @@ export default function SplashScreen() {
                   <div
                     className="Button"
                     style={{
-                      display: widgets.includes('temp') ? 'none' : 'block',
+                      display: widgets.includes("temp") ? "none" : "block",
                     }}
-                    onClick={() => dispatch(setWidgets([...widgets, 'temp']))}
+                    onClick={() => dispatch(setWidgets([...widgets, "temp"]))}
                   >
                     <SplashScreenItem type="temp" />
                   </div>
                 </div>
               </div>
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: "flex" }}>
                 {widgets.map((i, index) => (
-                  <div className={`Button ${i === 'date' && 'default'}`}>
+                  <div className={`Button ${i === "date" && "default"}`}>
                     <div
                       className="CloseButton"
                       onClick={() => removeWidget(index)}
@@ -519,9 +519,9 @@ export default function SplashScreen() {
           <div className="EditMenu">
             <div
               style={{
-                marginBottom: '15px',
-                display: 'flex',
-                flexDirection: 'row-reverse',
+                marginBottom: "15px",
+                display: "flex",
+                flexDirection: "row-reverse",
               }}
             >
               <div
@@ -533,22 +533,22 @@ export default function SplashScreen() {
             </div>
             <div className="EditMenuItem" style={{ margin: 0 }}>
               <p className="EditMenuItemName">
-                {t('lockScreen.editMenu.fontFamily')}
+                {t("lockScreen.editMenu.fontFamily")}
               </p>
               <div
                 className="EditMenuItemSection"
                 onClick={() => showFontFamilyMenu(true)}
               >
-                <p style={{ marginRight: '7px' }}>{lock.fontFamily}</p>
+                <p style={{ marginRight: "7px" }}>{lock.fontFamily}</p>
                 <i className="fa-regular fa-chevron-down" />
               </div>
               <ActMenu
                 style={{
-                  zIndex: '1',
-                  width: '220px',
-                  transform: 'translate(224px, 17px)',
+                  zIndex: "1",
+                  width: "220px",
+                  transform: "translate(224px, 17px)",
                 }}
-                className={fontFamilyMenu ? 'active' : ''}
+                className={fontFamilyMenu ? "active" : ""}
                 ref={fontFamilyMenuRef}
               >
                 {lock.style.map((i) => (
@@ -563,35 +563,35 @@ export default function SplashScreen() {
             </div>
             <div className="EditMenuItem">
               <p className="EditMenuItemName">
-                {t('lockScreen.editMenu.fontSize.name')}
+                {t("lockScreen.editMenu.fontSize.name")}
               </p>
               <div
                 className="EditMenuItemSection"
                 onClick={() => showFontSizeMenu(true)}
               >
-                <p style={{ marginRight: '7px' }}>{lock.fontSize}</p>
+                <p style={{ marginRight: "7px" }}>{lock.fontSize}</p>
                 <i className="fa-regular fa-chevron-down" />
               </div>
               <ActMenu
                 style={{
-                  zIndex: '1',
-                  width: '220px',
-                  transform: 'translate(224px, 17px)',
+                  zIndex: "1",
+                  width: "220px",
+                  transform: "translate(224px, 17px)",
                 }}
-                className={fontSizeMenu ? 'active' : ''}
+                className={fontSizeMenu ? "active" : ""}
                 ref={fontSizeMenuRef}
               >
                 <ActMenuSelector
                   onClose={() => showFontSizeMenu(false)}
-                  title={t('lockScreen.editMenu.fontSize.medium')}
-                  onClick={() => dispatch(setFontSize('medium'))}
-                  active={lock.fontSize === 'medium'}
+                  title={t("lockScreen.editMenu.fontSize.medium")}
+                  onClick={() => dispatch(setFontSize("medium"))}
+                  active={lock.fontSize === "medium"}
                 />
                 <ActMenuSelector
                   onClose={() => showFontSizeMenu(false)}
-                  title={t('lockScreen.editMenu.fontSize.large')}
-                  onClick={() => dispatch(setFontSize('large'))}
-                  active={lock.fontSize === 'large'}
+                  title={t("lockScreen.editMenu.fontSize.large")}
+                  onClick={() => dispatch(setFontSize("large"))}
+                  active={lock.fontSize === "large"}
                 />
               </ActMenu>
             </div>
@@ -601,31 +601,31 @@ export default function SplashScreen() {
                 className="EditMenuItemSection"
                 onClick={() => showTypeMenu(true)}
               >
-                <p style={{ marginRight: '7px', textTransform: 'capitalize' }}>
+                <p style={{ marginRight: "7px", textTransform: "capitalize" }}>
                   {lock.type}
                 </p>
                 <i className="fa-regular fa-chevron-down" />
               </div>
               <ActMenu
                 style={{
-                  zIndex: '1',
-                  width: '220px',
-                  transform: 'translate(224px, 17px)',
+                  zIndex: "1",
+                  width: "220px",
+                  transform: "translate(224px, 17px)",
                 }}
-                className={typeMenu ? 'active' : ''}
+                className={typeMenu ? "active" : ""}
                 ref={typeMenuRef}
               >
                 <ActMenuSelector
                   onClose={() => showTypeMenu(false)}
                   title="Default"
-                  onClick={() => dispatch(setLockScreenType('default'))}
-                  active={lock.type === 'default'}
+                  onClick={() => dispatch(setLockScreenType("default"))}
+                  active={lock.type === "default"}
                 />
                 <ActMenuSelector
                   onClose={() => showTypeMenu(false)}
                   title="Transparent"
-                  onClick={() => dispatch(setLockScreenType('transparent'))}
-                  active={lock.type === 'transparent'}
+                  onClick={() => dispatch(setLockScreenType("transparent"))}
+                  active={lock.type === "transparent"}
                 />
               </ActMenu>
             </div>
@@ -634,7 +634,7 @@ export default function SplashScreen() {
               onClick={() => setWidgetsMenuShown(true)}
             >
               <p className="EditMenuItemName">
-                {t('lockScreen.editMenu.widgets')}
+                {t("lockScreen.editMenu.widgets")}
               </p>
               <i className="fa-regular fa-chevron-right EditMenuChevron" />
             </div>
@@ -644,14 +644,14 @@ export default function SplashScreen() {
                   <div
                     className="EditMenuItem"
                     style={{
-                      justifyContent: 'space-around',
-                      padding: '0 30px',
+                      justifyContent: "space-around",
+                      padding: "0 30px",
                     }}
                   >
                     {i.weight.light && (
                       <div
                         className={`FontWeightBlock ${
-                          lock.fontWeight === i.weight.light && 'active'
+                          lock.fontWeight === i.weight.light && "active"
                         } ${i.family}`}
                         style={{
                           color: lock.foregroundColor,
@@ -664,7 +664,7 @@ export default function SplashScreen() {
                     {i.weight.medium && (
                       <div
                         className={`FontWeightBlock ${
-                          lock.fontWeight === i.weight.medium && 'active'
+                          lock.fontWeight === i.weight.medium && "active"
                         } ${i.family}`}
                         style={{
                           color: lock.foregroundColor,
@@ -679,7 +679,7 @@ export default function SplashScreen() {
                     {i.weight.bold && (
                       <div
                         className={`FontWeightBlock ${
-                          lock.fontWeight === i.weight.bold && 'active'
+                          lock.fontWeight === i.weight.bold && "active"
                         } ${i.family}`}
                         style={{
                           color: lock.foregroundColor,
@@ -692,48 +692,48 @@ export default function SplashScreen() {
                   </div>
                 ),
             )}
-            <div className="EditMenuItem" style={{ padding: '0 50px' }}>
+            <div className="EditMenuItem" style={{ padding: "0 50px" }}>
               <div
                 className={`ColorBlock ${
-                  lock.foregroundColor === '#e2e2e2' && 'active'
+                  lock.foregroundColor === "#e2e2e2" && "active"
                 }`}
-                style={{ backgroundColor: '#e2e2e2' }}
-                onClick={() => dispatch(setForegroundColor('#e2e2e2'))}
+                style={{ backgroundColor: "#e2e2e2" }}
+                onClick={() => dispatch(setForegroundColor("#e2e2e2"))}
               ></div>
               <div
                 className={`ColorBlock ${
-                  lock.foregroundColor === '#fef08a' && 'active'
+                  lock.foregroundColor === "#fef08a" && "active"
                 }`}
-                style={{ backgroundColor: '#fef08a' }}
-                onClick={() => dispatch(setForegroundColor('#fef08a'))}
+                style={{ backgroundColor: "#fef08a" }}
+                onClick={() => dispatch(setForegroundColor("#fef08a"))}
               ></div>
               <div
                 className={`ColorBlock ${
-                  lock.foregroundColor === '#7dd3fc' && 'active'
+                  lock.foregroundColor === "#7dd3fc" && "active"
                 }`}
-                style={{ backgroundColor: '#7dd3fc' }}
-                onClick={() => dispatch(setForegroundColor('#7dd3fc'))}
+                style={{ backgroundColor: "#7dd3fc" }}
+                onClick={() => dispatch(setForegroundColor("#7dd3fc"))}
               ></div>
               <div
                 className={`ColorBlock ${
-                  lock.foregroundColor === '#f0abfc' && 'active'
+                  lock.foregroundColor === "#f0abfc" && "active"
                 }`}
-                style={{ backgroundColor: '#f0abfc' }}
-                onClick={() => dispatch(setForegroundColor('#f0abfc'))}
+                style={{ backgroundColor: "#f0abfc" }}
+                onClick={() => dispatch(setForegroundColor("#f0abfc"))}
               ></div>
               <div
                 className={`ColorBlock ${
-                  lock.foregroundColor === '#65ea95' && 'active'
+                  lock.foregroundColor === "#65ea95" && "active"
                 }`}
-                style={{ backgroundColor: '#65ea95' }}
-                onClick={() => dispatch(setForegroundColor('#65ea95'))}
+                style={{ backgroundColor: "#65ea95" }}
+                onClick={() => dispatch(setForegroundColor("#65ea95"))}
               ></div>
               <div
                 className={`ColorBlock ${
-                  lock.foregroundColor === '#f87171' && 'active'
+                  lock.foregroundColor === "#f87171" && "active"
                 }`}
-                style={{ backgroundColor: '#f87171' }}
-                onClick={() => dispatch(setForegroundColor('#f87171'))}
+                style={{ backgroundColor: "#f87171" }}
+                onClick={() => dispatch(setForegroundColor("#f87171"))}
               ></div>
             </div>
           </div>
