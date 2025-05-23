@@ -1,0 +1,11 @@
+@reference "../../../index.css";
+
+@layer components {
+  .button {
+    @apply scale-99 w-full px-7 py-5 overflow-hidden rounded-2xl bg-[#fdfdfd] shadow-md flex items-center active:bg-[#f2f2f2];
+  }
+
+  .radio {
+    @apply scale-99 w-full px-7 py-5 overflow-hidden rounded-2xl bg-[#fdfdfd] shadow-md flex items-center active:bg-[#f2f2f2] data-[state="checked"]:bg-[var(--bg-color)] data-[state="checked"]:text-slate-50;
+  }
+}

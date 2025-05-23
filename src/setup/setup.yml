@@ -1,0 +1,6 @@
+preinstall:
+  language:
+    - Language
+  basic_setup:
+    - WiFi
+postinstall:

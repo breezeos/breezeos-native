@@ -1,0 +1,100 @@
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord;
+  font-style: normal;
+  font-weight: 100;
+  src: url(../../assets/fonts/main/ABCGintoNord-Hairline-Trial-BF651b7b7747cde.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord Italic;
+  font-style: italic;
+  font-weight: 100;
+  src: url(../../assets/fonts/main/ABCGintoNord-LightItalic-Trial-BF651b7b7747b4c.otf)
+    format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord;
+  font-style: normal;
+  font-weight: 200;
+  src: url(../../assets/fonts/main/ABCGintoNord-Thin-Trial-BF651b7b77ac864.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord Italic;
+  font-style: italic;
+  font-weight: 200;
+  src: url(../../assets/fonts/main/ABCGintoNord-ThinItalic-Trial-BF651b7b773ab56.otf)
+    format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord;
+  font-style: normal;
+  font-weight: 300;
+  src: url(../../assets/fonts/main/ABCGintoNord-Light-Trial-BF651b7b774e227.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord Italic;
+  font-style: italic;
+  font-weight: 300;
+  src: url(../../assets/fonts/main/ABCGintoNord-LightItalic-Trial-BF651b7b7747b4c.otf)
+    format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord;
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../assets/fonts/main/ABCGintoNord-Regular-Trial-BF651b7b7786b8a.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord Italic;
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../assets/fonts/main/ABCGintoNord-RegularItalic-Trial-BF651b7b777ccfe.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord;
+  font-style: normal;
+  font-weight: 500;
+  src: url(../../assets/fonts/main/ABCGintoNord-Medium-Trial-BF651b7b7839fc0.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord Italic;
+  font-style: italic;
+  font-weight: 500;
+  src: url(../../assets/fonts/main/ABCGintoNord-MediumItalic-Trial-BF651b7b778214d.otf)
+    format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord;
+  font-style: normal;
+  font-weight: 700;
+  src: url(../../assets/fonts/main/ABCGintoNord-Bold-Trial-BF651b7b7670e10.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Nord Italic;
+  font-style: italic;
+  font-weight: 700;
+  src: url(../../assets/fonts/main/ABCGintoNord-BoldItalic-Trial-BF651b7b763bcbc.otf)
+    format("opentype");
+}

@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.system-color-blue {
+  --bg-color: var(--color-blue-500);
+  --dark-bg-color: var(--color-blue-800);
+  --text-color: var(--color-blue-200);
+  --dark-text-color: var(--color-blue-500);
+  
+  ::selection {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+}
+
+.system-color-indigo {
+  --bg-color: var(--color-indigo-500);
+  --dark-bg-color: var(--color-indigo-800);
+  --text-color: var(--color-indigo-200);
+  --dark-text-color: var(--color-indigo-500);
+  
+  ::selection {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+}

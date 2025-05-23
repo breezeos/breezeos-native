@@ -1,0 +1,83 @@
+@font-face {
+  font-display: swap;
+  font-family: Ginto;
+  font-style: normal;
+  font-weight: 200;
+  src: url(../../assets/fonts/main/ABCGintoNormal-Thin-Trial-BF651b7b784060c.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Italic;
+  font-style: italic;
+  font-weight: 200;
+  src: url(../../assets/fonts/main/ABCGintoNormal-ThinItalic-Trial-BF651b7b7837e74.otf)
+    format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto;
+  font-style: normal;
+  font-weight: 300;
+  src: url(../../assets/fonts/main/ABCGintoNormal-Light-Trial-BF651b7b783c2cd.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Italic;
+  font-style: italic;
+  font-weight: 300;
+  src: url(../../assets/fonts/main/ABCGintoNormal-LightItalic-Trial-BF651b7b7805454.otf)
+    format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto;
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../assets/fonts/main/ABCGintoNormal-Regular-Trial-BF651b7b7846685.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Italic;
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../assets/fonts/main/ABCGintoNormal-RegularItalic-Trial-BF651b7b781613c.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto;
+  font-style: normal;
+  font-weight: 500;
+  src: url(../../assets/fonts/main/ABCGintoNormal-Medium-Trial-BF651b7b785c106.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Italic;
+  font-style: italic;
+  font-weight: 500;
+  src: url(../../assets/fonts/main/ABCGintoNormal-MediumItalic-Trial-BF651b7b782e49b.otf)
+    format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto;
+  font-style: normal;
+  font-weight: 700;
+  src: url(../../assets/fonts/main/ABCGintoNormal-Bold-Trial-BF651b7b77d863b.otf) format("opentype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Ginto Italic;
+  font-style: italic;
+  font-weight: 700;
+  src: url(../../assets/fonts/main/ABCGintoNormal-BoldItalic-Trial-BF651b7b78375ac.otf)
+    format("opentype");
+}
