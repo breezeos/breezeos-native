@@ -1,52 +1,30 @@
+import { ipcRenderer } from "electron-better-ipc";
 import useDialog from "./useDialog";
-import { supportedLanguages } from "../components/global";
-import { ipcRenderer } from "electron";
-import { useEffect, useState } from "react";
+import useGlobalVariable from "./useGlobalVariable";
+import { IPC_NAMES, IPC_TYPES } from "@/constants/ipcNames";
 
 export default function useLanguage() {
   const { createDialog } = useDialog();
+  const { getVariable } = useGlobalVariable();
+  const supportedLanguages = ["en", "vi", "zh-CN"];
 
-  type LangData = Record<string, { [key: string]: string }>;
-
-  const [langData, setLangData] = useState<LangData>();
-
-  useEffect(() => {
-    const getData = async () => {
-      if (!langData) {
-        const data = await ipcRenderer.invoke(
-          "handle-language",
-          "GET_LANGUAGE_DATA",
-        );
-        setLangData(data);
-      }
-    };
-
-    getData();
-  }, [langData]);
-
-  function getLanguageData() {
-    return ipcRenderer.invoke("handle-language", "GET_LANGUAGE_DATA");
+  async function getLanguageInfo(language?: string) {
+    const data = await ipcRenderer.callMain(IPC_NAMES.HANDLE_LANGUAGE, [
+      IPC_TYPES.HANDLE_LANGUAGE.GET_LANGUAGE_INFO,
+      language,
+    ]);
+    return data;
   }
 
-  const getFullSystemLanguage = (
-    language: string,
-  ) => {
-    return ipcRenderer.invoke(
-      "handle-language",
-      "GET_SYSTEM_LANGUAGE",
-      language
-    );
-  };
-
   function changeLanguage(id: string) {
+    const name = supportedLanguages.find((lang) => lang === id);
+
     if (!supportedLanguages.includes(id)) {
       createDialog({
         type: "warning",
         message: "This language does not exist!",
       });
     }
-
-    const name = supportedLanguages.find((lang) => lang === id);
 
     createDialog({
       type: "question",
@@ -57,32 +35,35 @@ export default function useLanguage() {
         },
         {
           label: "Yes",
-          action: () =>
-            ipcRenderer.invoke("handle-language", `CHANGE_LANGUAGE:${id}`),
+          action: () => {
+            ipcRenderer.callMain(IPC_NAMES.HANDLE_LANGUAGE, [
+              IPC_TYPES.HANDLE_LANGUAGE.CHANGE_CURRENT_LANGUAGE,
+              id,
+            ]);
+          },
         },
       ],
     });
   }
 
-  function getLanguageKey(key: string) {
-    const keySplit = key.split(".");
-    const data = langData && langData[keySplit[0]][keySplit[1]]
+  async function getLanguageKey(key: string) {
+    const languageData = await getVariable("languageData");
 
-    if (keySplit.length > 2) return "getLanguageKey only takes 2 arguments";
+    if (typeof languageData !== "object" || languageData === null) {
+      return "Language data is not available!";
+    }
 
-    if (data === undefined)
-      return `Key ${key} does not exist in the language file`;
+    const data = (languageData as Record<string, unknown>)[key];
+    if (!data) return "This key does not exist!";
 
-    if (Array.isArray(data) || typeof data === "object")
+    if (Array.isArray(data) || typeof data !== "string")
       return "Key is not a string";
 
     return data;
   }
 
   return {
-    langData,
-    getFullSystemLanguage,
-    getLanguageData,
+    getLanguageInfo,
     changeLanguage,
     getLanguageKey,
   };

@@ -14,20 +14,20 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
 }
 
 export default class MenuBuilder {
-  private readonly browserWindow: BrowserWindow;
+  readonly #browserWindow: BrowserWindow;
 
   constructor(browserWindow: BrowserWindow) {
-    this.browserWindow = browserWindow;
+    this.#browserWindow = browserWindow;
   }
 
   buildMenu(): Menu {
-    const menu = Menu.buildFromTemplate(this.buildDefaultTemplate());
+    const menu = Menu.buildFromTemplate(this.#buildDefaultTemplate());
     Menu.setApplicationMenu(menu);
 
     return menu;
   }
 
-  private buildDefaultTemplate(): MenuItemConstructorOptions[] {
+  #buildDefaultTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
       label: "BreezeOS",
       submenu: [
@@ -35,7 +35,7 @@ export default class MenuBuilder {
           label: "About",
           // click: () => {
           //   if (this.data.settings.isLocked) {
-          //     dialog.showMessageBox(this.browserWindow, {
+          //     dialog.showMessageBox(this.#browserWindow, {
           //       message: `
           //         Device Name: ${this.data.settings.deviceName}
           //         Hostname: ${this.data.system.hostname}
@@ -51,8 +51,8 @@ export default class MenuBuilder {
           //       icon: nativeImage.createFromPath(this.appIcon).toDataURL(),
           //     });
           //   } else {
-          //     this.browserWindow.webContents.send("app:active", "settings");
-          //     this.browserWindow.webContents.send("settings:settings", "About");
+          //     this.#browserWindow.webContents.send("app:active", "settings");
+          //     this.#browserWindow.webContents.send("settings:settings", "About");
           //   }
           // },
         },
@@ -63,7 +63,7 @@ export default class MenuBuilder {
           // enabled:
           //   !this.data.settings.isLocked && !this.data.terminalwindow.active,
           click: () =>
-            this.browserWindow.webContents.send("app:active", "settings"),
+            this.#browserWindow.webContents.send("app:active", "settings"),
         },
         { type: "separator" },
         { label: "Services", role: "services" },
@@ -71,19 +71,19 @@ export default class MenuBuilder {
         {
           label: "Sleep",
           // enabled: !this.data.terminalwindow.active,
-          click: () => this.browserWindow.webContents.send("activity", "sleep"),
+          click: () => this.#browserWindow.webContents.send("activity", "sleep"),
         },
         {
           label: "Shutdown",
           // enabled: !this.data.terminalwindow.active,
           click: () =>
-            this.browserWindow.webContents.send("activity", "shutdown"),
+            this.#browserWindow.webContents.send("activity", "shutdown"),
         },
         {
           label: "Restart",
           // enabled: !this.data.terminalwindow.active,
           click: () =>
-            this.browserWindow.webContents.send("activity", "restart"),
+            this.#browserWindow.webContents.send("activity", "restart"),
         },
         { type: "separator" },
         {
@@ -134,7 +134,7 @@ export default class MenuBuilder {
           label: "Reload",
           accelerator: "Command+R",
           click: () => {
-            this.browserWindow.webContents.reload();
+            this.#browserWindow.webContents.reload();
           },
         },
         { type: "separator" },
@@ -150,8 +150,8 @@ export default class MenuBuilder {
           label: "Toggle Full Screen",
           accelerator: "Control+Command+F",
           click: () => {
-            this.browserWindow.setFullScreen(
-              !this.browserWindow.isFullScreen(),
+            this.#browserWindow.setFullScreen(
+              !this.#browserWindow.isFullScreen(),
             );
           },
         },
@@ -159,7 +159,7 @@ export default class MenuBuilder {
           label: "Toggle Developer Tools",
           accelerator: "Alt+Command+I",
           click: () => {
-            this.browserWindow.webContents.toggleDevTools();
+            this.#browserWindow.webContents.toggleDevTools();
           },
         },
         { type: "separator" },
@@ -167,7 +167,7 @@ export default class MenuBuilder {
           label: "Take Screenshot",
           accelerator: "Command+Shift+S",
           click: () => {
-            this.browserWindow.webContents.send("screenshot", true);
+            this.#browserWindow.webContents.send("screenshot", true);
           },
         },
       ],
@@ -190,8 +190,8 @@ export default class MenuBuilder {
           label: "Toggle Full Screen",
           accelerator: "Control+Command+F",
           click: () => {
-            this.browserWindow.setFullScreen(
-              !this.browserWindow.isFullScreen(),
+            this.#browserWindow.setFullScreen(
+              !this.#browserWindow.isFullScreen(),
             );
           },
         },
@@ -200,7 +200,7 @@ export default class MenuBuilder {
           label: "Take Screenshot",
           accelerator: "Command+Shift+S",
           click: () => {
-            this.browserWindow.webContents.send("screenshot", true);
+            this.#browserWindow.webContents.send("screenshot", true);
           },
         },
       ],
@@ -249,14 +249,14 @@ export default class MenuBuilder {
     return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
   }
 
-  // private buildSetupTemplate(): MenuItemConstructorOptions[] {
+  // #buildSetupTemplate(): MenuItemConstructorOptions[] {
   //   const subMenuAbout: DarwinMenuItemConstructorOptions = {
   //     label: "BreezeOS",
   //     submenu: [
   //       {
   //         label: "About",
   //         click: () => {
-  //           dialog.showMessageBox(this.browserWindow, {
+  //           dialog.showMessageBox(this.#browserWindow, {
   //             message: `
   //               Device Name: ${this.data.settings.deviceName}
   //               Hostname: ${this.data.system.hostname}

@@ -1,73 +1,47 @@
-import React, { useEffect } from "react";
-import { ScrollArea } from "./ui/ScrollArea";
-import { BatteryState } from "react-use/lib/useBattery";
-import { useBattery } from "react-use";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight20Filled, FluentIcon } from "@fluentui/react-icons";
-import { cn } from "../lib/utils";
-import useSetup from "../hooks/useSetup";
-import useSequence from "../hooks/useSequence";
-import useDialog from "../hooks/useDialog";
-import useLanguage from "../hooks/useLanguage";
+import * as FluentIcons from "@fluentui/react-icons";
+import * as FluentIconsType from "@r/lib/fluentIcons";
+import { ScrollArea } from "./shadcn-ui/ScrollArea";
+import cn from "@r/utils/cn";
+import useSetupSequence from "@r/hooks/useSetupSequence";
+import useSequence from "@r/hooks/useSequence";
+import useDialog from "@r/hooks/useDialog";
+import useGlobalVariable from "@r/hooks/useGlobalVariable";
+import useLanguage from "@r/hooks/useLanguage";
 
-interface SequenceViewProps extends React.HTMLAttributes<HTMLDivElement> {
-  name?: string;
-  id: string;
-  icon: FluentIcon;
-  forwardDisabled?: boolean;
+type FluentIconName = keyof typeof FluentIconsType;
+
+function getFluentIcon(
+  fluentIcon: FluentIconName,
+  props?: React.SVGProps<SVGSVGElement>,
+) {
+  const FluentIcon = FluentIcons[fluentIcon] as React.ComponentType<
+    React.SVGProps<SVGSVGElement>
+  >;
+  return <FluentIcon {...props} />;
 }
 
-const SequenceView: React.FC<SequenceViewProps> = ({
-  name,
-  id,
-  icon: FluentIcon,
-  forwardDisabled,
+interface SequenceViewProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export default function SequenceView({
   children,
   className,
-}) => {
-  const { sequences, setSequence, nextSequence, currentSequence } = useSetup();
-  const {
-    title,
-    desc,
-    scrollDisabled,
-    interactionsDisabled,
-    resetSequence,
-    setTitle,
-    setDesc,
-  } = useSequence();
-  const batteryState = useBattery() as BatteryState;
-  const batteryLevel = batteryState.level * 100;
-  const isCriticallyLowBattery = batteryLevel < 6 && !batteryState.charging;
+}: SequenceViewProps) {
+  const { setCurrentSequence, nextSequence, currentSequence } =
+    useSetupSequence();
+  const { scrollDisabled, interactionsDisabled } = useSequence();
+  const { getLanguageKey } = useLanguage();
   const { createDialog } = useDialog();
-  const { langData, getLanguageKey } = useLanguage();
-
-  useEffect(() => {
-    resetSequence();
-    setTitle(getLanguageKey(`Setup_${id}.title`));
-    setDesc(getLanguageKey(`Setup_${id}.desc`));
-  }, [langData]);
-
-  function handleForward() {
-    const preinstall = Object.keys(sequences.preinstall);
-    const sequence = sequences.preinstall[currentSequence.sequence];
-    if (currentSequence.sequenceIndex === sequence.length - 1) {
-      const index = preinstall.indexOf(currentSequence.sequence);
-      setSequence(preinstall[index + 1]);
-    }
-
-    if (
-      preinstall.indexOf(currentSequence.sequence) ===
-      preinstall.length - 1
-    ) {
-      createDialog({
-        message: "Apply changes to the system?",
-        type: "question",
-        important: true,
-      });
-    }
-
-    nextSequence();
-  }
+  const { getVariable } = useGlobalVariable();
+  const [data, setData] = useState<{
+    title: string;
+    description?: string;
+    icon: FluentIconName;
+  }>({
+    title: "",
+    icon: "GlobeRegular",
+  });
 
   const variants = {
     hidden: {
@@ -81,9 +55,60 @@ const SequenceView: React.FC<SequenceViewProps> = ({
     },
   };
 
+  const currentSequenceName = currentSequence.sequence;
+  const currentSequenceIndex = currentSequence.sequenceIndex;
+
+  async function getCurrentSequenceKey(key: string) {
+    const sequences = (await getVariable("setupSequence")) as Record<
+      string,
+      any
+    >;
+    const sequence = sequences[currentSequenceName][currentSequenceIndex];
+    const keySeparator = ".";
+    const sequenceHandler = sequence.handler as string;
+    const sequenceDataKey = Array.of(sequenceHandler, key).join(keySeparator);
+    const sequenceData = await getLanguageKey(sequenceDataKey);
+    return sequenceData;
+  }
+
+  async function syncData() {
+    const title = await getCurrentSequenceKey("title");
+    const description = await getCurrentSequenceKey("description");
+    const icon = (await getCurrentSequenceKey("icon")) as FluentIconName;
+    setData({ title, description, icon });
+  }
+
+  async function handleForward() {
+    const sequences = (await getVariable("setupSequence")) as Record<
+      string,
+      any
+    >;
+    const sequence = sequences[currentSequenceName];
+    const sequencesKey = Object.keys(sequences);
+
+    if (currentSequenceIndex === Object.keys(sequence).length - 1) {
+      const index = sequencesKey.indexOf(currentSequenceName);
+      setCurrentSequence(sequences[index + 1]);
+    }
+
+    if (sequencesKey.indexOf(currentSequenceName) === sequencesKey.length - 1) {
+      createDialog({
+        message: "Apply changes to the system?",
+        type: "question",
+        important: true,
+      });
+    }
+
+    nextSequence();
+  }
+
+  useEffect(() => {
+    syncData();
+  }, []);
+
   return (
     <div className="absolute grid h-full w-full grid-cols-[350px_auto]">
-      <div className="basis-lg grid place-items-center h-full space-y-5 px-2 py-8">
+      <div className="basis-lg grid h-full place-items-center space-y-5 px-2 py-8">
         {/* {setup.currentSequence !== 0 &&
           !setup.importantSequence &&
           !isCriticallyLowBattery && (
@@ -106,9 +131,7 @@ const SequenceView: React.FC<SequenceViewProps> = ({
             ease: [0, 0.71, 0.2, 1.01],
           }}
         >
-          <FluentIcon
-            className="size-28 text-white"
-          />
+          {getFluentIcon(data.icon, { className: "size-28 text-white" })}
         </motion.div>
         {/* <motion.div
           initial={{ opacity: 0, translateX: "-20px" }}
@@ -124,7 +147,10 @@ const SequenceView: React.FC<SequenceViewProps> = ({
         </motion.div> */}
       </div>
       <div className="relative flex h-full w-full flex-col justify-between space-y-4 text-zinc-900">
-        <p className="font-medium text-3xl text-black">{title}</p>
+        <p className="text-3xl font-medium text-black">{data.title}</p>
+        {data.description && (
+          <p className="text-md font-medium text-black">{data.description}</p>
+        )}
         {!scrollDisabled ? (
           <ScrollArea>
             <motion.div
@@ -156,9 +182,9 @@ const SequenceView: React.FC<SequenceViewProps> = ({
             <button
               className="rounded-lg bg-slate-800 px-5 py-3 transition-transform active:scale-90 disabled:pointer-events-none disabled:opacity-30"
               onClick={handleForward}
-              disabled={forwardDisabled}
+              // disabled={forwardDisabled}
             >
-              <ArrowRight20Filled className="text-white" />
+              <FluentIcons.ArrowRight20Filled className="text-white" />
             </button>
           )}
           {/* {flexEndButtons && (
@@ -168,6 +194,4 @@ const SequenceView: React.FC<SequenceViewProps> = ({
       </div>
     </div>
   );
-};
-
-export default SequenceView;
+}

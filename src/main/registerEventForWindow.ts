@@ -1,41 +1,31 @@
-import { app, BrowserWindow, dialog, ipcMain } from "electron";
-import Log from "../utils/log";
+import { app, BrowserWindow, dialog } from "electron";
 
-export function registerEventForWindow(browserWindow: BrowserWindow | null) {
-  browserWindow?.on("ready-to-show", () => {
-    if (!browserWindow) {
-      Log.error(`"${browserWindow}" is not defined`);
-    }
-    if (process.env.START_MINIMIZED) {
-      browserWindow?.minimize();
-    } else {
-      browserWindow?.show();
-    }
+export function registerEventForWindow(browserWindow: BrowserWindow) {
+  browserWindow.on("ready-to-show", () => {
+    if (!browserWindow) return;
+    
+    browserWindow.show();
   });
 
-  browserWindow?.on("closed", () => {
-    browserWindow = null;
-  });
-
-  browserWindow?.on("unresponsive", () => {
+  browserWindow.on("unresponsive", () => {
     dialog
-      .showMessageBox(browserWindow as BrowserWindow, {
-        message: "The simulator is unresponding due to unexpected issues.",
-        type: "error",
+      .showMessageBox(browserWindow, {
+        message: "BreezeOS Native is unresponding due to unexpected issues.",
+        type: "info",
         buttons: ["Close the simulator", "Wait until it responds"],
       })
       .then((event) => {
         if (event.response === 1) {
-          browserWindow = null;
+          browserWindow.destroy();
           app.quit();
         }
-      });
+      })
   });
 
-  ipcMain.on("safe-to-quit", (_e, res: boolean) => {
-    if (res) {
-      browserWindow?.destroy();
-      app.quit();
-    }
-  });
+  // ipcMain.on("safe-to-quit", (_e, res: boolean) => {
+  //   if (res) {
+  //     browserWindow?.destroy();
+  //     app.quit();
+  //   }
+  // });
 }

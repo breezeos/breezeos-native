@@ -1,23 +1,25 @@
 import { BrowserWindow, globalShortcut } from "electron";
-import { APP } from "../constants";
+import { ipcMain } from "electron-better-ipc";
+import { IS_DEBUG } from "@/constants/common";
+import { IPC_NAMES } from "@/constants/ipcNames";
 
-export function registerHotkeyForWindow(browserWindow: BrowserWindow | null) {
+export function registerHotkeyForWindow(browserWindow: BrowserWindow) {
   globalShortcut.register(
     process.platform === "darwin" ? "Command+Q" : "Alt+F4",
     () => {
-      browserWindow?.webContents.send("willQuit", true);
+      ipcMain.callRenderer(browserWindow, IPC_NAMES.WILL_QUIT, true);
     },
   );
 
-  if (APP.IS_DEBUG) {
-    globalShortcut.register("Ctrl+R", () => browserWindow?.reload());
+  if (IS_DEBUG) {
+    globalShortcut.register("Ctrl+R", () => browserWindow.reload());
 
     globalShortcut.register("Ctrl+Shift+I", () =>
-      browserWindow?.webContents.openDevTools(),
+      browserWindow.webContents.openDevTools(),
     );
 
     globalShortcut.register("F11", () =>
-      browserWindow?.setFullScreen(!browserWindow?.isFullScreen),
+      browserWindow.setFullScreen(!browserWindow?.isFullScreen),
     );
   }
 }

@@ -1,15 +1,15 @@
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
-import Desktop from "./Setup";
-import "../../index.css";
-import DialogProvider from "../../components/DialogProvider";
+import App from "./Setup";
+import "../../assets/styles/index.css";
+import DialogProvider from "@r/components/DialogProvider";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
 root.render(
   <StrictMode>
     <DialogProvider>
-      <Desktop />
+      <App />
     </DialogProvider>
   </StrictMode>,
 );

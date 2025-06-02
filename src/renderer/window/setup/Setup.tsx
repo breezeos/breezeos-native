@@ -1,4 +1,3 @@
-import "../../index.css";
 import {
   AnimatePresence,
   cubicBezier,
@@ -8,250 +7,271 @@ import {
   useMotionValue,
   usePresence,
 } from "framer-motion";
-import "./Setup.css";
-import { animate } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
-import * as Sequences from "./sequences";
-import { useBattery } from "react-use";
-import { BatteryState } from "react-use/lib/useBattery";
-import { cn } from "../../lib/utils";
-import BatteryIcon from "../../components/BatteryIcon";
-import useSetup from "../../hooks/useSetup";
-import useConf from "../../hooks/useConf";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-} from "../../components/ui/DropdownMenu";
+// import { animate } from "framer-motion";
+import { useEffect, useState } from "react";
 import { ArrowRight20Filled } from "@fluentui/react-icons";
-import Background from "../../../../assets/images/pink-and-blue-gradient-background-vector-53093083.jpg";
+import { nativeImage } from "electron";
+import useSetupSequence from "@r/hooks/useSetupSequence";
+import useStore from "@r/hooks/useStore";
+// import {
+//   DropdownMenu,
+//   DropdownMenuTrigger,
+// } from "@r/components/ui/DropdownMenu";
+import useLanguage from "@r/hooks/useLanguage";
+import BetterParagraph from "@r/components/BetterParagraph";
+import useGlobalVariable from "@r/hooks/useGlobalVariable";
+import getAssetsPath from "@r/utils/getAssetsPath";
 
-export default function App() {
-  const {
-    sequences,
-    initializeSequence,
-    importantSequence,
-    currentSequence,
-    setSequence,
-  } = useSetup();
-  const { confData, setConf } = useConf();
-  const sequence = currentSequence.sequence;
-  const sequenceIndex = currentSequence.sequenceIndex;
-  const isFirstTimeOpened = confData.isFirstTimeOpened as boolean;
-  const eased = cubicBezier(0.17, 0.67, 0.53, 0.99);
-  const backgroundWidth = useMotionValue(832);
+const easingGraph = cubicBezier(0.17, 0.67, 0.53, 0.99);
 
-  const Welcome = () => {
-    const [scope, animate] = useAnimate();
-    const [isPresent, safeToRemove] = usePresence();
-    const [isNextButtonVisible, setIsNextButtonVisible] = useState(true);
+function Welcome() {
+  const { setStoreKey } = useStore();
+  const { getLanguageKey } = useLanguage();
+  const [scope, animate] = useAnimate();
+  const [isPresent, safeToRemove] = usePresence();
+  const [isNextButtonVisible, setIsNextButtonVisible] = useState(true);
+  const [divChildrens, setDivChildrens] = useState<{
+    firstDivChildren: Array<string>;
+    secondDivChildren: Array<string>;
+  }>({
+    firstDivChildren: [],
+    secondDivChildren: [],
+  });
 
-    async function handleStartAnimation() {
-      await animate(
-        "div",
-        { transform: ["translateY(0)", "translateY(-20px)"] },
-        {
-          delay: stagger(0.1, { startDelay: 2.9 }),
-          duration: 0.4,
-          ease: "easeOut",
-        },
-      );
-    }
+  useEffect(() => {
+    (async () => {
+      const WELCOME_TEXT = "setup.welcome_text";
 
-    async function handleExitAnimation() {
-      await animate(
-        "div",
-        {
-          transform: ["translateY(-20px)", "translateY(-40px)"],
-          opacity: [1, 0],
-          filter: "blur(6px)",
-        },
-        {
-          delay: stagger(0.1),
-          duration: 0.4,
-          ease: eased,
-        },
-      );
-      handleWelcomeNextAction();
-    }
-
-    useEffect(() => {
-      if (isPresent) {
-        handleStartAnimation();
-      } else {
-        // animate(backgroundWidth, 320, {duration:2})
-        safeToRemove()
+      const welcomeText = await getLanguageKey(WELCOME_TEXT);
+      const welcomeTextSplited = welcomeText.split(" ");
+      for (let i = 0; i < welcomeTextSplited.length; i++) {
+        if (welcomeTextSplited[i].indexOf("**") === 0) {
+          setDivChildrens({
+            ...divChildrens,
+            firstDivChildren: welcomeTextSplited.slice(0, i),
+          });
+          setDivChildrens({
+            ...divChildrens,
+            secondDivChildren: welcomeTextSplited.slice(i),
+          });
+          return;
+        }
       }
-    }, [isPresent]);
+    })();
+  }, [getLanguageKey, divChildrens]);
 
-    const spanVariants = {
-      hidden: {
-        opacity: 0,
-        filter: "blur(6px)",
-        bottom: -10,
-        transition: {
-          ease: eased,
-        },
-      },
-      visible: { opacity: 1, filter: "blur(0)", bottom: 0 },
-    };
-
-    return (
-      <div className="grid h-full w-full items-center text-white">
-        <motion.div className="text-5xl/16 text-center" ref={scope}>
-          <motion.div
-            variants={spanVariants}
-            animate="visible"
-            initial="hidden"
-            transition={{
-              staggerChildren: 0.15
-            }}
-          >
-            <motion.span
-              className="font-ginto-nord relative"
-              variants={spanVariants}
-              transition={{
-                duration: 0.4,
-              }}
-            >
-              Welcome
-            </motion.span>
-            <motion.span
-              className="font-ginto-nord relative"
-              variants={spanVariants}
-              transition={{
-                duration: 0.4,
-              }}
-            >
-              {" "}
-              to{" "}
-            </motion.span>
-            <motion.span
-              className="font-ginto-nord relative"
-              variants={spanVariants}
-              transition={{
-                duration: 0.4,
-              }}
-            >
-              {" "}
-              a
-            </motion.span>
-          </motion.div>
-          <motion.div
-            animate="visible"
-            initial="hidden"
-            variants={spanVariants}
-            transition={{
-              delayChildren: 0.5,
-              staggerChildren: 0.15,
-            }}
-          >
-            <motion.span
-              className="font-ginto-nord relative font-bold"
-              variants={spanVariants}
-              transition={{
-                duration: 0.4,
-              }}
-            >
-              better
-            </motion.span>
-            <motion.span
-              className="font-ginto-nord relative"
-              variants={spanVariants}
-              transition={{
-                duration: 0.4,
-              }}
-            >
-              {" "}
-              desktop
-            </motion.span>
-            <motion.span
-              className="font-ginto-nord relative"
-              variants={spanVariants}
-            >
-              .
-            </motion.span>
-          </motion.div>
-        </motion.div>
-        <div className="absolute bottom-0 flex w-full justify-center">
-          <AnimatePresence mode="wait">
-            {isNextButtonVisible && (
-              <motion.button
-                className="relative grid w-fit items-center rounded-lg bg-white px-7 py-3 text-slate-950 hover:bg-neutral-300 active:bg-neutral-400"
-                animate={{
-                  opacity: [0, 1],
-                  filter: ["blur(6px)", "blur(0)"],
-                  bottom: [130, 140],
-                  transition: {
-                    delay: 3.2,
-                    duration: 0.5,
-                    ease: eased,
-                  },
-                }}
-                exit={{
-                  opacity: [1, 0],
-                  filter: ["blur(0)", "blur(6px)"],
-                  bottom: [140, 150],
-                  transition: {
-                    delay: 0.15,
-                    duration: 0.5,
-                    ease: eased,
-                  },
-                }}
-                onClick={() => {
-                  setIsNextButtonVisible(false);
-                  handleExitAnimation();
-                }}
-              >
-                <ArrowRight20Filled />
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-    );
-  };
-
-  async function handleWelcomeNextAction() {
-    const animateBgWidth = animate(backgroundWidth, 350, { duration: 0.8, ease: eased });
-    animateBgWidth.then(() => startSetup());
+  function startSetup() {
+    setStoreKey({ isFirstTimeOpened: false });
   }
 
-  async function startSetup(){
-    setConf("isFirstTimeOpened", false);
+  function handleWelcomeNextAction() {
+    // const animateBgWidth = animate(backgroundWidth, 350, {
+    //   duration: 0.8,
+    //   ease: eased,
+    // });
+    // animateBgWidth.then(() => startSetup());
+    startSetup();
+  }
+
+  async function handleStartAnimation() {
+    await animate(
+      "div",
+      { transform: ["translateY(0)", "translateY(-20px)"] },
+      {
+        delay: stagger(0.1, { startDelay: 2.9 }),
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    );
+  }
+
+  async function handleExitAnimation() {
+    await animate(
+      "div",
+      {
+        transform: ["translateY(-20px)", "translateY(-40px)"],
+        opacity: [1, 0],
+        filter: "blur(6px)",
+      },
+      {
+        delay: stagger(0.1),
+        duration: 0.4,
+        ease: easingGraph,
+      },
+    );
+    handleWelcomeNextAction();
   }
 
   useEffect(() => {
-    if(isFirstTimeOpened == false) {
-      initializeSequence();
-      backgroundWidth.set(350);
+    if (isPresent) {
+      handleStartAnimation();
+    } else {
+      // animate(backgroundWidth, 320, {duration:2})
+      safeToRemove();
     }
-    console.log(sequences);
-  }, [isFirstTimeOpened]);
+  }, [isPresent]);
+
+  const spanVariants = {
+    hidden: {
+      opacity: 0,
+      filter: "blur(6px)",
+      bottom: -10,
+      transition: {
+        ease: easingGraph,
+      },
+    },
+    visible: { opacity: 1, filter: "blur(0)", bottom: 0 },
+  };
 
   return (
-    <>
-      <div className="Setup bg-orange-50 text-slate-950">
-          <motion.div
-            className="grid h-full items-center rounded-lg bg-cover"
-            style={{
-              width: backgroundWidth,
-              backgroundImage: `url(${Background})`,
-            }}
+    <div className="grid h-full w-full items-center text-white">
+      <motion.div className="text-5xl/16 text-center" ref={scope}>
+        <motion.div
+          variants={spanVariants}
+          animate="visible"
+          initial="hidden"
+          transition={{
+            staggerChildren: 0.15,
+          }}
+        >
+          {divChildrens.firstDivChildren.map((children) => (
+            <motion.span
+              className="font-ginto-nord relative"
+              variants={spanVariants}
+              transition={{
+                duration: 0.4,
+              }}
+            >
+              <BetterParagraph>{children}</BetterParagraph>
+            </motion.span>
+          ))}
+        </motion.div>
+        <motion.div
+          animate="visible"
+          initial="hidden"
+          variants={spanVariants}
+          transition={{
+            delayChildren: 0.5,
+            staggerChildren: 0.15,
+          }}
+        >
+          {divChildrens.secondDivChildren.map((children) => (
+            <motion.span
+              className="font-ginto-nord relative"
+              variants={spanVariants}
+              transition={{
+                duration: 0.4,
+              }}
+            >
+              <BetterParagraph>{children}</BetterParagraph>
+            </motion.span>
+          ))}
+          <motion.span
+            className="font-ginto-nord relative"
+            variants={spanVariants}
           >
-            <AnimatePresence mode="wait">
-              {isFirstTimeOpened ? <Welcome /> : (
-                sequences.preinstall[sequence]?.map((step, i) => {
-                  const Sequence = !importantSequence
-                    ? Sequences[step]
-                    : Sequences[importantSequence];
-                  return sequences.preinstall[sequence][sequenceIndex] && (
-                    <Sequence key={i} />
-                  );
-                })
-              )}
-            </AnimatePresence>
-          </motion.div>
+            .
+          </motion.span>
+        </motion.div>
+      </motion.div>
+      <div className="absolute bottom-0 flex w-full justify-center">
+        <AnimatePresence mode="wait">
+          {isNextButtonVisible && (
+            <motion.button
+              className="relative grid w-fit items-center rounded-lg bg-white px-7 py-3 text-slate-950 hover:bg-neutral-300 active:bg-neutral-400"
+              animate={{
+                opacity: [0, 1],
+                filter: ["blur(6px)", "blur(0)"],
+                bottom: [130, 140],
+                transition: {
+                  delay: 3.2,
+                  duration: 0.5,
+                  ease: easingGraph,
+                },
+              }}
+              exit={{
+                opacity: [1, 0],
+                filter: ["blur(0)", "blur(6px)"],
+                bottom: [140, 150],
+                transition: {
+                  delay: 0.15,
+                  duration: 0.5,
+                  ease: easingGraph,
+                },
+              }}
+              onClick={() => {
+                setIsNextButtonVisible(false);
+                handleExitAnimation();
+              }}
+            >
+              <ArrowRight20Filled />
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
-    </>
+    </div>
+  );
+}
+
+export default function App() {
+  const backgroundWidth = useMotionValue(832);
+  const { currentSequence, setCurrentSequence } = useSetupSequence();
+  const { getStoreKey } = useStore();
+  const { getVariable } = useGlobalVariable();
+  const [sequence, setSequence] = useState<Record<string, any>>({});
+  const [isFirstTimeOpened, setIsFirstTimeOpened] = useState<boolean>(true);
+  const wallpaperPath = getAssetsPath("images/wallpaper.jpg");
+  const wallpaperUrl = nativeImage.createFromPath(wallpaperPath);
+
+  // useEffect(() => {
+  //   if (!isFirstTimeOpened) {
+  //     backgroundWidth.set(350);
+  //   }
+  // }, [isFirstTimeOpened, backgroundWidth]);
+
+  useEffect(() => {
+    (async () => {
+      const value = (await getStoreKey(
+        "isFirstTimeOpened",
+      )) as typeof isFirstTimeOpened;
+
+      setIsFirstTimeOpened(value);
+
+      const setupSequenceValue = (await getVariable(
+        "setupSequence",
+      )) as typeof sequence;
+
+      setSequence(setupSequenceValue);
+      setCurrentSequence(Object.keys(sequence)[0]);
+    })();
+  }, []);
+
+  return (
+    <div className="bg-orange-50">
+      <motion.div
+        className="grid h-full items-center rounded-lg"
+        style={{
+          backgroundImage: `url(${wallpaperUrl})`,
+          width: backgroundWidth,
+        }}
+      >
+        <AnimatePresence mode="wait">
+          {isFirstTimeOpened ? (
+            <Welcome />
+          ) : (
+            Object.keys(sequence[currentSequence.sequence]).map((step) => {
+              const Sequence = step;
+              const currentSequenceName = currentSequence.sequence;
+              const currentSequenceIndex = currentSequence.sequenceIndex;
+              return (
+                sequence[currentSequenceName][currentSequenceIndex] && (
+                  <Sequence key={Math.random()} />
+                )
+              );
+            })
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
   );
 }

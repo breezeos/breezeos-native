@@ -1,0 +1,14 @@
+{
+  "sequence_1": {
+    "Language": {
+      "id": "language",
+      "handler": "setup.sequence.language"
+    }
+  },
+  "sequence_2": {
+    "Network": {
+      "id": "network",
+      "handler": "setup.sequence.network"
+    }
+  }
+}

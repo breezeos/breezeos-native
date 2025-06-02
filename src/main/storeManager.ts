@@ -2,70 +2,71 @@ import path from "path";
 import fs from "fs";
 import { app } from "electron";
 import chokidar from "chokidar";
+import { DATA_PATH } from "@/constants/paths";
 
 const userData = app.getPath("userData");
 const storePath = path.join(userData, "config.json");
 const storeDefaultJSON = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "../store.json"), "utf-8"),
+  fs.readFileSync(path.join(DATA_PATH, "store.json"), "utf-8"),
 );
 
-export default class StoreManager {
-  private store: Record<string, unknown> = {};
+class Store {
+  #store: Record<string, unknown> = {};
 
-  public constructor() {
+  constructor() {
     if (!fs.existsSync(storePath)) {
       fs.writeFileSync(storePath, JSON.stringify(storeDefaultJSON, null, 2));
     }
 
-    this.store = JSON.parse(fs.readFileSync(storePath, "utf-8"));
+    this.#store = JSON.parse(fs.readFileSync(storePath, "utf-8"));
 
     chokidar.watch(storePath).on("change", () => {
-      this.store = JSON.parse(fs.readFileSync(storePath, "utf-8"));
+      this.#store = JSON.parse(fs.readFileSync(storePath, "utf-8"));
     });
   }
 
-  private updateConfigFile() {
-    return fs.writeFileSync(storePath, JSON.stringify(this.store, null, 2));
+  #updateConfigFile() {
+    return fs.writeFileSync(storePath, JSON.stringify(this.#store, null, 2));
   }
 
-  public get<T = unknown>(key: string) {
-    return this.store[key] as T;
+  get(...keys: string[]) {
+    return keys.map((key) => this.#store[key]);
   }
 
-  public set(key: string, value: unknown) {
-    this.store[key] = value;
-    this.updateConfigFile();
+  set(params: Record<string, unknown>) {
+    Object.entries(params).forEach(([key, value]) => {
+      this.#store[key] = value;
+    });
+    this.#updateConfigFile();
   }
 
-  public clear() {
-    this.store = { ...storeDefaultJSON };
+  clearAll() {
+    this.#store = { ...storeDefaultJSON };
     return fs.writeFileSync(
       storePath,
       JSON.stringify(storeDefaultJSON, null, 2),
     );
   }
 
-  public delete(key: string) {
-    delete this.store[key];
-    this.updateConfigFile();
+  delete(...keys: string[]) {
+    keys.forEach((key) => delete this.#store[key]);
+    this.#updateConfigFile();
   }
 
-  public reset(...keys: string[]) {
-    if (keys.length === 0) return;
+  reset(...keys: string[]) {
     keys.forEach((key) => {
       if (storeDefaultJSON[key]) {
-        this.set(key, storeDefaultJSON[key]);
+        this.#store[key] = storeDefaultJSON[key];
       } else {
         this.delete(key);
       }
     });
-    this.updateConfigFile();
+    this.#updateConfigFile();
   }
 
-  public has(key: string) {
-    if (this.store[key]) {
-      return true;
-    }
-    return false;
+  has(key: string) {
+    return Object.prototype.hasOwnProperty.call(this.#store, key);
   }
 }
+
+export const store = new Store();

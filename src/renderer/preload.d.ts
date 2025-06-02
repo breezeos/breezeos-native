@@ -1,11 +1,7 @@
-import { ipcRenderer } from "electron";
-
-export {};
+import { electronApiHandler } from "../main/preload";
 
 declare global {
   interface Window {
-    electron: {
-      ipcRenderer: typeof ipcRenderer;
-    };
+    electronApi: typeof electronApiHandler;
   }
 }

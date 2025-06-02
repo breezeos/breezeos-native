@@ -20,45 +20,50 @@ import fs from "fs";
 
 checkNodeEnv("production");
 deleteSourceMaps();
+
 const entries = JSON.parse(
-  fs.readFileSync(path.join(webpackPaths.srcPath, "entries.json"), "utf-8"),
+  fs.readFileSync(path.join(webpackPaths.srcPath, "data/entries.json"), "utf-8"),
 ) as Record<string, string>;
 
 const initializeEntry = () => {
-  const entryObject = {};
-  for (const entry of Object.keys(entries)) {
-    const windowName = entry.slice(0, entry.indexOf("Window"));
-    entryObject[entries[entry]] = path.join(
-      webpackPaths.srcRendererPath,
-      "window",
-      windowName,
-      "index.tsx",
-    );
-  }
-  return entryObject;
+  return Object.keys(entries).reduce(
+    (entryObject, entry) => {
+      const windowName = entry.slice(0, entry.indexOf("Window"));
+      entryObject[entries[entry]] = path.join(
+        webpackPaths.srcRendererPath,
+        "window",
+        windowName,
+        "index.tsx",
+      );
+      return entryObject;
+    },
+    {} as Record<string, string>,
+  );
 };
 
 const initializeWebpackPlugin = () => {
-  const webpackPlugin: HtmlWebpackPlugin[] = [];
-  for (const entry of Object.values(entries)) {
-    webpackPlugin.push(
+  return Object.values(entries).map(
+    (entry) =>
       new HtmlWebpackPlugin({
         filename: `${entry}.html`,
-        template: path.join(webpackPaths.srcPath, "templates", `${entry}.html`),
+        template: path.join(
+          webpackPaths.srcRendererPath,
+          "templates",
+          `${entry}.ejs`,
+        ),
         minify: {
           collapseWhitespace: true,
           removeAttributeQuotes: true,
           removeComments: true,
         },
         chunks: [entry],
-        isBrowser: false,
-        env: process.env.NODE_ENV,
-        isDevelopment: process.env.NODE_ENV !== "production",
-        nodeModules: webpackPaths.appNodeModulesPath,
+        templateParameters: {
+          env: process.env.NODE_ENV,
+          isDevelopment: process.env.NODE_ENV !== "production",
+          entry,
+        },
       }),
-    );
-  }
-  return webpackPlugin;
+  );
 };
 
 const configuration: webpack.Configuration = {

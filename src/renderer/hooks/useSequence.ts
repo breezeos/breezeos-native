@@ -1,9 +1,11 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
+import FluentIcon from "@fluentui/react-icons/lib";
 
 interface State {
   title: string;
   desc?: string;
+  icon: keyof typeof FluentIcon;
   isLoading?: boolean;
   flexEndButtons?: {
     label: string;
@@ -15,7 +17,8 @@ interface State {
 
 interface Actions {
   setTitle: (title: string) => void;
-  setDesc: (desc: string) => void;
+  setDescription: (desc: string) => void;
+  setIcon: (icon: State["icon"]) => void;
   setIsLoading: (isLoading: boolean) => void;
   setFlexEndButtons: (flexEndButtons: State["flexEndButtons"]) => void;
   setDisableScroll: (scrollDisabled: boolean) => void;
@@ -25,6 +28,7 @@ interface Actions {
 
 const state: State = {
   title: "",
+  icon: "GlobeRegular",
 };
 
 const useSequence = create<State & Actions>(
@@ -32,7 +36,8 @@ const useSequence = create<State & Actions>(
     state,
     (set): Actions => ({
       setTitle: (title) => set({ title }),
-      setDesc: (desc) => set({ desc }),
+      setDescription: (desc) => set({ desc }),
+      setIcon: (icon) => set({ icon }),
       setIsLoading: (isLoading) => set({ isLoading }),
       setFlexEndButtons: (flexEndButtons) => set({ flexEndButtons }),
       setDisableScroll: (scrollDisabled) => set({ scrollDisabled }),

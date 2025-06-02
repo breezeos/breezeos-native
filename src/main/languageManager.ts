@@ -1,45 +1,44 @@
-import { Languages } from "../types";
 import ISO3691 from "iso-639-1";
-import Store from "./storeManager";
-import path from "path";
-import fs from "fs";
-import yaml from "js-yaml";
+import { store } from "./storeManager";
+import { app } from "electron";
+import loadLanguageFiles from "./utils/loadLanguageFiles";
+import { SUPPORTED_LANGUAGES } from "@/constants/common";
 
-const store = new Store();
-const lang = store.get<string>("lang");
-const localePath = path.resolve(__dirname, "../languages", lang);
+type LanguageObject = Record<
+  string,
+  {
+    code: string;
+    name: string;
+  }
+>;
 
 export default class LanguageManager {
-  private dataObj: Record<string, { [key: string]: {} }> = {};
-
-  public constructor() {
-    const dir = fs.readdirSync(localePath);
-    dir.forEach((file) => {
-      const langPath = path.join(localePath, file);
-      const langData = fs.readFileSync(langPath, "utf-8");
-      const format = path.extname(file);
-      const basename = path.basename(file, format);
-      if (format == ".yml") {
-        const yamlData = yaml.load(langData);
-        this.dataObj[basename] = JSON.parse(JSON.stringify(yamlData));
-      }
-    });
+  static getCurrentLanguage() {
+    const [currentLanguage] = store.get("lang");
+    return currentLanguage as string;
   }
 
-  public getLanguageData() {
-    return this.dataObj;
+  static changeCurrentLanguage(language: string) {
+    store.set({ lang: language });
+    app.relaunch();
+    loadLanguageFiles();
+    app.exit();
   }
 
-  public getSystemLanguage(language?: string) {
-    const data: Languages = {
-      code: lang,
-    };
-
+  static getLanguageInfo(language?: string) {
     if (language) {
-      data.code = language;
-      data.name = ISO3691.getName(language);
+      return {
+        code: language,
+        name: ISO3691.getName(language),
+      };
     }
 
-    return data;
+    return SUPPORTED_LANGUAGES.reduce((lang, language) => {
+      lang[language] = {
+        code: language,
+        name: ISO3691.getName(language),
+      };
+      return lang;
+    }, {} as LanguageObject);
   }
 }

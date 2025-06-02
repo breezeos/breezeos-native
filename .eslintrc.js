@@ -17,6 +17,8 @@ module.exports = {
     "prettier/prettier": "off",
     "no-plusplus": "off",
     "import/prefer-default-export": "off",
+    "promise/catch-or-return": "off",
+    "promise/always-return": "off",
   },
   parserOptions: {
     ecmaVersion: 2022,

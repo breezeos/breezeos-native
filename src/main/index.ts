@@ -4,36 +4,132 @@ import path from "path";
 import { app, BrowserWindow, screen } from "electron";
 // import {MenuBuilder} from "./menu";
 import fs from "fs";
-import yaml from "js-yaml";
 import debug from "electron-debug";
-import Store from "./storeManager";
-import { APP, WINDOWS } from "../constants";
-import Log from "../utils/log";
+import sourceMapSupport from "source-map-support";
+import { ipcMain } from "electron-better-ipc";
+import { store } from "./storeManager";
+import { IS_DEBUG } from "@/constants/common";
+import Log from "./utils/log";
 import { loadAllConfig } from "./loadAllConfig";
-import { setupIpcHandle, setupIpcListener } from "./ipc";
+import GlobalVariable from "./globalVariable";
+import loadLanguageFiles from "./utils/loadLanguageFiles";
+import LanguageManager from "./languageManager";
+import { IPC_NAMES, IPC_TYPES } from "@/constants/ipcNames";
+import { DATA_PATH } from "@/constants/paths";
 
 type WindowType = BrowserWindow | null;
 
 let mainWindow: WindowType;
 let setupWindow: WindowType;
 
+const entries = JSON.parse(
+  fs.readFileSync(path.join(DATA_PATH, "entries.json"), "utf-8"),
+) as Record<string, string>;
+
 const preloadPath = app.isPackaged
   ? path.join(__dirname, "preload.js")
   : path.join(__dirname, "../../.erb/dll/preload.js");
 
-if (APP.IS_DEBUG) debug();
+const fileSystemPath = path.join(app.getPath("userData"), "filesystem");
 
-const installSourceMapSupport = async () => {
-  if (process.env.NODE_ENV === "production") {
-    const sourceMapSupport = await import("source-map-support");
-    sourceMapSupport.install();
+if (IS_DEBUG) debug();
+
+if (process.env.NODE_ENV === "production") {
+  sourceMapSupport.install();
+}
+
+ipcMain.answerRenderer(
+  IPC_NAMES.WINDOW_EVENT,
+  (type: string, browserWindow) => {
+    if (window) {
+      switch (type) {
+        case IPC_TYPES.WINDOW_EVENT.WINDOW_MINIMIZE:
+          browserWindow.minimize();
+          break;
+        case IPC_TYPES.WINDOW_EVENT.WINDOW_CLOSE:
+          browserWindow.close();
+          break;
+        case IPC_TYPES.WINDOW_EVENT.WINDOW_MAXIMIZED:
+          if (browserWindow.isMaximized()) {
+            browserWindow.maximize();
+          } else {
+            browserWindow.unmaximize();
+          }
+          break;
+        case IPC_TYPES.WINDOW_EVENT.WINDOW_IS_MAXIMIZED:
+          return browserWindow.isMaximized();
+        default:
+          break;
+      }
+    }
+  },
+);
+
+ipcMain.answerRenderer(IPC_NAMES.HANDLE_STORE, (args: unknown[]) => {
+  const [type, param] = args;
+
+  switch (type) {
+    case IPC_TYPES.HANDLE_STORE.SET_KEY:
+      Object.entries(param as Record<string, unknown>).forEach(
+        ([key, value]) => {
+          store.set({
+            [key]: value,
+          });
+        },
+      );
+      break;
+    case IPC_TYPES.HANDLE_STORE.GET_KEY:
+      return store.get(...(param as string[]));
+    case IPC_TYPES.HANDLE_STORE.CLEAR_ALL:
+      store.clearAll();
+      break;
+    case IPC_TYPES.HANDLE_STORE.DELETE_KEY:
+      store.delete(...(param as string[]));
+      break;
+    case IPC_TYPES.HANDLE_STORE.RESET_KEY:
+      store.reset(...(param as string[]));
+      break;
+    case IPC_TYPES.HANDLE_STORE.HAS_KEY:
+      return store.has(param as string);
+    default:
+      return;
   }
-};
+});
 
-installSourceMapSupport();
+ipcMain.answerRenderer(IPC_NAMES.HANDLE_LANGUAGE, (args: string[]) => {
+  const [type, value] = args;
 
-setupIpcHandle();
-setupIpcListener();
+  switch (type) {
+    case IPC_TYPES.HANDLE_LANGUAGE.GET_LANGUAGE_INFO:
+      return LanguageManager.getLanguageInfo(value);
+    case IPC_TYPES.HANDLE_LANGUAGE.CHANGE_CURRENT_LANGUAGE:
+      LanguageManager.changeCurrentLanguage(value);
+      break;
+    default:
+      return;
+  }
+});
+
+ipcMain.answerRenderer(IPC_NAMES.HANDLE_GLOBAL_VARIABLE, (args: unknown[]) => {
+  const [type, param] = args;
+  switch (type) {
+    case IPC_TYPES.HANDLE_GLOBAL_VARIABLE.SET_KEY:
+      Object.entries(param as Record<string, unknown>).forEach(
+        ([key, value]) => {
+          GlobalVariable.setVariable({
+            [key]: value,
+          });
+        },
+      );
+      break;
+    case IPC_TYPES.HANDLE_GLOBAL_VARIABLE.GET_KEY:
+      return GlobalVariable.getVariable(...(param as string[]));
+    default:
+      return;
+  }
+});
+
+loadLanguageFiles();
 
 function createMainWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -50,7 +146,7 @@ function createMainWindow() {
     },
   });
 
-  loadAllConfig(mainWindow, WINDOWS.ENTRIES[Object.keys({ mainWindow })[0]]);
+  loadAllConfig(mainWindow, entries.mainWindow);
 }
 
 function createSetupWindow() {
@@ -71,19 +167,18 @@ function createSetupWindow() {
     },
   });
 
-  loadAllConfig(setupWindow, WINDOWS.ENTRIES[Object.keys({ setupWindow })[0]]);
+  loadAllConfig(setupWindow, entries.setupWindow);
 
-  const store = new Store();
-  const yamlPath = path.join(__dirname, "../setup/setup.yml");
-  const yamlRoot = yaml.load(fs.readFileSync(yamlPath, "utf-8"));
-  const yamlToJson = JSON.parse(JSON.stringify(yamlRoot));
+  const jsonContent = fs.readFileSync(
+    path.join(DATA_PATH, "sequences.json"),
+    "utf-8",
+  );
 
   setupWindow.webContents.on("did-finish-load", () => {
-    const isFirstTimeOpened = store.get<boolean>("isFirstTimeOpened");
-    if (isFirstTimeOpened === false) {
-      setTimeout(() => {
-        setupWindow?.webContents.send("load-sequences", yamlToJson);
-      }, 100);
+    const [isFirstTimeOpened] = store.get("isFirstTimeOpened");
+
+    if (!isFirstTimeOpened) {
+      GlobalVariable.setVariable({ setupSequence: JSON.parse(jsonContent) });
     }
   });
 
@@ -94,12 +189,10 @@ function createSetupWindow() {
 app
   .whenReady()
   .then(() => {
-    return fs.stat(APP.FILESYSTEM_PATH, (err, stat) => {
+    return fs.stat(fileSystemPath, (err, stat) => {
       // check whether filesystem dir exists or is empty
       if (err?.code === "ENOENT" || stat.size === 0) {
         createSetupWindow();
-        // On macOS it's common to re-create a window in the app when the
-        // dock icon is clicked and there are no other windows open.
         app.on("activate", () => {
           if (setupWindow === null) createSetupWindow();
         });
@@ -111,6 +204,6 @@ app
       }
     });
   })
-  .catch((e) => {
-    Log.error("An error has been occurred while starting the simulator!", e);
+  .catch(() => {
+    Log.error("An error has been occurred while starting the simulator!");
   });

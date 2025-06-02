@@ -1,8 +1,8 @@
-import useDialog from "../hooks/useDialog";
+import useDialog from "@r/hooks/useDialog";
 
 interface DialogProviderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
+export default function DialogProvider({ children }:DialogProviderProps) {
   const { dialogs, removeDialog } = useDialog();
   return (
     <>
@@ -19,11 +19,15 @@ const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
                 </button>
               ) : (
                 i.buttons.map((j) => (
-                  <button onClick={() => {
-                    // @ts-expect-error
-                    j.action();
-                    removeDialog(i.id);
-                  }}>{j.label}</button>
+                  <button
+                    onClick={() => {
+                      // @ts-expect-error
+                      j.action();
+                      removeDialog(i.id);
+                    }}
+                  >
+                    {j.label}
+                  </button>
                 ))
               )}
             </div>
@@ -34,6 +38,4 @@ const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
       {children}
     </>
   );
-}
-
-export default DialogProvider;
+};

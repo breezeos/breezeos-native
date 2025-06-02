@@ -1,50 +1,45 @@
 import { useEffect, useState } from "react";
-import SequenceView from "../../../components/SequenceView";
-import { GlobeRegular } from "@fluentui/react-icons";
-import useLanguage from "../../../hooks/useLanguage";
-import { Languages } from "../../../../types";
-import { supportedLanguages } from "../../../components/global";
-import { RadioCards, RadioCardsGroup } from "../../../components/ui/RadioCard";
+import SequenceView from "@r/components/SequenceView";
+import useLanguage from "@r/hooks/useLanguage";
+import {
+  RadioCards,
+  RadioCardsGroup,
+} from "@r/components/shadcn-ui/RadioCard";
+
+type LanguageObject = Record<
+  string,
+  {
+    code: string;
+    name: string;
+  }
+>;
 
 export function Language() {
-  const { getFullSystemLanguage } = useLanguage();
-  const [systemLanguage, setSystemLanguage] = useState<Languages[]>([]);
+  const { getLanguageInfo } = useLanguage();
+  const [systemLanguages, setSystemLanguages] = useState<LanguageObject>({});
   const [currentLang, setCurrentLang] = useState<string>();
 
-  const handleLanguages = async () => {
-    const langs: Languages[] = [];
-
-    supportedLanguages.forEach((i) => {
-      getFullSystemLanguage(i).then((j) => langs.push(j));
-    });
-    
-    setSystemLanguage(langs);
-
-    console.log(langs);
-  }
-
   useEffect(() => {
-    handleLanguages();
-  }, []);
+    (async () => {
+      const languages = (await getLanguageInfo()) as LanguageObject;
+      setSystemLanguages(languages);
+    })();
+  }, [getLanguageInfo]);
 
   return (
     <SequenceView
       id="language"
-      icon={GlobeRegular}
-      forwardDisabled={!Boolean(currentLang)}
+      // forwardDisabled={!Boolean(currentLang)}
     >
       <RadioCardsGroup
         defaultValue={currentLang}
         onValueChange={(value) => setCurrentLang(value)}
       >
-        {/* {systemLanguage.map((language) => (
-          <RadioCards className="radio" value={language.name!}>
-            <p>{language.name}</p>
+        {Object.keys(systemLanguages).map((language) => (
+          <RadioCards className="radio" value={systemLanguages[language].name}>
+            <p>{systemLanguages[language].name}</p>
           </RadioCards>
-        ))} */}
-        <RadioCards className="radio" value="erreer">
-            <p>erreer</p>
-          </RadioCards>
+        ))}
       </RadioCardsGroup>
     </SequenceView>
   );

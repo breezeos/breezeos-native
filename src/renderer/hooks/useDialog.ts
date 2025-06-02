@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { DialogType } from "../../types";
+import generateId from "@r/utils/generateId";
+
+type DialogType = "critical" | "exclamation" | "info" | "question";
 
 interface State {
   readonly type?: {
@@ -23,22 +25,16 @@ interface Actions {
   clearDialog: () => void;
 }
 
-const state: State = {
+const dialogState: State = {
   dialogs: [],
 };
 
-function genId() {
-  let count = 0;
-  count = (count + 1) % Number.MAX_SAFE_INTEGER;
-  return count.toString();
-}
-
 const useDialog = create<State & Actions>(
   combine(
-    state,
+    dialogState,
     (set): Actions => ({
       createDialog: (props) => {
-        const id = genId();
+        const id = generateId();
         set((state) => ({ dialogs: [...state.dialogs, { ...props, id }] }));
       },
       updateDialog: (id, props) =>

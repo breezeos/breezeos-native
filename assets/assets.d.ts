@@ -24,12 +24,12 @@ declare module '*.ico' {
   export default content;
 }
 
-declare module '*.mp4' {
+declare module '*.otf' {
   const content: string;
   export default content;
 }
 
-declare module '*.css' {
-  const content: Styles;
+declare module '*.woff2' {
+  const content: string;
   export default content;
 }

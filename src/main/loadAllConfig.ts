@@ -1,6 +1,6 @@
-import { BrowserWindow, shell } from "electron";
-import Log from "../utils/log";
-import { APP } from "../constants";
+import { BrowserWindow } from "electron";
+import Log from "./utils/log";
+import { IS_DEBUG } from "@/constants/common";
 import { renderHTMLForWindow } from "./renderHTMLForWindow";
 import { registerHotkeyForWindow } from "./registerHotkeyForWindow";
 import { registerEventForWindow } from "./registerEventForWindow";
@@ -11,23 +11,29 @@ const installExtensions = async () => {
 
   return installer
     .default(installer["REACT_DEVELOPER_TOOLS"], forceDownload)
-    .catch((e) => {
-      Log.error("An error has been occurred while installing extensions!", e);
+    .catch(() => {
+      Log.error("Install extensions for development failed.");
     });
 };
 
 export async function loadAllConfig(
-  browserWindow: BrowserWindow | null,
+  browserWindow: BrowserWindow,
   entry: string,
 ) {
-  if (APP.IS_DEBUG) await installExtensions();
+  if (IS_DEBUG) await installExtensions();
+
+  // browserWindow.webContents.setWindowOpenHandler((edata) => {
+  //   shell.openExternal(edata.url);
+  //   return { action: "deny" };
+  // });
 
   renderHTMLForWindow(browserWindow, entry);
   registerHotkeyForWindow(browserWindow);
   registerEventForWindow(browserWindow);
 
-  browserWindow?.webContents.setWindowOpenHandler((edata) => {
-    shell.openExternal(edata.url);
-    return { action: "deny" };
+  Log.info(`Creating ${entry} window...`);
+
+  browserWindow.on("ready-to-show", () => {
+    Log.info(`${entry} window created!`);
   });
 }

@@ -1,10 +1,10 @@
 import { BrowserWindow } from "electron";
 import path from "path";
-import Log from "../utils/log";
-import { APP } from "../constants";
+import Log from "./utils/log";
+import { IS_DEBUG } from "@/constants/common";
 
 function resolveHtmlPath(htmlFileName: string) {
-  if (APP.IS_DEBUG) {
+  if (IS_DEBUG) {
     const port = process.env.PORT || 1212;
     const url = new URL(`http://localhost:${port}`);
     url.pathname = htmlFileName;
@@ -14,7 +14,7 @@ function resolveHtmlPath(htmlFileName: string) {
 }
 
 export function renderHTMLForWindow(
-  browserWindow: BrowserWindow | null,
+  browserWindow: BrowserWindow,
   htmlName: string,
 ) {
   if (!htmlName.endsWith("_window")) {
@@ -22,5 +22,5 @@ export function renderHTMLForWindow(
     return;
   }
 
-  browserWindow?.loadURL(resolveHtmlPath(`${htmlName}.html`));
+  browserWindow.loadURL(resolveHtmlPath(`${htmlName}.html`));
 }

@@ -1,0 +1,5 @@
+setup.sequence.network.title: Select your network
+setup.sequence.network.description: BreezeOS needs the connected network to download the latest updates and to provide you with the best experience.
+setup.sequence.network.icon: WiFi1Regular
+#################################################################
+setup.sequence.network.connect_hidden: Connect to Hidden Network...

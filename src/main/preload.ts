@@ -1,9 +1,7 @@
-import { ipcRenderer } from 'electron';
+import { nativeImage } from "electron";
 
-const electronHandler = {
-  ipcRenderer,
+export const electronApiHandler = {
+  nativeImage,
 };
 
-window.electron = electronHandler;
-
-export type ElectronHandler = typeof electronHandler;
+window.electronApi = electronApiHandler;
