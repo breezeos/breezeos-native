@@ -7,9 +7,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function generateId() {
-  let count = 0;
-  count = (count + 1) % Number.MAX_SAFE_INTEGER;
-  return count.toString();
+  const arr = new Uint32Array(1);
+  window.crypto.getRandomValues(arr);
+  return arr[0] % 10;
 }
 
 export function getAssetsPath(...paths: string[]) {
