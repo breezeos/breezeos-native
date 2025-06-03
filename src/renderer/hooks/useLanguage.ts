@@ -2,11 +2,11 @@ import { ipcRenderer } from "electron-better-ipc";
 import useDialog from "./useDialog";
 import useGlobalVariable from "./useGlobalVariable";
 import { IPC_NAMES, IPC_TYPES } from "@/constants/ipcNames";
+import { SUPPORTED_LANGUAGES } from "@/constants/common";
 
 export default function useLanguage() {
   const { createDialog } = useDialog();
   const { getVariable } = useGlobalVariable();
-  const supportedLanguages = ["en", "vi", "zh-CN"];
 
   async function getLanguageInfo(language?: string) {
     const data = await ipcRenderer.callMain(IPC_NAMES.HANDLE_LANGUAGE, [
@@ -17,9 +17,9 @@ export default function useLanguage() {
   }
 
   function changeLanguage(id: string) {
-    const name = supportedLanguages.find((lang) => lang === id);
+    const name = SUPPORTED_LANGUAGES.find((lang) => lang === id);
 
-    if (!supportedLanguages.includes(id)) {
+    if (!SUPPORTED_LANGUAGES.includes(id)) {
       createDialog({
         type: "warning",
         message: "This language does not exist!",
@@ -47,13 +47,16 @@ export default function useLanguage() {
   }
 
   async function getLanguageKey(key: string) {
-    const languageData = await getVariable("languageData");
+    const languageData = (await getVariable("languageData")) as Record<
+      string,
+      unknown
+    >;
 
     if (typeof languageData !== "object" || languageData === null) {
       return "Language data is not available!";
     }
 
-    const data = (languageData as Record<string, unknown>)[key];
+    const data = languageData[key];
     if (!data) return "This key does not exist!";
 
     if (Array.isArray(data) || typeof data !== "string")

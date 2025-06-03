@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import * as FluentIcons from "@fluentui/react-icons";
 import * as FluentIconsType from "@r/lib/fluentIcons";
 import { ScrollArea } from "./shadcn-ui/ScrollArea";
-import cn from "@r/utils/cn";
+import {cn} from "@r/lib/utils";
 import useSetupSequence from "@r/hooks/useSetupSequence";
 import useSequence from "@r/hooks/useSequence";
 import useDialog from "@r/hooks/useDialog";

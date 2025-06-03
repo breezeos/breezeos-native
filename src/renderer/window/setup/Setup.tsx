@@ -20,7 +20,7 @@ import useStore from "@r/hooks/useStore";
 import useLanguage from "@r/hooks/useLanguage";
 import BetterParagraph from "@r/components/BetterParagraph";
 import useGlobalVariable from "@r/hooks/useGlobalVariable";
-import getAssetsPath from "@r/utils/getAssetsPath";
+import { getAssetsPath } from "@r/lib/utils";
 
 const easingGraph = cubicBezier(0.17, 0.67, 0.53, 0.99);
 
@@ -47,14 +47,9 @@ function Welcome() {
       for (let i = 0; i < welcomeTextSplited.length; i++) {
         if (welcomeTextSplited[i].indexOf("**") === 0) {
           setDivChildrens({
-            ...divChildrens,
             firstDivChildren: welcomeTextSplited.slice(0, i),
-          });
-          setDivChildrens({
-            ...divChildrens,
             secondDivChildren: welcomeTextSplited.slice(i),
           });
-          return;
         }
       }
     })();
@@ -214,33 +209,25 @@ function Welcome() {
 }
 
 export default function App() {
-  const backgroundWidth = useMotionValue(832);
   const { currentSequence, setCurrentSequence } = useSetupSequence();
   const { getStoreKey } = useStore();
   const { getVariable } = useGlobalVariable();
   const [sequence, setSequence] = useState<Record<string, any>>({});
   const [isFirstTimeOpened, setIsFirstTimeOpened] = useState<boolean>(true);
+  const currentSequenceName = currentSequence.sequence;
+  const currentSequenceIndex = currentSequence.sequenceIndex;
+  const backgroundWidth = useMotionValue(832);
   const wallpaperPath = getAssetsPath("images/wallpaper.jpg");
-  const wallpaperUrl = nativeImage.createFromPath(wallpaperPath);
-
-  // useEffect(() => {
-  //   if (!isFirstTimeOpened) {
-  //     backgroundWidth.set(350);
-  //   }
-  // }, [isFirstTimeOpened, backgroundWidth]);
+  const wallpaperUrl = nativeImage.createFromPath(wallpaperPath).toDataURL();
 
   useEffect(() => {
     (async () => {
-      const value = (await getStoreKey(
-        "isFirstTimeOpened",
-      )) as typeof isFirstTimeOpened;
-
-      setIsFirstTimeOpened(value);
-
+      const value = (await getStoreKey("isFirstTimeOpened")) as boolean;
       const setupSequenceValue = (await getVariable(
         "setupSequence",
       )) as typeof sequence;
 
+      setIsFirstTimeOpened(value);
       setSequence(setupSequenceValue);
       setCurrentSequence(Object.keys(sequence)[0]);
     })();
@@ -261,8 +248,6 @@ export default function App() {
           ) : (
             Object.keys(sequence[currentSequence.sequence]).map((step) => {
               const Sequence = step;
-              const currentSequenceName = currentSequence.sequence;
-              const currentSequenceIndex = currentSequence.sequenceIndex;
               return (
                 sequence[currentSequenceName][currentSequenceIndex] && (
                   <Sequence key={Math.random()} />
