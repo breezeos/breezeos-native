@@ -62,7 +62,9 @@ const configuration: webpack.Configuration = {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
     modules: [webpackPaths.srcPath, 'node_modules'],
     // There is no need to add aliases here, the paths in tsconfig get mirrored
-    plugins: [new TsconfigPathsPlugin()],
+    plugins: [new TsconfigPathsPlugin({
+      extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+    })],
     fallback: {
       "osx-temperature-sensor": process.platform !== "darwin" && false
     }
