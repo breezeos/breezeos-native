@@ -3,7 +3,7 @@ import path from "path";
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export function generateId() {
@@ -13,6 +13,7 @@ export function generateId() {
 }
 
 export function getAssetsPath(...paths: string[]) {
-  const RESOURCES_PATH = path.join(__dirname, "../assets");
+  const RESOURCES_PATH = path.join(__dirname, "assets");
+  console.log(path.join(RESOURCES_PATH, ...paths))
   return path.join(RESOURCES_PATH, ...paths);
 }

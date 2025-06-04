@@ -6,7 +6,7 @@ type DialogType = "critical" | "exclamation" | "info" | "question";
 
 interface State {
   readonly type?: {
-    id: string;
+    id: number;
     message?: string;
     type?: DialogType;
     important?: boolean;
@@ -20,8 +20,8 @@ interface State {
 
 interface Actions {
   createDialog: (props: Omit<State["type"], "id">) => void;
-  updateDialog: (id: string, props: State["type"]) => void;
-  removeDialog: (id: string) => void;
+  updateDialog: (id: number, props: State["type"]) => void;
+  removeDialog: (id: number) => void;
   clearDialog: () => void;
 }
 

@@ -10,7 +10,7 @@ import {
 // import { animate } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ArrowRight20Filled } from "@fluentui/react-icons";
-import { nativeImage } from "electron";
+import WallpaperUrl from "@r/assets/images/wallpaper.jpg";
 import useSetupSequence from "@r/hooks/useSetupSequence";
 import useStore from "@r/hooks/useStore";
 // import {
@@ -20,12 +20,12 @@ import useStore from "@r/hooks/useStore";
 import useLanguage from "@r/hooks/useLanguage";
 import BetterParagraph from "@r/components/BetterParagraph";
 import useGlobalVariable from "@r/hooks/useGlobalVariable";
-import { getAssetsPath } from "@r/lib/utils";
+import { GlobalVariableType } from "@/common/types";
 
 const easingGraph = cubicBezier(0.17, 0.67, 0.53, 0.99);
 
 function Welcome() {
-  const { setStoreKey } = useStore();
+  const { setStoreItems } = useStore();
   const { getLanguageKey } = useLanguage();
   const [scope, animate] = useAnimate();
   const [isPresent, safeToRemove] = usePresence();
@@ -39,24 +39,23 @@ function Welcome() {
   });
 
   useEffect(() => {
-    (async () => {
-      const WELCOME_TEXT = "setup.welcome_text";
+    const WELCOME_TEXT = "setup.welcome_text";
 
-      const welcomeText = await getLanguageKey(WELCOME_TEXT);
-      const welcomeTextSplited = welcomeText.split(" ");
-      for (let i = 0; i < welcomeTextSplited.length; i++) {
-        if (welcomeTextSplited[i].indexOf("**") === 0) {
-          setDivChildrens({
-            firstDivChildren: welcomeTextSplited.slice(0, i),
-            secondDivChildren: welcomeTextSplited.slice(i),
-          });
-        }
+    const welcomeText = getLanguageKey(WELCOME_TEXT);
+    const welcomeTextSplited = welcomeText.split(" ");
+    for (let i = 0; i < welcomeTextSplited.length; i++) {
+      if (welcomeTextSplited[i].indexOf("**") === 0) {
+        const childrens = {
+          firstDivChildren: welcomeTextSplited.slice(0, i),
+          secondDivChildren: welcomeTextSplited.slice(i),
+        };
+        setDivChildrens(childrens);
       }
-    })();
-  }, [getLanguageKey, divChildrens]);
+    }
+  }, []);
 
   function startSetup() {
-    setStoreKey({ isFirstTimeOpened: false });
+    setStoreItems({ isFirstTimeOpened: false });
   }
 
   function handleWelcomeNextAction() {
@@ -210,35 +209,27 @@ function Welcome() {
 
 export default function App() {
   const { currentSequence, setCurrentSequence } = useSetupSequence();
-  const { getStoreKey } = useStore();
+  const { getStoreItem } = useStore();
   const { getVariable } = useGlobalVariable();
-  const [sequence, setSequence] = useState<Record<string, any>>({});
-  const [isFirstTimeOpened, setIsFirstTimeOpened] = useState<boolean>(true);
+  const sequence =
+    getVariable<GlobalVariableType["setupSequence"]>("setupSequence");
+  const isFirstTimeOpened = getStoreItem<boolean>("isFirstTimeOpened");
   const currentSequenceName = currentSequence.sequence;
   const currentSequenceIndex = currentSequence.sequenceIndex;
   const backgroundWidth = useMotionValue(832);
-  const wallpaperPath = getAssetsPath("images/wallpaper.jpg");
-  const wallpaperUrl = nativeImage.createFromPath(wallpaperPath).toDataURL();
 
-  useEffect(() => {
-    (async () => {
-      const value = (await getStoreKey("isFirstTimeOpened")) as boolean;
-      const setupSequenceValue = (await getVariable(
-        "setupSequence",
-      )) as typeof sequence;
-
-      setIsFirstTimeOpened(value);
-      setSequence(setupSequenceValue);
-      setCurrentSequence(Object.keys(sequence)[0]);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     setCurrentSequence(Object.keys(sequence)[0]);
+  //   })();
+  // }, []);
 
   return (
-    <div className="bg-orange-50">
+    <div className="absolute h-full w-full bg-orange-50">
       <motion.div
-        className="grid h-full items-center rounded-lg"
+        className="grid h-full items-center rounded-lg bg-cover bg-center"
         style={{
-          backgroundImage: `url(${wallpaperUrl})`,
+          backgroundImage: `url(${WallpaperUrl})`,
           width: backgroundWidth,
         }}
       >
@@ -246,14 +237,18 @@ export default function App() {
           {isFirstTimeOpened ? (
             <Welcome />
           ) : (
-            Object.keys(sequence[currentSequence.sequence]).map((step) => {
-              const Sequence = step;
-              return (
-                sequence[currentSequenceName][currentSequenceIndex] && (
-                  <Sequence key={Math.random()} />
-                )
-              );
-            })
+            sequence &&
+            Object.keys(sequence[currentSequence.sequence] || {}).map(
+              (step) => {
+                const Sequence = step;
+                return (
+                  sequence[currentSequenceName] &&
+                  sequence[currentSequenceName][currentSequenceIndex] && (
+                    <Sequence key={Math.random()} />
+                  )
+                );
+              },
+            )
           )}
         </AnimatePresence>
       </motion.div>

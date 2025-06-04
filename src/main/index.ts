@@ -7,32 +7,42 @@ import fs from "fs";
 import debug from "electron-debug";
 import sourceMapSupport from "source-map-support";
 import { ipcMain } from "electron-better-ipc";
+import {
+  installExtension,
+  REACT_DEVELOPER_TOOLS,
+} from "electron-extension-installer";
 import { store } from "./storeManager";
-import { IS_DEBUG } from "@/constants/common";
-import Log from "./utils/log";
+import { IS_DEBUG } from "@/common/constants";
+import { Log, loadLanguageFiles } from "./lib/utils";
 import { loadAllConfig } from "./loadAllConfig";
 import GlobalVariable from "./globalVariable";
-import loadLanguageFiles from "./utils/loadLanguageFiles";
 import LanguageManager from "./languageManager";
-import { IPC_NAMES, IPC_TYPES } from "@/constants/ipcNames";
-import { DATA_PATH } from "@/constants/paths";
+import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipcNames";
+import entries from "@/data/entries.json";
+import sequences from "@/data/sequences.json";
+import { StoreConfigKey } from "../common/types";
 
 type WindowType = BrowserWindow | null;
 
 let mainWindow: WindowType;
 let setupWindow: WindowType;
 
-const entries = JSON.parse(
-  fs.readFileSync(path.join(DATA_PATH, "entries.json"), "utf-8"),
-) as Record<string, string>;
-
-const preloadPath = app.isPackaged
-  ? path.join(__dirname, "preload.js")
-  : path.join(__dirname, "../../.erb/dll/preload.js");
+const preloadPath = path.join(__dirname, "preload.js");
 
 const fileSystemPath = path.join(app.getPath("userData"), "filesystem");
 
-if (IS_DEBUG) debug();
+async function installExtensions() {
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+
+  if (IS_DEBUG) {
+    debug();
+    await installExtension(REACT_DEVELOPER_TOOLS, {
+      forceDownload,
+    });
+  }
+}
+
+installExtensions();
 
 if (process.env.NODE_ENV === "production") {
   sourceMapSupport.install();
@@ -69,30 +79,28 @@ ipcMain.answerRenderer(IPC_NAMES.HANDLE_STORE, (args: unknown[]) => {
   const [type, param] = args;
 
   switch (type) {
-    case IPC_TYPES.HANDLE_STORE.SET_KEY:
+    case IPC_TYPES.HANDLE_STORE.GET_ALL_ITEMS:
+      return store.getAllItems();
+    case IPC_TYPES.HANDLE_STORE.SET_ITEMS:
       Object.entries(param as Record<string, unknown>).forEach(
         ([key, value]) => {
-          store.set({
+          store.setItems({
             [key]: value,
           });
         },
       );
       break;
-    case IPC_TYPES.HANDLE_STORE.GET_KEY:
-      return store.get(...(param as string[]));
-    case IPC_TYPES.HANDLE_STORE.CLEAR_ALL:
-      store.clearAll();
+    case IPC_TYPES.HANDLE_STORE.RESET_ALL_ITEMS:
+      store.resetAllItems();
       break;
-    case IPC_TYPES.HANDLE_STORE.DELETE_KEY:
-      store.delete(...(param as string[]));
+    case IPC_TYPES.HANDLE_STORE.DELETE_ITEMS:
+      store.deleteItems(...(param as StoreConfigKey[]));
       break;
-    case IPC_TYPES.HANDLE_STORE.RESET_KEY:
-      store.reset(...(param as string[]));
+    case IPC_TYPES.HANDLE_STORE.RESET_ITEMS:
+      store.resetItems(...(param as StoreConfigKey[]));
       break;
-    case IPC_TYPES.HANDLE_STORE.HAS_KEY:
-      return store.has(param as string);
     default:
-      return;
+      break;
   }
 });
 
@@ -106,26 +114,26 @@ ipcMain.answerRenderer(IPC_NAMES.HANDLE_LANGUAGE, (args: string[]) => {
       LanguageManager.changeCurrentLanguage(value);
       break;
     default:
-      return;
+      break;
   }
 });
 
 ipcMain.answerRenderer(IPC_NAMES.HANDLE_GLOBAL_VARIABLE, (args: unknown[]) => {
   const [type, param] = args;
   switch (type) {
-    case IPC_TYPES.HANDLE_GLOBAL_VARIABLE.SET_KEY:
+    case IPC_TYPES.HANDLE_GLOBAL_VARIABLE.GET_ALL_VARIABLES:
+      return GlobalVariable.getAllVariables();
+    case IPC_TYPES.HANDLE_GLOBAL_VARIABLE.SET_VARIABLES:
       Object.entries(param as Record<string, unknown>).forEach(
         ([key, value]) => {
-          GlobalVariable.setVariable({
+          GlobalVariable.setVariables({
             [key]: value,
           });
         },
       );
       break;
-    case IPC_TYPES.HANDLE_GLOBAL_VARIABLE.GET_KEY:
-      return GlobalVariable.getVariable(...(param as string[]));
     default:
-      return;
+      break;
   }
 });
 
@@ -169,16 +177,11 @@ function createSetupWindow() {
 
   loadAllConfig(setupWindow, entries.setupWindow);
 
-  const jsonContent = fs.readFileSync(
-    path.join(DATA_PATH, "sequences.json"),
-    "utf-8",
-  );
-
   setupWindow.webContents.on("did-finish-load", () => {
-    const [isFirstTimeOpened] = store.get("isFirstTimeOpened");
+    const isFirstTimeOpened = store.getItem<boolean>("isFirstTimeOpened");
 
     if (!isFirstTimeOpened) {
-      GlobalVariable.setVariable({ setupSequence: JSON.parse(jsonContent) });
+      GlobalVariable.setVariables({ setupSequence: sequences });
     }
   });
 

@@ -6,13 +6,13 @@ import chalk from "chalk";
 import { merge } from "webpack-merge";
 import { execSync, spawn } from "child_process";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
-import baseConfig from "./webpack.config.base";
-import webpackPaths from "./webpack.paths";
-import checkNodeEnv from "../scripts/check-node-env";
 import tailwindcss from "@tailwindcss/postcss";
 import autoprefixer from "autoprefixer";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-// import { initializeEntry, initializeWebpackPlugin } from "./webpack.functions";
+import baseConfig from "./webpack.config.base";
+import webpackPaths from "./webpack.paths";
+import checkNodeEnv from "../scripts/check-node-env";
+import entries from "../../src/data/entries.json";
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment
@@ -35,15 +35,11 @@ if (
 ) {
   console.log(
     chalk.black.bgYellow.bold(
-      'The DLL files are missing. Sit back while we build them for you with "npm run build-dll"',
+      'The DLL files are missing. Sit back while we build them for you with "npm run build:dll"',
     ),
   );
   execSync("npm run postinstall");
 }
-
-const entries = JSON.parse(
-  fs.readFileSync(path.join(webpackPaths.srcPath, "data/entries.json"), "utf-8"),
-) as Record<string, string>;
 
 const initializeEntry = () => {
   return Object.keys(entries).reduce(
@@ -57,7 +53,7 @@ const initializeEntry = () => {
       );
       return entryObject;
     },
-    {} as Record<string, string>,
+    {} as typeof entries,
   );
 };
 
@@ -66,11 +62,7 @@ const initializeWebpackPlugin = () => {
     (entry) =>
       new HtmlWebpackPlugin({
         filename: `${entry}.html`,
-        template: path.join(
-          webpackPaths.srcRendererPath,
-          "templates",
-          `${entry}.ejs`,
-        ),
+        template: path.join(webpackPaths.srcTemplatesPath, `${entry}.ejs`),
         minify: {
           collapseWhitespace: true,
           removeAttributeQuotes: true,
@@ -223,8 +215,9 @@ const configuration: webpack.Configuration = {
         shell: true,
         stdio: "inherit",
       })
-        .on("close", (code: number) => process.exit(code!))
-        .on("error", (spawnError) => console.error(spawnError));
+
+      preloadProcess.on("close", (code: number) => process.exit(code))
+      preloadProcess.on("error", (spawnError) => console.error(spawnError));
 
       console.log("Starting Main Process...");
       let args = ["run", "start:main"];

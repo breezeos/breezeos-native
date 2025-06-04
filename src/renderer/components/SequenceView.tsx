@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import * as FluentIcons from "@fluentui/react-icons";
 import * as FluentIconsType from "@r/lib/fluentIcons";
 import { ScrollArea } from "./shadcn-ui/ScrollArea";
-import {cn} from "@r/lib/utils";
+import { cn } from "@r/lib/utils";
 import useSetupSequence from "@r/hooks/useSetupSequence";
 import useSequence from "@r/hooks/useSequence";
 import useDialog from "@r/hooks/useDialog";
 import useGlobalVariable from "@r/hooks/useGlobalVariable";
 import useLanguage from "@r/hooks/useLanguage";
+import { GlobalVariableType } from "@/common/types";
 
 type FluentIconName = keyof typeof FluentIconsType;
 
@@ -34,14 +35,11 @@ export default function SequenceView({
   const { getLanguageKey } = useLanguage();
   const { createDialog } = useDialog();
   const { getVariable } = useGlobalVariable();
-  const [data, setData] = useState<{
-    title: string;
-    description?: string;
-    icon: FluentIconName;
-  }>({
-    title: "",
-    icon: "GlobeRegular",
-  });
+  const data = {
+    title: getCurrentSequenceKey("title"),
+    description: getCurrentSequenceKey("description"),
+    icon: getCurrentSequenceKey("icon") as FluentIconName,
+  };
 
   const variants = {
     hidden: {
@@ -58,31 +56,25 @@ export default function SequenceView({
   const currentSequenceName = currentSequence.sequence;
   const currentSequenceIndex = currentSequence.sequenceIndex;
 
-  async function getCurrentSequenceKey(key: string) {
-    const sequences = (await getVariable("setupSequence")) as Record<
-      string,
-      any
-    >;
+  function getCurrentSequenceKey(key: string) {
+    const sequences =
+      getVariable<GlobalVariableType["setupSequence"]>("setupSequence");
+
+    if (!sequences) return;
+
     const sequence = sequences[currentSequenceName][currentSequenceIndex];
-    const keySeparator = ".";
     const sequenceHandler = sequence.handler as string;
-    const sequenceDataKey = Array.of(sequenceHandler, key).join(keySeparator);
-    const sequenceData = await getLanguageKey(sequenceDataKey);
+    const sequenceDataKey = Array.of(sequenceHandler, key).join(".");
+    const sequenceData = getLanguageKey(sequenceDataKey);
     return sequenceData;
   }
 
-  async function syncData() {
-    const title = await getCurrentSequenceKey("title");
-    const description = await getCurrentSequenceKey("description");
-    const icon = (await getCurrentSequenceKey("icon")) as FluentIconName;
-    setData({ title, description, icon });
-  }
+  function handleForward() {
+    const sequences =
+      getVariable<GlobalVariableType["setupSequence"]>("setupSequence");
 
-  async function handleForward() {
-    const sequences = (await getVariable("setupSequence")) as Record<
-      string,
-      any
-    >;
+    if (!sequences) return;
+
     const sequence = sequences[currentSequenceName];
     const sequencesKey = Object.keys(sequences);
 
@@ -101,10 +93,6 @@ export default function SequenceView({
 
     nextSequence();
   }
-
-  useEffect(() => {
-    syncData();
-  }, []);
 
   return (
     <div className="absolute grid h-full w-full grid-cols-[350px_auto]">

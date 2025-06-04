@@ -1,8 +1,4 @@
-type GlobalVariableType = {
-  setupSequence: Record<string, any>;
-  languageData: Record<string, any>;
-  [key: string]: unknown;
-};
+import { GlobalVariableType } from "../common/types";
 
 const globalVariable = {
   setupSequence: {},
@@ -12,13 +8,19 @@ const globalVariable = {
 export default class GlobalVariable {
   static #globalVariable: GlobalVariableType = globalVariable;
 
-  static setVariable(params: Record<string, unknown>) {
+  static setVariables(params: Record<string, unknown>) {
     Object.entries(params).forEach(([key, value]) => {
-      this.#globalVariable[key] = value;
+      const variableKey = key as keyof GlobalVariableType;
+      this.#globalVariable[variableKey] =
+        value as GlobalVariableType[typeof variableKey];
     });
   }
 
-  static getVariable(...keys: string[]) {
-    return keys.map((key) => this.#globalVariable[key]);
+  static getAllVariables() {
+    return this.#globalVariable;
+  }
+
+  static getVariable<T = unknown>(key: keyof GlobalVariableType) {
+    return this.#globalVariable[key] as T;
   }
 }

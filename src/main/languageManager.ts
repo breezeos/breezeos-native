@@ -1,8 +1,8 @@
 import ISO3691 from "iso-639-1";
 import { store } from "./storeManager";
 import { app } from "electron";
-import loadLanguageFiles from "./utils/loadLanguageFiles";
-import { SUPPORTED_LANGUAGES } from "@/constants/common";
+import { loadLanguageFiles } from "./lib/utils";
+import { SUPPORTED_LANGUAGES } from "@/common/constants";
 
 type LanguageObject = Record<
   string,
@@ -14,12 +14,12 @@ type LanguageObject = Record<
 
 export default class LanguageManager {
   static getCurrentLanguage() {
-    const [currentLanguage] = store.get("lang");
-    return currentLanguage as string;
+    const currentLanguage = store.getItem<string>("lang");
+    return currentLanguage;
   }
 
   static changeCurrentLanguage(language: string) {
-    store.set({ lang: language });
+    store.setItems({ lang: language });
     app.relaunch();
     loadLanguageFiles();
     app.exit();

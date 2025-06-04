@@ -1,7 +1,8 @@
 import { BrowserWindow } from "electron";
 import path from "path";
-import Log from "./utils/log";
-import { IS_DEBUG } from "@/constants/common";
+import { Log } from "./lib/utils";
+import { IS_DEBUG } from "@/common/constants";
+import { SRC_PATH } from "./lib/paths";
 
 function resolveHtmlPath(htmlFileName: string) {
   if (IS_DEBUG) {
@@ -10,7 +11,7 @@ function resolveHtmlPath(htmlFileName: string) {
     url.pathname = htmlFileName;
     return url.href;
   }
-  return `file://${path.resolve(__dirname, "../renderer/", htmlFileName)}`;
+  return `file://${path.resolve(SRC_PATH, "renderer", htmlFileName)}`;
 }
 
 export function renderHTMLForWindow(

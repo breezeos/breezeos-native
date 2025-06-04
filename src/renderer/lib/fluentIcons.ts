@@ -3,7 +3,6 @@ export * from '@fluentui/react-icons/lib/icons/chunk-1';
 export * from '@fluentui/react-icons/lib/icons/chunk-2';
 export * from '@fluentui/react-icons/lib/icons/chunk-3';
 export * from '@fluentui/react-icons/lib/icons/chunk-4';
-export * from '@fluentui/react-icons/lib/icons/chunk-5';
 export * from '@fluentui/react-icons/lib/sizedIcons/chunk-0';
 export * from '@fluentui/react-icons/lib/sizedIcons/chunk-1';
 export * from '@fluentui/react-icons/lib/sizedIcons/chunk-2';

@@ -4,7 +4,7 @@
     "paths": {
       "@/*": ["*"],
       "@m/*": ["main/*"],
-      "@r/*": ["renderer/*"],
+      "@r/*": ["renderer/*"]
     },
     "incremental": true,
     "target": "es2022",
@@ -23,5 +23,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"],
+  "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"]
 }

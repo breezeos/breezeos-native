@@ -3,7 +3,6 @@
 @import "./ginto.css" layer(utilities);
 @import "./ginto-nord.css" layer(utilities);
 @import "./theme.css" layer(components);
-@import "./component.css" layer(components);
 
 @theme {
   --scale-80: 0.8;
@@ -39,7 +38,7 @@
     width: 0;
     background-color: transparent;
   }
-  
+
   [contenteditable],
   input {
     background: transparent;
@@ -64,7 +63,7 @@
     text-decoration: none;
     color: inherit;
   }
-  
+
   img {
     -webkit-user-drag: none;
     user-select: none;
@@ -72,7 +71,7 @@
     -webkit-user-select: none;
     -ms-user-select: none;
   }
-  
+
   button {
     display: block;
   }

@@ -1,8 +1,9 @@
 import { ipcRenderer } from "electron-better-ipc";
 import useDialog from "./useDialog";
 import useGlobalVariable from "./useGlobalVariable";
-import { IPC_NAMES, IPC_TYPES } from "@/constants/ipcNames";
-import { SUPPORTED_LANGUAGES } from "@/constants/common";
+import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipcNames";
+import { SUPPORTED_LANGUAGES } from "@/common/constants";
+import { GlobalVariableType } from "@/common/types";
 
 export default function useLanguage() {
   const { createDialog } = useDialog();
@@ -46,11 +47,8 @@ export default function useLanguage() {
     });
   }
 
-  async function getLanguageKey(key: string) {
-    const languageData = (await getVariable("languageData")) as Record<
-      string,
-      unknown
-    >;
+  function getLanguageKey(key: string) {
+    const languageData = getVariable<GlobalVariableType["languageData"]>("languageData");
 
     if (typeof languageData !== "object" || languageData === null) {
       return "Language data is not available!";

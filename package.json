@@ -1,20 +1,5 @@
 {
   "name": "breezeos-native",
-  "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
-  ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
-  "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/breezeos/breezeos-native.git"
@@ -32,27 +17,29 @@
       "url": "https://github.com/cyplucastero"
     }
   ],
-  "main": "./src/main/index.ts",
+  "main": "./.erb/dll/main.bundle.dev.js",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
-    "build:dll": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
-    "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true BREEZEOS_MIRROR=https://raw.githubusercontent.com/breezeos/mirror/main  webpack --config ./.erb/configs/webpack.config.main.prod.ts",
-    "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true BREEZEOS_MIRROR=https://raw.githubusercontent.com/breezeos/mirror/main  webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
+    "build:dll": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true NODE_OPTIONS=\"-r ts-node/register --no-warnings\" webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
+    "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true NODE_OPTIONS=\"-r ts-node/register --no-warnings\" webpack --config ./.erb/configs/webpack.config.main.prod.ts",
+    "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true NODE_OPTIONS=\"-r ts-node/register --no-warnings\" webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
     "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && npm run build:dll",
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
-    "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never && npm run build:dll",
-    "package:win32": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --win --ia32 --publish never && npm run build:dll",
-    "package:win64": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --win --x64 --publish never && npm run build:dll",
+    "lint:fix": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --win --x64 --publish never && npm run build:dll",
     "package:mac": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --mac --publish never && npm run build:dll",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
+    "prestart": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true NODE_OPTIONS=\"-r ts-node/register --no-warnings\" webpack --config ./.erb/configs/webpack.config.main.dev.ts",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
-    "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
-    "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
-    "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
+    "start:main": "concurrently -k -P \"cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --watch --config ./.erb/configs/webpack.config.main.dev.ts\" \"electronmon . -- {@}\" --",
+    "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true NODE_OPTIONS=\"-r ts-node/register --no-warnings\" webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
+    "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true NODE_OPTIONS=\"-r ts-node/register --no-warnings\" webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
     "test": "jest",
     "prepare": "husky"
   },
-  "browserslist": [],
+  "browserslist": [
+    "extends browserslist-config-erb"
+  ],
   "jest": {
     "moduleDirectories": [
       "node_modules",
@@ -129,6 +116,7 @@
     "react-hammerjs": "^1.0.1",
     "react-i18next": "^15.0.2",
     "react-icons": "^5.3.0",
+    "react-query": "^3.39.3",
     "react-router": "^6.18.0",
     "react-router-redux": "^4.0.8",
     "react-three": "^0.9.7",
@@ -144,7 +132,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@electron/notarize": "^2.1.0",
+    "@electron/notarize": "^2.3.2",
     "@electron/rebuild": "^3.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@svgr/webpack": "^8.1.0",
@@ -166,7 +154,6 @@
     "@types/redux-logger": "^3.0.11",
     "@types/redux-promise": "^0.5.31",
     "@types/source-map-support": "^0.5.10",
-    "@types/terser-webpack-plugin": "^5.0.4",
     "@types/webpack-bundle-analyzer": "^4.6.0",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^6.7.0",
@@ -179,9 +166,9 @@
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "detect-port": "^1.5.1",
-    "electron": "^26.2.1",
-    "electron-builder": "^24.6.4",
-    "electron-devtools-installer": "^3.2.1",
+    "electron": "^31.3.0",
+    "electron-builder": "^24.13.3",
+    "electron-extension-installer": "^1.2.0",
     "electronmon": "^2.0.2",
     "eslint": "^8.49.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -231,14 +218,15 @@
     "productName": "BreezeOS",
     "appId": "io.breezeos.native",
     "asar": true,
+    "afterSign": ".erb/scripts/notarize.js",
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
       "dist",
       "node_modules",
       "package.json"
     ],
-    "afterSign": ".erb/scripts/notarize.js",
     "mac": {
+      "notarize": false,
       "target": {
         "target": "default",
         "arch": [
@@ -296,18 +284,28 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "BreezeOS Native",
+      "repo": "breezeos-native"
     },
     "extends": null
   },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=14.x",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": ">=7.x",
+      "onFail": "error"
+    }
   },
   "electronmon": {
     "patterns": [
       "!**/**",
-      "src/main/**"
+      "src/main/**",
+      ".erb/dll/**"
     ],
     "logLevel": "quiet"
   }

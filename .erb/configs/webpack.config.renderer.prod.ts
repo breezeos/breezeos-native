@@ -10,20 +10,16 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import { merge } from "webpack-merge";
 import TerserPlugin from "terser-webpack-plugin";
+import tailwindcss from "@tailwindcss/postcss";
+import autoprefixer from "autoprefixer";
 import baseConfig from "./webpack.config.base";
 import webpackPaths from "./webpack.paths";
 import checkNodeEnv from "../scripts/check-node-env";
 import deleteSourceMaps from "../scripts/delete-source-maps";
-import tailwindcss from "@tailwindcss/postcss";
-import autoprefixer from "autoprefixer";
-import fs from "fs";
+import entries from "../../src/data/entries.json";
 
 checkNodeEnv("production");
 deleteSourceMaps();
-
-const entries = JSON.parse(
-  fs.readFileSync(path.join(webpackPaths.srcPath, "data/entries.json"), "utf-8"),
-) as Record<string, string>;
 
 const initializeEntry = () => {
   return Object.keys(entries).reduce(
@@ -37,7 +33,7 @@ const initializeEntry = () => {
       );
       return entryObject;
     },
-    {} as Record<string, string>,
+    {} as typeof entries,
   );
 };
 
@@ -46,11 +42,7 @@ const initializeWebpackPlugin = () => {
     (entry) =>
       new HtmlWebpackPlugin({
         filename: `${entry}.html`,
-        template: path.join(
-          webpackPaths.srcRendererPath,
-          "templates",
-          `${entry}.ejs`,
-        ),
+        template: path.join(webpackPaths.srcTemplatesPath, `${entry}.ejs`),
         minify: {
           collapseWhitespace: true,
           removeAttributeQuotes: true,
