@@ -60,7 +60,7 @@ export default function BetterParagraph({
         );
       }
 
-      elements.push(<b key={Math.random()}>{parseItalicText(match[1])}</b>);
+      elements.push(<b className="font-semibold" key={Math.random()}>{parseItalicText(match[1])}</b>);
 
       lastIndex = match.index + match[0].length;
       match = boldRegex.exec(remainingText);

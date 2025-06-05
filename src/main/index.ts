@@ -13,14 +13,13 @@ import {
 } from "electron-extension-installer";
 import { store } from "./storeManager";
 import { IS_DEBUG } from "@/common/constants";
-import { Log, loadLanguageFiles } from "./lib/utils";
 import { loadAllConfig } from "./loadAllConfig";
 import GlobalVariable from "./globalVariable";
 import LanguageManager from "./languageManager";
-import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipcNames";
+import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
 import entries from "@/data/entries.json";
-import sequences from "@/data/sequences.json";
 import { StoreConfigKey } from "../common/types";
+import { Log, loadLanguageFiles } from "./utils";
 
 type WindowType = BrowserWindow | null;
 
@@ -82,13 +81,8 @@ ipcMain.answerRenderer(IPC_NAMES.HANDLE_STORE, (args: unknown[]) => {
     case IPC_TYPES.HANDLE_STORE.GET_ALL_ITEMS:
       return store.getAllItems();
     case IPC_TYPES.HANDLE_STORE.SET_ITEMS:
-      Object.entries(param as Record<string, unknown>).forEach(
-        ([key, value]) => {
-          store.setItems({
-            [key]: value,
-          });
-        },
-      );
+      const params = param as Record<string, unknown>;
+      store.setItems(params);
       break;
     case IPC_TYPES.HANDLE_STORE.RESET_ALL_ITEMS:
       store.resetAllItems();
@@ -176,14 +170,6 @@ function createSetupWindow() {
   });
 
   loadAllConfig(setupWindow, entries.setupWindow);
-
-  setupWindow.webContents.on("did-finish-load", () => {
-    const isFirstTimeOpened = store.getItem<boolean>("isFirstTimeOpened");
-
-    if (!isFirstTimeOpened) {
-      GlobalVariable.setVariables({ setupSequence: sequences });
-    }
-  });
 
   // const menuBuilder = new MenuBuilder(setupWindow, {});
   // menuBuilder.buildSetupMenu();

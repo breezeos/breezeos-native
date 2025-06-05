@@ -1,0 +1,35 @@
+@font-face {
+  font-family: Ginto;
+  font-weight: 100;
+  src: url(../assets/fonts/main/Ginto-Light.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 200;
+  src: url(../assets/fonts/main/Ginto-Thin.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 400;
+  src: url(../assets/fonts/main/Ginto-Regular.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 500;
+  src: url(../assets/fonts/main/Ginto-Semibold.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 600;
+  src: url(../assets/fonts/main/Ginto-Bold.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 700;
+  src: url(../assets/fonts/main/Ginto-Black.woff2) format("woff2");
+}

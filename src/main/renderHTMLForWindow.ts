@@ -1,8 +1,8 @@
 import { BrowserWindow } from "electron";
 import path from "path";
-import { Log } from "./lib/utils";
+import { Log } from "./utils";
 import { IS_DEBUG } from "@/common/constants";
-import { SRC_PATH } from "./lib/paths";
+import { SRC_PATH } from "./constants/paths";
 
 function resolveHtmlPath(htmlFileName: string) {
   if (IS_DEBUG) {

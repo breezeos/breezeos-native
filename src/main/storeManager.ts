@@ -17,7 +17,7 @@ class Store {
       fs.writeFileSync(storePath, JSON.stringify(defaultConfig, null, 2));
     }
 
-    this.#store = JSON.parse(fs.readFileSync(storePath, "utf-8"));
+    this.#store = JSON.parse(fs.readFileSync(storePath, "utf-8"))
 
     chokidar.watch(storePath).on("change", () => {
       this.#store = JSON.parse(fs.readFileSync(storePath, "utf-8"));
@@ -36,11 +36,13 @@ class Store {
     return this.#store[key] as T;
   }
 
-  setItems(params: Partial<Record<string, unknown>>) {
+  setItems(params: Record<string, unknown>) {
     Object.entries(params).forEach(([key, value]) => {
       const storeKey = key as StoreConfigKey;
       this.#store[storeKey] = value;
+      console.log(`set ${key} to ${value}`)
     });
+    console.log(this.#store)
     this.#updateConfigFile();
   }
 

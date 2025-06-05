@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
 import Desktop from "./Desktop";
-import DialogProvider from "@r/components/DialogProvider";
+import DialogProvider from "@/renderer/layouts/DialogProvider";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);

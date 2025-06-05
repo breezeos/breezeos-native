@@ -20,6 +20,7 @@ module.exports = {
     "promise/catch-or-return": "off",
     "promise/always-return": "off",
     "import/no-relative-packages": "off",
+    "consistent-return": "off",
   },
   parserOptions: {
     ecmaVersion: 2022,
@@ -29,8 +30,8 @@ module.exports = {
     "import/resolver": {
       // See https://github.com/benmosher/eslint-plugin-import/issues/1396#issuecomment-575727774 for line below
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        moduleDirectory: ['node_modules', 'src/'],
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+        moduleDirectory: ["node_modules", "src/"],
       },
       webpack: {
         config: require.resolve("./.erb/configs/webpack.config.eslint.ts"),

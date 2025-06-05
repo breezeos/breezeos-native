@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { Log } from "./lib/utils";
+import { Log } from "./utils";
 import { renderHTMLForWindow } from "./renderHTMLForWindow";
 import { registerHotkeyForWindow } from "./registerHotkeyForWindow";
 import { registerEventForWindow } from "./registerEventForWindow";

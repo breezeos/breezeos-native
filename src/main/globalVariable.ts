@@ -1,7 +1,6 @@
 import { GlobalVariableType } from "../common/types";
 
 const globalVariable = {
-  setupSequence: {},
   languageData: {},
 };
 

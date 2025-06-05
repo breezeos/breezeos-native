@@ -1,5 +1,4 @@
-import { ipcRenderer } from "electron-better-ipc";
-import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipcNames";
+import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
 import { useMutation, useQuery } from "react-query";
 import { StoreConfigKey } from "@/common/types";
 
@@ -11,17 +10,19 @@ export default function useStore() {
   const { data } = useQuery({
     queryKey: ["store-data"],
     queryFn: async () => {
-      return ipcRenderer
+      return await window.electronApi
         .callMain(handleStoreName, [handleStoreType.GET_ALL_ITEMS])
         .then((storeData) => storeData as StoreConfigObjectType);
     },
+    refetchOnWindowFocus: false,
   });
   const { mutate } = useMutation({
     mutationFn: (params: {
       ipcType: keyof typeof handleStoreType;
       value?: unknown;
     }) => {
-      return ipcRenderer.callMain(handleStoreName, [
+      console.log("as");
+      return window.electronApi.callMain(handleStoreName, [
         params.ipcType,
         params.value,
       ]);
@@ -32,7 +33,7 @@ export default function useStore() {
     if (data) return data[key] as T;
   }
 
-  function setStoreItems(params: Partial<Record<string, unknown>>) {
+  function setStoreItems(params: Record<string, unknown>) {
     mutate({
       ipcType: "SET_ITEMS",
       value: params,
@@ -58,7 +59,7 @@ export default function useStore() {
   }
 
   function hasStoreItem(key: string) {
-    if(data) return Object.prototype.hasOwnProperty.call(data, key);
+    if (data) return Object.prototype.hasOwnProperty.call(data, key);
   }
 
   return {

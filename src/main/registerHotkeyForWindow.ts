@@ -1,7 +1,7 @@
 import { BrowserWindow, globalShortcut } from "electron";
 import { ipcMain } from "electron-better-ipc";
 import { IS_DEBUG } from "@/common/constants";
-import { IPC_NAMES } from "@/common/constants/ipcNames";
+import { IPC_NAMES } from "@/common/constants/ipc";
 
 export function registerHotkeyForWindow(browserWindow: BrowserWindow) {
   globalShortcut.register(

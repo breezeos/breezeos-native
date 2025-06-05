@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { generateId } from "@r/lib/utils";
+import generateId from "@r/utils/generateId";
 
 type DialogType = "critical" | "exclamation" | "info" | "question";
 

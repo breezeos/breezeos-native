@@ -1,5 +1,4 @@
-import { ipcRenderer } from "electron-better-ipc";
-import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipcNames";
+import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
 import { useMutation, useQuery } from "react-query";
 import { GlobalVariableType } from "@/common/types";
 
@@ -9,19 +8,20 @@ export default function useGlobalVariable() {
   const { data } = useQuery({
     queryKey: ["global-variable-data"],
     queryFn: async () => {
-      return ipcRenderer
+      return await window.electronApi
         .callMain(handleGlobalVariableName, [
           handleGlobalVariableType.GET_ALL_VARIABLES,
         ])
         .then((storeData) => storeData as GlobalVariableType);
     },
+    refetchOnWindowFocus: false,
   });
   const { mutate } = useMutation({
     mutationFn: (params: {
       ipcType: keyof typeof handleGlobalVariableType;
       value?: unknown;
     }) => {
-      return ipcRenderer.callMain(handleGlobalVariableName, [
+      return window.electronApi.callMain(handleGlobalVariableName, [
         params.ipcType,
         params.value,
       ]);

@@ -1,7 +1,9 @@
-import { nativeImage } from "electron";
+import { ipcRenderer } from "electron-better-ipc";
 
 export const electronApiHandler = {
-  nativeImage,
+  callMain: (channel: string, data?: unknown) => {
+    return ipcRenderer.callMain(channel, data);
+  },
 };
 
 window.electronApi = electronApiHandler;

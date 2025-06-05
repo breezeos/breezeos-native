@@ -1,3 +1,2 @@
-import "./sequences/button.css";
-export * from "./sequences/language";
-export * from "./sequences/network";
+export * from "./sequences/Language";
+export * from "./sequences/Network";

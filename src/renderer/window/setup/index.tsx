@@ -1,8 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
 import App from "./Setup";
-import "@r/assets/styles/index.css";
-import DialogProvider from "@r/components/DialogProvider";
+import "@r/styles/index.css";
+import DialogProvider from "@/renderer/layouts/DialogProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();

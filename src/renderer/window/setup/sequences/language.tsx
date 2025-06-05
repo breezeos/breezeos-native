@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import SequenceView from "@r/components/SequenceView";
+import SequenceView from "@/renderer/layouts/setup/SequenceView";
 import useLanguage from "@r/hooks/useLanguage";
-import {
-  RadioCards,
-  RadioCardsGroup,
-} from "@r/components/shadcn-ui/RadioCard";
+import { RadioCards, RadioCardsGroup } from "@r/components/shadcn-ui/RadioCard";
 
 type LanguageObject = Record<
   string,

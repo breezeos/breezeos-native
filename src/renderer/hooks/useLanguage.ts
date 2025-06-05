@@ -1,7 +1,6 @@
-import { ipcRenderer } from "electron-better-ipc";
 import useDialog from "./useDialog";
 import useGlobalVariable from "./useGlobalVariable";
-import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipcNames";
+import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
 import { SUPPORTED_LANGUAGES } from "@/common/constants";
 import { GlobalVariableType } from "@/common/types";
 
@@ -10,7 +9,7 @@ export default function useLanguage() {
   const { getVariable } = useGlobalVariable();
 
   async function getLanguageInfo(language?: string) {
-    const data = await ipcRenderer.callMain(IPC_NAMES.HANDLE_LANGUAGE, [
+    const data = await window.electronApi.callMain(IPC_NAMES.HANDLE_LANGUAGE, [
       IPC_TYPES.HANDLE_LANGUAGE.GET_LANGUAGE_INFO,
       language,
     ]);
@@ -37,7 +36,7 @@ export default function useLanguage() {
         {
           label: "Yes",
           action: () => {
-            ipcRenderer.callMain(IPC_NAMES.HANDLE_LANGUAGE, [
+            window.electronApi.callMain(IPC_NAMES.HANDLE_LANGUAGE, [
               IPC_TYPES.HANDLE_LANGUAGE.CHANGE_CURRENT_LANGUAGE,
               id,
             ]);
@@ -48,7 +47,8 @@ export default function useLanguage() {
   }
 
   function getLanguageKey(key: string) {
-    const languageData = getVariable<GlobalVariableType["languageData"]>("languageData");
+    const languageData =
+      getVariable<GlobalVariableType["languageData"]>("languageData");
 
     if (typeof languageData !== "object" || languageData === null) {
       return "Language data is not available!";
