@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import cn from "@r/utils/cn";
+import { cn } from "@r/utils";
 
 interface ScrollAreaRoot extends ScrollAreaPrimitive.ScrollAreaProps {
   thumbVisibled?: boolean;
@@ -13,19 +13,24 @@ type ScrollArea = React.ForwardRefExoticComponent<
 const ScrollArea = React.forwardRef<
   React.ElementRef<ScrollArea>,
   React.ComponentPropsWithoutRef<ScrollArea>
->(({ className, children, thumbVisibled: thumbVisibled = false, ...props }, ref) => (
-  <ScrollAreaPrimitive.Root
-    ref={ref}
-    className={cn("relative overflow-hidden", className)}
-    {...props}
-  >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full pb-1">
-      {children}
-    </ScrollAreaPrimitive.Viewport>
-    <ScrollBar visible={thumbVisibled} />
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
-));
+>(
+  (
+    { className, children, thumbVisibled: thumbVisibled = false, ...props },
+    ref,
+  ) => (
+    <ScrollAreaPrimitive.Root
+      ref={ref}
+      className={cn("relative overflow-hidden", className)}
+      {...props}
+    >
+      <ScrollAreaPrimitive.Viewport className="h-full w-full pb-1">
+        {children}
+      </ScrollAreaPrimitive.Viewport>
+      <ScrollBar visible={thumbVisibled} />
+      <ScrollAreaPrimitive.Corner />
+    </ScrollAreaPrimitive.Root>
+  ),
+);
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
 
 interface ScrollAreaScrollbarProps

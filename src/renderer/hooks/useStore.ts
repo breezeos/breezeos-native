@@ -1,13 +1,13 @@
 import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
 import { useMutation, useQuery } from "react-query";
-import { StoreConfigKey } from "@/common/types";
+import { type StoreConfigKey } from "@/common/types";
 
 type StoreConfigObjectType = Record<StoreConfigKey, unknown>;
 
 export default function useStore() {
   const handleStoreName = IPC_NAMES.HANDLE_STORE;
   const handleStoreType = IPC_TYPES.HANDLE_STORE;
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["store-data"],
     queryFn: async () => {
       return await window.electronApi
@@ -21,7 +21,6 @@ export default function useStore() {
       ipcType: keyof typeof handleStoreType;
       value?: unknown;
     }) => {
-      console.log("as");
       return window.electronApi.callMain(handleStoreName, [
         params.ipcType,
         params.value,
@@ -63,6 +62,7 @@ export default function useStore() {
   }
 
   return {
+    isStoreLoading: isLoading,
     getStoreItem,
     resetAllStoreItems,
     deleteStoreItems,

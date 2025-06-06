@@ -1,24 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
-import * as FluentIcons from "@fluentui/react-icons";
+import { ArrowRight20Filled } from "@fluentui/react-icons";
 import { ScrollArea } from "@r/components/shadcn-ui/ScrollArea";
-import cn from "@r/utils/cn";
-import useSetupSequence from "@r/hooks/useSetupSequence";
-import useSequence from "@r/hooks/useSequence";
-import useDialog from "@r/hooks/useDialog";
-import useGlobalVariable from "@r/hooks/useGlobalVariable";
-import useLanguage from "@r/hooks/useLanguage";
-import { FluentIconName } from "@/renderer/types";
-
-function getFluentIcon(
-  fluentIcon: FluentIconName,
-  props?: React.SVGProps<SVGSVGElement>,
-) {
-  const FluentIcon = FluentIcons[fluentIcon] as React.ComponentType<
-    React.SVGProps<SVGSVGElement>
-  >;
-  return <FluentIcon {...props} />;
-}
+import { cn } from "@r/utils";
+import {
+  useSetupSequence,
+  useSequence,
+  useDialog,
+  useLanguage,
+} from "@r/hooks";
+import { type FluentIconName } from "@/renderer/types";
+import FluentIconComponent from "@/renderer/components/FluentIconComponent";
 
 interface SequenceViewProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -26,12 +18,24 @@ export default function SequenceView({
   children,
   className,
 }: SequenceViewProps) {
-  const { setCurrentSequence, nextSequence, currentSequence } =
+  const { sequences, setCurrentSequence, nextSequence, currentSequence } =
     useSetupSequence();
   const { scrollDisabled, interactionsDisabled } = useSequence();
   const { getLanguageKey } = useLanguage();
   const { createDialog } = useDialog();
-  const { getVariable } = useGlobalVariable();
+  const currentSequenceIndex = currentSequence.sequenceIndex;
+  const currentSequenceName = Object.keys(sequences[currentSequence.sequence])[
+    currentSequenceIndex
+  ];
+  const sequenceKey = Object.keys(sequences);
+
+  function getCurrentSequenceKey(key: string) {
+    const sequence = sequences[currentSequence.sequence][currentSequenceName];
+    const sequenceHandler = sequence.handler as string;
+    const sequenceDataKey = Array.of(sequenceHandler, key).join(".");
+    return getLanguageKey(sequenceDataKey);
+  }
+
   const data = {
     title: getCurrentSequenceKey("title"),
     description: getCurrentSequenceKey("description"),
@@ -50,35 +54,15 @@ export default function SequenceView({
     },
   };
 
-  const currentSequenceName = currentSequence.sequence;
-  const currentSequenceIndex = currentSequence.sequenceIndex;
-
-  function getCurrentSequenceKey(key: string) {
-    const sequences = getVariable<Record<string, any>>("setupSequence");
-
-    if (!sequences) return;
-
-    const sequence = sequences[currentSequenceName][currentSequenceIndex];
-    const sequenceHandler = sequence.handler as string;
-    const sequenceDataKey = Array.of(sequenceHandler, key).join(".");
-    const sequenceData = getLanguageKey(sequenceDataKey);
-    return sequenceData;
-  }
-
   function handleForward() {
-    const sequences = getVariable<Record<string, any>>("setupSequence");
-
-    if (!sequences) return;
-
     const sequence = sequences[currentSequenceName];
-    const sequencesKey = Object.keys(sequences);
 
     if (currentSequenceIndex === Object.keys(sequence).length - 1) {
-      const index = sequencesKey.indexOf(currentSequenceName);
+      const index = sequenceKey.indexOf(currentSequenceName);
       setCurrentSequence(sequences[index + 1]);
     }
 
-    if (sequencesKey.indexOf(currentSequenceName) === sequencesKey.length - 1) {
+    if (sequenceKey.lastIndexOf(currentSequenceName) === 0) {
       createDialog({
         message: "Apply changes to the system?",
         type: "question",
@@ -114,25 +98,16 @@ export default function SequenceView({
             ease: [0, 0.71, 0.2, 1.01],
           }}
         >
-          {getFluentIcon(data.icon, { className: "size-28 text-white" })}
+          <FluentIconComponent
+            fluentIcon={data.icon}
+            className="size-28 text-white"
+          />
         </motion.div>
-        {/* <motion.div
-          initial={{ opacity: 0, translateX: "-20px" }}
-          animate={{ opacity: 1, translateX: "0" }}
-          exit={{ opacity: 0, translateX: "20px" }}
-          transition={{
-            duration: 0.5,
-            ease: [0, 0.71, 0.2, 1.01],
-          }}
-        >
-          <p className="text-3xl font-semibold text-black">{title}</p>
-          <p className="text-sm text-zinc-500">{desc}</p>
-        </motion.div> */}
       </div>
       <div className="relative flex h-full w-full flex-col justify-between space-y-4 text-zinc-900">
-        <p className="text-3xl font-medium text-black">{data.title}</p>
+        <p className="text-5xl font-normal text-black">{data.title}</p>
         {data.description && (
-          <p className="text-md font-medium text-black">{data.description}</p>
+          <p className="text-md text-black">{data.description}</p>
         )}
         {!scrollDisabled ? (
           <ScrollArea>
@@ -167,7 +142,7 @@ export default function SequenceView({
               onClick={handleForward}
               // disabled={forwardDisabled}
             >
-              <FluentIcons.ArrowRight20Filled className="text-white" />
+              <ArrowRight20Filled className="text-white" />
             </button>
           )}
           {/* {flexEndButtons && (

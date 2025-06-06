@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import generateId from "@r/utils/generateId";
+import { generateId } from "@r/utils";
 
 type DialogType = "critical" | "exclamation" | "info" | "question";
 
@@ -51,4 +51,5 @@ const useDialog = create<State & Actions>(
     }),
   ),
 );
+
 export default useDialog;

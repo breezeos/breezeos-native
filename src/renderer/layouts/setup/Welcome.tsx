@@ -4,12 +4,12 @@ import {
   cubicBezier,
   stagger,
   useAnimate,
-  usePresence } from "framer-motion";
+  usePresence,
+} from "framer-motion";
 import { useEffect, useState } from "react";
 import { ArrowRight20Filled } from "@fluentui/react-icons";
-import useLanguage from "@r/hooks/useLanguage";
+import { useLanguage, useStore } from "@r/hooks";
 import BetterParagraph from "@r/components/BetterParagraph";
-import useStore from "@/renderer/hooks/useStore";
 
 export default function Welcome() {
   const { setStoreItems } = useStore();
@@ -181,8 +181,8 @@ export default function Welcome() {
                 },
               }}
               onClick={() => {
-                setIsNextButtonVisible(false);
                 handleExitAnimation();
+                setIsNextButtonVisible(false);
               }}
             >
               <ArrowRight20Filled />

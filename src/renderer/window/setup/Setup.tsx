@@ -1,22 +1,23 @@
 import { AnimatePresence, motion, useMotionValue } from "framer-motion";
-// import { animate } from "framer-motion";
 import WallpaperUrl from "@r/assets/images/wallpaper.jpg";
-import useSetupSequence from "@r/hooks/useSetupSequence";
-import useStore from "@r/hooks/useStore";
-// import {
-//   DropdownMenu,
-//   DropdownMenuTrigger,
-// } from "@r/components/ui/DropdownMenu";
+import { useSetupSequence, useStore } from "@r/hooks";
 import Welcome from "@/renderer/layouts/setup/Welcome";
-import * as sequenceLayout from "./index";
-import { useEffect } from "react";
+import * as sequenceLayout from "./sequences";
 
-export default function App() {
-  const { sequences, currentSequence, setCurrentSequence } = useSetupSequence();
+function renderSequences() {
+  const { sequences, currentSequence } = useSetupSequence();
+  const sequenceOrder = Object.keys(sequences[currentSequence.sequence]);
+  const currentSequenceIndex = currentSequence.sequenceIndex;
+  const currentSequenceName = sequenceOrder[currentSequenceIndex];
+  const Sequence =
+    sequenceLayout[currentSequenceName as keyof typeof sequenceLayout];
+
+  return sequences && <Sequence key={Math.random()} />;
+}
+
+export default function Setup() {
   const { getStoreItem } = useStore();
   const isFirstTimeOpened = getStoreItem<boolean>("isFirstTimeOpened");
-  const currentSequenceName = currentSequence.sequence;
-  const currentSequenceIndex = currentSequence.sequenceIndex;
   const backgroundWidth = useMotionValue(832);
 
   return (
@@ -29,17 +30,7 @@ export default function App() {
         }}
       >
         <AnimatePresence mode="wait">
-          {isFirstTimeOpened ? (
-            <Welcome />
-          ) : (
-            sequences &&
-            (sequenceLayout as Record<string, any>)[
-              currentSequence.sequence
-            ]?.map((step: string) => {
-              const Sequence = step;
-              return <Sequence key={Math.random()} />;
-            })
-          )}
+          {isFirstTimeOpened ? <Welcome /> : renderSequences()}
         </AnimatePresence>
       </motion.div>
     </div>

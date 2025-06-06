@@ -1,4 +1,4 @@
-import { GlobalVariableType } from "../common/types";
+import { type GlobalVariableType } from "../common/types";
 
 const globalVariable = {
   languageData: {},

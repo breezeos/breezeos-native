@@ -1,4 +1,4 @@
-import useDialog from "@r/hooks/useDialog";
+import { useDialog } from "@r/hooks";
 
 interface DialogProviderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -37,4 +37,4 @@ export default function DialogProvider({ children }: DialogProviderProps) {
       {children}
     </>
   );
-};
+}

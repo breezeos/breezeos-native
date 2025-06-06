@@ -3,7 +3,7 @@ import fs from "fs";
 import { app } from "electron";
 import chokidar from "chokidar";
 import defaultConfig from "@/data/store.json";
-import { StoreConfigKey } from "../common/types";
+import { type StoreConfigKey } from "../common/types";
 
 const userData = app.getPath("userData");
 

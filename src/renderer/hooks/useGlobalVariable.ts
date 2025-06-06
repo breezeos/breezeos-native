@@ -1,11 +1,11 @@
 import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
 import { useMutation, useQuery } from "react-query";
-import { GlobalVariableType } from "@/common/types";
+import { type GlobalVariableType } from "@/common/types";
 
 export default function useGlobalVariable() {
   const handleGlobalVariableName = IPC_NAMES.HANDLE_GLOBAL_VARIABLE;
   const handleGlobalVariableType = IPC_TYPES.HANDLE_GLOBAL_VARIABLE;
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["global-variable-data"],
     queryFn: async () => {
       return await window.electronApi
@@ -40,6 +40,7 @@ export default function useGlobalVariable() {
   }
 
   return {
+    isGlobalVariableLoading: isLoading,
     getVariable,
     setVariable,
   };

@@ -18,7 +18,7 @@ import GlobalVariable from "./globalVariable";
 import LanguageManager from "./languageManager";
 import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
 import entries from "@/data/entries.json";
-import { StoreConfigKey } from "../common/types";
+import { type StoreConfigKey } from "../common/types";
 import { Log, loadLanguageFiles } from "./utils";
 
 type WindowType = BrowserWindow | null;

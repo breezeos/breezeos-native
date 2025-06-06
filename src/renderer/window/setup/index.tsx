@@ -1,20 +1,32 @@
 import { createRoot } from "react-dom/client";
-import { StrictMode } from "react";
-import App from "./Setup";
+import { StrictMode, useContext } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import Setup from "./Setup";
 import "@r/styles/index.css";
 import DialogProvider from "@/renderer/layouts/DialogProvider";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { LoadingContext, LoadingProvider } from "@/renderer/contexts/LoadingContext";
+import Loading from "@/renderer/layouts/Loading";
 
 const queryClient = new QueryClient();
 const container = document.getElementById("root") as HTMLDivElement;
 const root = createRoot(container);
 
+function App(){
+  const isLoading = useContext(LoadingContext);
+
+  return isLoading ? <Loading /> : (
+    <DialogProvider>
+      <Setup />
+    </DialogProvider>
+  )
+}
+
 root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <DialogProvider>
+      <LoadingProvider>
         <App />
-      </DialogProvider>
+      </LoadingProvider>
     </QueryClientProvider>
   </StrictMode>,
 );
