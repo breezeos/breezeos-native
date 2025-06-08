@@ -21,6 +21,11 @@ module.exports = {
     "promise/always-return": "off",
     "import/no-relative-packages": "off",
     "consistent-return": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-props-no-spreading": "warn",
+    "react/button-has-type": "off",
+    "react/require-default-props": "off"
   },
   parserOptions: {
     ecmaVersion: 2022,

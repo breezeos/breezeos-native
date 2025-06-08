@@ -12,14 +12,14 @@ import {
   REACT_DEVELOPER_TOOLS,
 } from "electron-extension-installer";
 import { store } from "./storeManager";
-import { IS_DEBUG } from "@/common/constants";
+import { IS_DEBUG } from "@/constants";
 import { loadAllConfig } from "./loadAllConfig";
 import GlobalVariable from "./globalVariable";
 import LanguageManager from "./languageManager";
-import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
+import { IPC_NAMES, IPC_TYPES } from "@/constants/ipc";
 import entries from "@/data/entries.json";
-import { type StoreConfigKey } from "../common/types";
-import { Log, loadLanguageFiles } from "./utils";
+import { type StoreConfigKey } from "../types";
+import { Log, loadLanguageFiles } from "./lib";
 
 type WindowType = BrowserWindow | null;
 
@@ -75,23 +75,22 @@ ipcMain.answerRenderer(
 );
 
 ipcMain.answerRenderer(IPC_NAMES.HANDLE_STORE, (args: unknown[]) => {
-  const [type, param] = args;
+  const [type, payload] = args;
 
   switch (type) {
     case IPC_TYPES.HANDLE_STORE.GET_ALL_ITEMS:
       return store.getAllItems();
     case IPC_TYPES.HANDLE_STORE.SET_ITEMS:
-      const params = param as Record<string, unknown>;
-      store.setItems(params);
+      store.setItems(payload as Record<string, unknown>);
       break;
     case IPC_TYPES.HANDLE_STORE.RESET_ALL_ITEMS:
       store.resetAllItems();
       break;
     case IPC_TYPES.HANDLE_STORE.DELETE_ITEMS:
-      store.deleteItems(...(param as StoreConfigKey[]));
+      store.deleteItems(...(payload as StoreConfigKey[]));
       break;
     case IPC_TYPES.HANDLE_STORE.RESET_ITEMS:
-      store.resetItems(...(param as StoreConfigKey[]));
+      store.resetItems(...(payload as StoreConfigKey[]));
       break;
     default:
       break;

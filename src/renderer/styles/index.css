@@ -9,11 +9,15 @@
   --scale-97: 0.97;
   --scale-99: 0.99;
   --font-default:
-    Ginto, -apple-system, ui-sans-serif, system-ui, BlinkMacSystemFont,
+    Ginto Variable, -apple-system, ui-sans-serif, system-ui, BlinkMacSystemFont,
     Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
     Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   --font-ginto-nord:
     Ginto Nord, -apple-system, ui-sans-serif, system-ui, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  --font-ginto-default:
+    Ginto, -apple-system, ui-sans-serif, system-ui, BlinkMacSystemFont,
     Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
     Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }
@@ -73,5 +77,6 @@
 
   button {
     display: block;
+    cursor: pointer;
   }
 }

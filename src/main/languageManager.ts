@@ -1,8 +1,8 @@
 import ISO3691 from "iso-639-1";
 import { store } from "./storeManager";
 import { app } from "electron";
-import { loadLanguageFiles } from "./utils";
-import { SUPPORTED_LANGUAGES } from "@/common/constants";
+import { loadLanguageFiles } from "./lib";
+import { SUPPORTED_LANGUAGES } from "@/constants";
 
 type LanguageObject = Record<
   string,

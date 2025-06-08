@@ -5,13 +5,35 @@ import {
   stagger,
   useAnimate,
   usePresence,
+  Variants,
 } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ArrowRight20Filled } from "@fluentui/react-icons";
 import { useLanguage, useStore } from "@r/hooks";
-import BetterParagraph from "@r/components/BetterParagraph";
+import BetterParagraph from "@/renderer/components/BetterParagraph";
+import { SetupLayoutContext } from "@/renderer/contexts/SetupLayoutContext";
+
+const easingGraph = cubicBezier(0.17, 0.67, 0.53, 0.99);
+
+const spanVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    filter: "blur(6px)",
+    bottom: -10,
+    transition: {
+      ease: easingGraph,
+    },
+  },
+  visible: { opacity: 1, filter: "blur(0)", bottom: 0 },
+};
+
+const classes = {
+  welcomeSpan: "font-ginto-nord relative **:font-ginto-nord",
+};
 
 export default function Welcome() {
+  const setupLayoutContext = useContext(SetupLayoutContext);
+  const setBackgroundShrink = setupLayoutContext?.setBackgroundShrink;
   const { setStoreItems } = useStore();
   const { getLanguageKey } = useLanguage();
   const [scope, animate] = useAnimate();
@@ -25,18 +47,12 @@ export default function Welcome() {
     secondDivChildren: [],
   });
 
-  const easingGraph = cubicBezier(0.17, 0.67, 0.53, 0.99);
-
   function startSetup() {
     setStoreItems({ isFirstTimeOpened: false });
   }
 
   function handleWelcomeNextAction() {
-    // const animateBgWidth = animate(backgroundWidth, 350, {
-    //   duration: 0.8,
-    //   ease: eased,
-    // });
-    // animateBgWidth.then(() => startSetup());
+    if (setBackgroundShrink) setBackgroundShrink();
     startSetup();
   }
 
@@ -73,7 +89,6 @@ export default function Welcome() {
     if (isPresent) {
       handleStartAnimation();
     } else {
-      // animate(backgroundWidth, 320, {duration:2})
       safeToRemove();
     }
   }, [isPresent]);
@@ -94,25 +109,13 @@ export default function Welcome() {
     }
   }, []);
 
-  const spanVariants = {
-    hidden: {
-      opacity: 0,
-      filter: "blur(6px)",
-      bottom: -10,
-      transition: {
-        ease: easingGraph,
-      },
-    },
-    visible: { opacity: 1, filter: "blur(0)", bottom: 0 },
-  };
-
-  const spanClass = "font-ginto-nord [&_*]:font-ginto-nord relative";
-
   return (
     <div className="grid h-full w-full items-center text-white">
-      <motion.div className="text-5xl/16 text-center" ref={scope}>
+      <motion.div
+        className="text-5xl/16 text-center [&_*]:space-x-3"
+        ref={scope}
+      >
         <motion.div
-          className="space-x-3"
           variants={spanVariants}
           animate="visible"
           initial="hidden"
@@ -122,7 +125,7 @@ export default function Welcome() {
         >
           {divChildrens.firstDivChildren.map((children) => (
             <motion.span
-              className={spanClass}
+              className={classes.welcomeSpan}
               variants={spanVariants}
               transition={{
                 duration: 0.4,
@@ -133,7 +136,6 @@ export default function Welcome() {
           ))}
         </motion.div>
         <motion.div
-          className="space-x-3"
           animate="visible"
           initial="hidden"
           variants={spanVariants}
@@ -144,7 +146,7 @@ export default function Welcome() {
         >
           {divChildrens.secondDivChildren.map((children) => (
             <motion.span
-              className={spanClass}
+              className={classes.welcomeSpan}
               variants={spanVariants}
               transition={{
                 duration: 0.4,
@@ -155,7 +157,7 @@ export default function Welcome() {
           ))}
         </motion.div>
       </motion.div>
-      <div className="absolute bottom-0 flex w-full justify-center">
+      <div className="absolute bottom-0 flex w-full justify-center ">
         <AnimatePresence mode="wait">
           {isNextButtonVisible && (
             <motion.button

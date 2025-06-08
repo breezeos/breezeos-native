@@ -27,7 +27,7 @@ const initializeEntry = () => {
       const windowName = entry.slice(0, entry.indexOf("Window"));
       entryObject[entries[entry]] = path.join(
         webpackPaths.srcRendererPath,
-        "window",
+        "modules",
         windowName,
         "index.tsx",
       );

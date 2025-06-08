@@ -1,29 +1,32 @@
-import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
 import { useMutation, useQuery } from "react-query";
-import { type StoreConfigKey } from "@/common/types";
+import { IPC_NAMES, IPC_TYPES } from "@/constants/ipc";
+import { type StoreConfigKey } from "@/types";
 
 type StoreConfigObjectType = Record<StoreConfigKey, unknown>;
 
 export default function useStore() {
   const handleStoreName = IPC_NAMES.HANDLE_STORE;
   const handleStoreType = IPC_TYPES.HANDLE_STORE;
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["store-data"],
     queryFn: async () => {
-      return await window.electronApi
+      const storeItems = await window.electronApi
         .callMain(handleStoreName, [handleStoreType.GET_ALL_ITEMS])
         .then((storeData) => storeData as StoreConfigObjectType);
+      return storeItems;
     },
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: "always",
+    cacheTime: 0,
+    onError: (err) => console.error(err),
   });
   const { mutate } = useMutation({
-    mutationFn: (params: {
+    mutationFn: (payload: {
       ipcType: keyof typeof handleStoreType;
       value?: unknown;
     }) => {
       return window.electronApi.callMain(handleStoreName, [
-        params.ipcType,
-        params.value,
+        payload.ipcType,
+        payload.value,
       ]);
     },
   });
@@ -37,10 +40,13 @@ export default function useStore() {
       ipcType: "SET_ITEMS",
       value: params,
     });
+    refetch();
+    console.log("Store items updated:", params);
   }
 
   function resetAllStoreItems() {
     mutate({ ipcType: "RESET_ALL_ITEMS" });
+    refetch();
   }
 
   function deleteStoreItems(...keys: string[]) {
@@ -48,6 +54,7 @@ export default function useStore() {
       ipcType: "DELETE_ITEMS",
       value: keys,
     });
+    refetch();
   }
 
   function resetStoreItems(...keys: string[]) {
@@ -55,6 +62,7 @@ export default function useStore() {
       ipcType: "RESET_ITEMS",
       value: keys,
     });
+    refetch();
   }
 
   function hasStoreItem(key: string) {

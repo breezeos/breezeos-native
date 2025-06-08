@@ -3,7 +3,8 @@ import fs from "fs";
 import { app } from "electron";
 import chokidar from "chokidar";
 import defaultConfig from "@/data/store.json";
-import { type StoreConfigKey } from "../common/types";
+import { type StoreConfigKey } from "../types";
+import { Log } from "./lib";
 
 const userData = app.getPath("userData");
 
@@ -17,7 +18,7 @@ class Store {
       fs.writeFileSync(storePath, JSON.stringify(defaultConfig, null, 2));
     }
 
-    this.#store = JSON.parse(fs.readFileSync(storePath, "utf-8"))
+    this.#store = JSON.parse(fs.readFileSync(storePath, "utf-8"));
 
     chokidar.watch(storePath).on("change", () => {
       this.#store = JSON.parse(fs.readFileSync(storePath, "utf-8"));
@@ -36,13 +37,13 @@ class Store {
     return this.#store[key] as T;
   }
 
-  setItems(params: Record<string, unknown>) {
-    Object.entries(params).forEach(([key, value]) => {
+  setItems(payload: Record<string, unknown>) {
+    Object.entries(payload).forEach(([key, value]) => {
       const storeKey = key as StoreConfigKey;
       this.#store[storeKey] = value;
-      console.log(`set ${key} to ${value}`)
+      Log.info(`set ${key} to ${value}`);
     });
-    console.log(this.#store)
+    Log.info(this.#store);
     this.#updateConfigFile();
   }
 

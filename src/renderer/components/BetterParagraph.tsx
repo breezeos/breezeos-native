@@ -61,9 +61,7 @@ export default function BetterParagraph({
       }
 
       elements.push(
-        <strong className="font-semibold" key={Math.random()}>
-          {parseItalicText(match[1])}
-        </strong>,
+        <strong key={Math.random()}>{parseItalicText(match[1])}</strong>,
       );
 
       lastIndex = match.index + match[0].length;

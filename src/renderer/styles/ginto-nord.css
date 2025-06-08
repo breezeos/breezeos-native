@@ -19,11 +19,17 @@
 @font-face {
   font-family: Ginto Nord;
   font-weight: 600;
-  src: url(../assets/fonts/main/Ginto-Nord-Bold.woff2) format("woff2");
+  src: url(../assets/fonts/main/Ginto-Nord-Semibold.woff2) format("woff2");
 }
 
 @font-face {
   font-family: Ginto Nord;
   font-weight: 700;
+  src: url(../assets/fonts/main/Ginto-Nord-Bold.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: Ginto Nord;
+  font-weight: 800;
   src: url(../assets/fonts/main/Ginto-Nord-Black.woff2) format("woff2");
 }

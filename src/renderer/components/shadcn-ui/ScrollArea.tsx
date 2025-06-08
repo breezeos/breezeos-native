@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import { cn } from "@r/utils";
+import { cn } from "@r/lib";
 
 interface ScrollAreaRoot extends ScrollAreaPrimitive.ScrollAreaProps {
   thumbVisibled?: boolean;

@@ -1,8 +1,8 @@
 import useDialog from "./useDialog";
 import useGlobalVariable from "./useGlobalVariable";
-import { IPC_NAMES, IPC_TYPES } from "@/common/constants/ipc";
-import { SUPPORTED_LANGUAGES } from "@/common/constants";
-import { type GlobalVariableType } from "@/common/types";
+import { IPC_NAMES, IPC_TYPES } from "@/constants/ipc";
+import { SUPPORTED_LANGUAGES } from "@/constants";
+import { type GlobalVariableType } from "@/types";
 
 export default function useLanguage() {
   const { createDialog } = useDialog();
@@ -54,12 +54,7 @@ export default function useLanguage() {
       return "Language data is not available!";
     }
 
-    const data = languageData[key];
-
-    if (Array.isArray(data) || typeof data !== "string")
-      return "Key is not a string";
-
-    return data;
+    return languageData[key];
   }
 
   return {

@@ -1,18 +1,30 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useCallback, useEffect, useState } from "react";
+import { motion, Variants } from "framer-motion";
 import { ArrowRight20Filled } from "@fluentui/react-icons";
-import { ScrollArea } from "@r/components/shadcn-ui/ScrollArea";
-import { cn } from "@r/utils";
 import {
   useSetupSequence,
   useSequence,
   useDialog,
   useLanguage,
 } from "@r/hooks";
-import { type FluentIconName } from "@/renderer/types";
-import FluentIconComponent from "@/renderer/components/FluentIconComponent";
+import { type FluentIconName } from "@/types";
+import FluentIconComponent from "@r/components/FluentIconComponent";
+import { InteractionButton } from "@r/components/setup";
+import { cn } from "@r/lib";
 
-interface SequenceViewProps extends React.HTMLAttributes<HTMLDivElement> {}
+const variants: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+  },
+  exit: {
+    opacity: 0,
+  },
+};
+
+interface SequenceViewProps extends React.ComponentPropsWithoutRef<"div"> {}
 
 export default function SequenceView({
   children,
@@ -20,46 +32,43 @@ export default function SequenceView({
 }: SequenceViewProps) {
   const { sequences, setCurrentSequence, nextSequence, currentSequence } =
     useSetupSequence();
-  const { scrollDisabled, interactionsDisabled } = useSequence();
-  const { getLanguageKey } = useLanguage();
-  const { createDialog } = useDialog();
   const currentSequenceIndex = currentSequence.sequenceIndex;
-  const currentSequenceName = Object.keys(sequences[currentSequence.sequence])[
+  const currentSequenceName = currentSequence.sequence;
+  const currentSequenceView = Object.keys(sequences[currentSequenceName])[
     currentSequenceIndex
   ];
   const sequenceKey = Object.keys(sequences);
 
+  const { interactionsDisabled } = useSequence();
+  const { getLanguageKey } = useLanguage();
+  const { createDialog } = useDialog();
+  const [data, setData] = useState<{
+    title: string;
+    description?: string;
+    icon: FluentIconName;
+  }>();
+
   function getCurrentSequenceKey(key: string) {
-    const sequence = sequences[currentSequence.sequence][currentSequenceName];
-    const sequenceHandler = sequence.handler as string;
+    const sequence = sequences[currentSequenceName][currentSequenceView];
+    const sequenceHandler = sequence.handler;
     const sequenceDataKey = Array.of(sequenceHandler, key).join(".");
     return getLanguageKey(sequenceDataKey);
   }
 
-  const data = {
-    title: getCurrentSequenceKey("title"),
-    description: getCurrentSequenceKey("description"),
-    icon: getCurrentSequenceKey("icon") as FluentIconName,
-  };
+  useEffect(() => {
+    setData({
+      title: getCurrentSequenceKey("title"),
+      description: getCurrentSequenceKey("description"),
+      icon: getCurrentSequenceKey("icon") as FluentIconName,
+    });
+  }, []);
 
-  const variants = {
-    hidden: {
-      opacity: 0,
-    },
-    visible: {
-      opacity: 1,
-    },
-    exit: {
-      opacity: 0,
-    },
-  };
-
-  function handleForward() {
+  const handleForward = useCallback(() => {
     const sequence = sequences[currentSequenceName];
 
     if (currentSequenceIndex === Object.keys(sequence).length - 1) {
       const index = sequenceKey.indexOf(currentSequenceName);
-      setCurrentSequence(sequences[index + 1]);
+      setCurrentSequence(sequenceKey[index + 1]);
     }
 
     if (sequenceKey.lastIndexOf(currentSequenceName) === 0) {
@@ -71,11 +80,19 @@ export default function SequenceView({
     }
 
     nextSequence();
-  }
+  }, [
+    sequences,
+    currentSequenceName,
+    currentSequenceIndex,
+    sequenceKey,
+    setCurrentSequence,
+    createDialog,
+    nextSequence,
+  ]);
 
   return (
-    <div className="absolute grid h-full w-full grid-cols-[350px_auto]">
-      <div className="basis-lg grid h-full place-items-center space-y-5 px-2 py-8">
+    <div className="absolute grid h-full w-full grid-cols-7 gap-5 px-5 pl-0">
+      <div className="basis-lg col-span-3 grid h-full place-items-center">
         {/* {setup.currentSequence !== 0 &&
           !setup.importantSequence &&
           !isCriticallyLowBattery && (
@@ -99,51 +116,41 @@ export default function SequenceView({
           }}
         >
           <FluentIconComponent
-            fluentIcon={data.icon}
-            className="size-28 text-white"
+            fluentIcon={data?.icon}
+            className="size-32 text-white"
           />
         </motion.div>
       </div>
-      <div className="relative flex h-full w-full flex-col justify-between space-y-4 text-zinc-900">
-        <p className="text-5xl font-normal text-black">{data.title}</p>
-        {data.description && (
-          <p className="text-md text-black">{data.description}</p>
-        )}
-        {!scrollDisabled ? (
-          <ScrollArea>
-            <motion.div
-              variants={variants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              transition={{
-                duration: 0.5,
-                ease: [0, 0.71, 0.2, 1.01],
-              }}
-              className={className}
-            >
-              {children}
-            </motion.div>
-          </ScrollArea>
-        ) : (
-          <div
-            className={cn(
-              "flex h-full flex-col items-center justify-center",
-              className,
+      <div className="relative col-span-4 grid h-full w-full grid-rows-1 gap-4 py-5 text-zinc-900">
+        <div className="space-y-3">
+          <div className="rows-span-1 h-auto space-y-3 px-3 py-2">
+            <p className="font-ginto-variable text-3xl font-medium text-black">
+              {data?.title}
+            </p>
+            {data?.description && (
+              <p className="text-md text-black">{data?.description}</p>
             )}
+          </div>
+          <motion.div
+            variants={variants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{
+              duration: 0.5,
+              ease: [0, 0.71, 0.2, 1.01],
+            }}
+            className={cn("h-[calc(100%-50px)] w-full overflow-y-auto", className)}
           >
             {children}
-          </div>
-        )}
-        <div className="flex flex-row-reverse">
+          </motion.div>
+        </div>
+        <div className="flex gap-3">
           {!interactionsDisabled && (
-            <button
-              className="rounded-lg bg-slate-800 px-5 py-3 transition-transform active:scale-90 disabled:pointer-events-none disabled:opacity-30"
-              onClick={handleForward}
-              // disabled={forwardDisabled}
-            >
-              <ArrowRight20Filled className="text-white" />
-            </button>
+            <InteractionButton className="flex-1" onClick={handleForward}>
+              <p>Continue</p>
+              <ArrowRight20Filled className="arrow-icon" />
+            </InteractionButton>
           )}
           {/* {flexEndButtons && (
             <p onClick={flexEndButtons.action}>{flexEndButtons.label}</p>

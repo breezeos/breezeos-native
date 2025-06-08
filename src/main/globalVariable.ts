@@ -1,4 +1,4 @@
-import { type GlobalVariableType } from "../common/types";
+import { type GlobalVariableType } from "../types";
 
 const globalVariable = {
   languageData: {},
@@ -7,8 +7,8 @@ const globalVariable = {
 export default class GlobalVariable {
   static #globalVariable: GlobalVariableType = globalVariable;
 
-  static setVariables(params: Record<string, unknown>) {
-    Object.entries(params).forEach(([key, value]) => {
+  static setVariables(payload: Record<string, unknown>) {
+    Object.entries(payload).forEach(([key, value]) => {
       const variableKey = key as keyof GlobalVariableType;
       this.#globalVariable[variableKey] =
         value as GlobalVariableType[typeof variableKey];

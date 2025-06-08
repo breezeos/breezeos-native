@@ -1,6 +1,7 @@
+import React from "react";
 import { useDialog } from "@r/hooks";
 
-interface DialogProviderProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface DialogProviderProps extends React.ComponentPropsWithoutRef<"div"> {}
 
 export default function DialogProvider({ children }: DialogProviderProps) {
   const { dialogs, removeDialog } = useDialog();

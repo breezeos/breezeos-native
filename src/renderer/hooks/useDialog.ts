@@ -37,16 +37,18 @@ const useDialog = create<State & Actions>(
         const id = generateId();
         set((state) => ({ dialogs: [...state.dialogs, { ...props, id }] }));
       },
-      updateDialog: (id, props) =>
+      updateDialog: (id, props) => {
         set((state) => ({
           dialogs: state.dialogs.map((i) =>
             i?.id === id ? { ...i, ...props } : i,
           ),
-        })),
-      removeDialog: (id) =>
+        }));
+      },
+      removeDialog: (id) => {
         set((state) => ({
           dialogs: state.dialogs.filter((i) => i?.id !== id),
-        })),
+        }));
+      },
       clearDialog: () => set({ dialogs: [] }),
     }),
   ),

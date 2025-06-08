@@ -3,7 +3,14 @@ import { combine } from "zustand/middleware";
 import sequences from "@/data/sequences.json";
 
 interface State {
-  sequences: Record<string, any>;
+  sequences: {
+    [key: string]: {
+      [key: string]: {
+        id: string;
+        handler: string;
+      };
+    };
+  };
   currentSequence: {
     sequence: string;
     sequenceIndex: number;
@@ -11,7 +18,7 @@ interface State {
 }
 
 interface Actions {
-  setCurrentSequence: (sequence: string) => void;
+  setCurrentSequence: (payload: string) => void;
   nextSequence: () => void;
   prevSequence: () => void;
 }
@@ -28,27 +35,30 @@ const useSetupSequence = create<State & Actions>(
   combine(
     currentState,
     (set): Actions => ({
-      setCurrentSequence: (sequence) =>
+      setCurrentSequence: (payload) => {
         set((state) => ({
           ...state,
-          currentSequence: { sequence, sequenceIndex: 0 },
-        })),
-      nextSequence: () =>
+          currentSequence: { sequence: payload, sequenceIndex: 0 },
+        }));
+      },
+      nextSequence: () => {
         set((state) => ({
           ...state,
           currentSequence: {
             sequence: state.currentSequence.sequence,
             sequenceIndex: state.currentSequence.sequenceIndex + 1,
           },
-        })),
-      prevSequence: () =>
+        }));
+      },
+      prevSequence: () => {
         set((state) => ({
           ...state,
           currentSequence: {
             sequence: state.currentSequence.sequence,
             sequenceIndex: state.currentSequence.sequenceIndex - 1,
           },
-        })),
+        }));
+      },
     }),
   ),
 );
